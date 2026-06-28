@@ -125,10 +125,10 @@
     <aside id="main-sidebar" class="hidden w-full md:w-64 bg-gamer-card border-b md:border-b-0 md:border-r border-gamer-border flex flex-col shrink-0 z-30 transition-all duration-300">
         <!-- Logo Header -->
         <div class="p-5 border-b border-gamer-border">
-            <div class="flex items-center gap-3 mb-2">
+            <a href="index.html" target="_blank" class="flex items-center gap-3 mb-2 hover:opacity-80 transition-opacity" title="Ir a la tienda">
                 <img src="images/logo_tecnogamers_1_f_oscuro.png" alt="Tecno Gamers" class="h-10 w-auto shrink-0">
                 <span class="text-[10px] text-gamer-orange uppercase tracking-widest font-bold whitespace-nowrap">Admin Panel</span>
-            </div>
+            </a>
             <div id="connection-badge" class="inline-block px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
                 DEMO
             </div>
@@ -163,6 +163,14 @@
             <button onclick="switchTab('content-settings')" id="nav-content-settings" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 border-l-2 border-transparent">
                 <i class="fa-solid fa-file-lines w-5"></i>
                 <span>Gestión de Contenido</span>
+            </button>
+            <button onclick="switchTab('import-export')" id="nav-import-export" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 border-l-2 border-transparent">
+                <i class="fa-solid fa-right-left w-5"></i>
+                <span>Importar / Exportar</span>
+            </button>
+            <button onclick="switchTab('analytics-settings')" id="nav-analytics-settings" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 border-l-2 border-transparent">
+                <i class="fa-solid fa-chart-line w-5"></i>
+                <span>Analytics & SEO</span>
             </button>
         </nav>
 
@@ -562,6 +570,20 @@
                             <input type="url" id="social-tiktok" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="https://tiktok.com/@tu-cuenta">
                         </div>
 
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">
+                                <i class="fa-brands fa-telegram mr-1 text-zinc-200"></i> Telegram URL
+                            </label>
+                            <input type="url" id="social-telegram" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="https://t.me/tu-canal">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">
+                                <i class="fa-brands fa-youtube mr-1 text-zinc-200"></i> YouTube URL
+                            </label>
+                            <input type="url" id="social-youtube" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="https://youtube.com/@tu-canal">
+                        </div>
+
                         <div class="pt-4 border-t border-gamer-border flex gap-3">
                             <button type="button" onclick="clearSocialConfig()" class="px-4 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-gamer-border text-zinc-400 rounded-xl text-xs font-bold transition">
                                 Limpiar
@@ -815,6 +837,227 @@
                         </button>
                     </div>
                 </div>
+            </section>
+
+            <!-- Importar / Exportar -->
+            <section id="tab-import-export" class="space-y-6 hidden fade-in">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-black tracking-wider text-zinc-200 uppercase">
+                        <i class="fa-solid fa-right-left text-gamer-orange mr-2"></i> Importar / Exportar Datos
+                    </h2>
+                </div>
+
+                <!-- Explicación -->
+                <div class="p-4 bg-zinc-900/60 border border-gamer-border rounded-xl space-y-2">
+                    <h3 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">
+                        <i class="fa-solid fa-circle-info mr-1"></i> ¿Cómo funciona?
+                    </h3>
+                    <p class="text-[11px] text-zinc-400 leading-relaxed">
+                        Este módulo te permite <strong class="text-zinc-200">respaldar</strong> y <strong class="text-zinc-200">restaurar</strong> todos los datos de tu tienda (productos, categorías, contenido, redes sociales) mediante un archivo JSON.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+                        <div class="p-3 bg-zinc-950 rounded-lg border border-gamer-border">
+                            <p class="text-[10px] font-bold text-gamer-orange uppercase mb-1">Se exporta:</p>
+                            <ul class="text-[10px] text-zinc-500 space-y-0.5">
+                                <li>• Productos (título, precio, descripción, SKU, estado)</li>
+                                <li>• Categorías</li>
+                                <li>• Contenido (Nosotros, Ubicación, páginas legales)</li>
+                                <li>• Redes sociales</li>
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-zinc-950 rounded-lg border border-gamer-border">
+                            <p class="text-[10px] font-bold text-gamer-orange uppercase mb-1">No se exporta:</p>
+                            <ul class="text-[10px] text-zinc-500 space-y-0.5">
+                                <li>• Imágenes (se quedan en Cloudinary)</li>
+                                <li>• Configuración de Firebase</li>
+                                <li>• Credenciales de admin</li>
+                            </ul>
+                            <p class="text-[10px] text-zinc-600 mt-2 italic">Las URLs de las imágenes se incluyen pero las imágenes físicas no.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exportar -->
+                <div class="p-5 bg-zinc-900 border border-gamer-border rounded-xl space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gamer-orange/10 flex items-center justify-center">
+                            <i class="fa-solid fa-download text-gamer-orange"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-zinc-200">Exportar Datos</h3>
+                            <p class="text-[10px] text-zinc-500">Descarga un archivo .json con todos los datos de tu tienda</p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="exportData()" id="btn-export" class="w-full py-3 bg-gradient-to-r from-gamer-orange to-gamer-orangeHover text-zinc-950 font-black uppercase tracking-wider rounded-xl text-xs shadow-neon-orange hover:brightness-110 transition">
+                        <i class="fa-solid fa-download mr-2"></i> Exportar Todo a JSON
+                    </button>
+                </div>
+
+                <!-- Importar -->
+                <div class="p-5 bg-zinc-900 border border-gamer-border rounded-xl space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                            <i class="fa-solid fa-upload text-blue-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-zinc-200">Importar Datos</h3>
+                            <p class="text-[10px] text-zinc-500">Carga un archivo .json para restaurar o agregar datos</p>
+                        </div>
+                    </div>
+
+                    <div class="border-2 border-dashed border-gamer-border rounded-xl p-6 text-center hover:border-blue-500/50 transition" id="import-drop-zone">
+                        <i class="fa-solid fa-file-arrow-up text-3xl text-zinc-600 mb-2"></i>
+                        <p class="text-xs text-zinc-500 mb-2">Arrastra un archivo .json aquí o haz clic para seleccionar</p>
+                        <input type="file" id="import-file" accept=".json" class="hidden" onchange="handleImportFile(this)">
+                        <button type="button" onclick="document.getElementById('import-file').click()" class="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 border border-gamer-border text-zinc-300 rounded-lg text-xs font-bold transition">
+                            <i class="fa-solid fa-folder-open mr-1"></i> Seleccionar Archivo
+                        </button>
+                    </div>
+
+                    <!-- Preview del archivo importado -->
+                    <div id="import-preview" class="hidden space-y-3">
+                        <div class="p-4 bg-zinc-950 border border-gamer-border rounded-xl">
+                            <h4 class="text-xs font-bold text-zinc-200 uppercase tracking-wider mb-3">
+                                <i class="fa-solid fa-eye mr-1"></i> Vista Previa del Archivo
+                            </h4>
+                            <div id="import-preview-content" class="space-y-2 text-[11px] text-zinc-400"></div>
+                        </div>
+
+                        <div class="p-4 bg-zinc-950 border border-gamer-border rounded-xl">
+                            <h4 class="text-xs font-bold text-zinc-200 uppercase tracking-wider mb-3">
+                                <i class="fa-solid fa-sliders mr-1"></i> Modo de Importación
+                            </h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-3 p-3 bg-zinc-900 rounded-lg border border-gamer-border cursor-pointer hover:border-gamer-orange/30 transition">
+                                    <input type="radio" name="import-mode" value="merge" checked class="accent-gamer-orange">
+                                    <div>
+                                        <p class="text-xs font-bold text-zinc-200">Fusionar</p>
+                                        <p class="text-[10px] text-zinc-500">Agrega los datos sin borrar los existentes. Si un producto ya existe (por SKU), lo actualiza.</p>
+                                    </div>
+                                </label>
+                                <label class="flex items-center gap-3 p-3 bg-zinc-900 rounded-lg border border-gamer-border cursor-pointer hover:border-gamer-orange/30 transition">
+                                    <input type="radio" name="import-mode" value="replace" class="accent-gamer-orange">
+                                    <div>
+                                        <p class="text-xs font-bold text-zinc-200">Reemplazar Todo</p>
+                                        <p class="text-[10px] text-zinc-500">Elimina todos los datos actuales y los reemplaza con los del archivo. <span class="text-red-400 font-bold">¡Esta acción no se puede deshacer!</span></p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <button type="button" onclick="cancelImport()" class="px-4 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-gamer-border text-zinc-400 rounded-xl text-xs font-bold transition">
+                                <i class="fa-solid fa-times mr-1"></i> Cancelar
+                            </button>
+                            <button type="button" onclick="executeImport()" id="btn-import" class="flex-1 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-black uppercase tracking-wider rounded-xl text-xs shadow-lg hover:brightness-110 transition">
+                                <i class="fa-solid fa-upload mr-1"></i> Importar Datos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics & SEO -->
+            <section id="tab-analytics-settings" class="space-y-6 hidden fade-in">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-black tracking-wider text-zinc-200 uppercase">
+                        <i class="fa-solid fa-chart-line text-gamer-orange mr-2"></i> Analytics & SEO
+                    </h2>
+                </div>
+
+                <!-- Explicación -->
+                <div class="p-4 bg-zinc-900/60 border border-gamer-border rounded-xl space-y-2">
+                    <h3 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">
+                        <i class="fa-solid fa-circle-info mr-1"></i> ¿Para qué sirve esto?
+                    </h3>
+                    <p class="text-[11px] text-zinc-400 leading-relaxed">
+                        Conecta tu tienda con <strong class="text-zinc-200">Google Analytics</strong> para medir visitas y comportamiento de usuarios, y con <strong class="text-zinc-200">Google Search Console</strong> para monitorear tu posicionamiento en Google.
+                    </p>
+                    <p class="text-[10px] text-zinc-500 mt-2">
+                        Los códigos se inyectan automáticamente en todas las páginas de la tienda.
+                    </p>
+                </div>
+
+                <form id="analytics-form" class="space-y-6">
+                    <!-- Google Analytics -->
+                    <div class="p-5 bg-zinc-900 border border-gamer-border rounded-xl space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center">
+                                <i class="fa-brands fa-google text-orange-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-bold text-zinc-200">Google Analytics</h3>
+                                <p class="text-[10px] text-zinc-500">Mide las visitas y el comportamiento de tus usuarios</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">
+                                <i class="fa-solid fa-hashtag mr-1 text-zinc-200"></i> ID de Medición (GA4)
+                            </label>
+                            <input type="text" id="analytics-ga-id" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input font-mono" placeholder="G-XXXXXXXXXX">
+                            <p class="text-[10px] text-zinc-500 mt-1">Formato: G-XXXXXXXXXX. Lo encuentras en Admin > Flujos de datos > ID de medición.</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">
+                                <i class="fa-solid fa-code mr-1 text-zinc-200"></i> Código Completo (Opcional)
+                            </label>
+                            <textarea id="analytics-ga-code" rows="4" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-[10px] text-zinc-200 neon-input font-mono" placeholder="<!-- Pega aquí el código completo de Google Tag Manager si prefieres usarlo en lugar del ID -->"></textarea>
+                            <p class="text-[10px] text-zinc-500 mt-1">Si pegas un código completo, este tendrá prioridad sobre el ID de medición.</p>
+                        </div>
+                    </div>
+
+                    <!-- Google Search Console -->
+                    <div class="p-5 bg-zinc-900 border border-gamer-border rounded-xl space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                                <i class="fa-brands fa-google text-blue-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-bold text-zinc-200">Google Search Console</h3>
+                                <p class="text-[10px] text-zinc-500">Verifica tu sitio en Google y monitorea el SEO</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">
+                                <i class="fa-solid fa-key mr-1 text-zinc-200"></i> Meta Tag de Verificación
+                            </label>
+                            <input type="text" id="analytics-gsc-tag" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input font-mono" placeholder='name="google-site-verification" content="xxxxx"'>
+                            <p class="text-[10px] text-zinc-500 mt-1">Pega solo el atributo <code>content="..."</code> de la meta tag de verificación HTML.</p>
+                        </div>
+                    </div>
+
+                    <!-- Facebook Pixel (Opcional) -->
+                    <div class="p-5 bg-zinc-900 border border-gamer-border rounded-xl space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-blue-600/10 flex items-center justify-center">
+                                <i class="fa-brands fa-facebook text-blue-500"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-bold text-zinc-200">Meta Pixel (Facebook) <span class="text-[10px] text-zinc-500 font-normal">— Opcional</span></h3>
+                                <p class="text-[10px] text-zinc-500">Trackea conversiones y crea audiencias para anuncios</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">
+                                <i class="fa-solid fa-fingerprint mr-1 text-zinc-200"></i> Pixel ID
+                            </label>
+                            <input type="text" id="analytics-fb-pixel" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input font-mono" placeholder="123456789012345">
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button type="button" onclick="loadAnalyticsSettings()" class="px-4 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-gamer-border text-zinc-400 rounded-xl text-xs font-bold transition">
+                            <i class="fa-solid fa-rotate-right mr-1"></i> Recargar
+                        </button>
+                        <button type="submit" class="flex-1 py-2.5 bg-gradient-to-r from-gamer-orange to-gamer-orangeHover text-zinc-950 font-black uppercase tracking-wider rounded-xl text-xs shadow-neon-orange hover:brightness-110 transition">
+                            <i class="fa-solid fa-floppy-disk mr-1"></i> Guardar Analytics & SEO
+                        </button>
+                    </div>
+                </form>
             </section>
         </div>
 
@@ -1403,6 +1646,8 @@
                     document.getElementById('social-facebook').value = data.facebook || '';
                     document.getElementById('social-instagram').value = data.instagram || '';
                     document.getElementById('social-tiktok').value = data.tiktok || '';
+                    document.getElementById('social-telegram').value = data.telegram || '';
+                    document.getElementById('social-youtube').value = data.youtube || '';
                     updateSocialStatus(true);
                 }
             }).catch(() => {});
@@ -1429,7 +1674,9 @@
                 whatsapp: document.getElementById('social-whatsapp').value.trim(),
                 facebook: document.getElementById('social-facebook').value.trim(),
                 instagram: document.getElementById('social-instagram').value.trim(),
-                tiktok: document.getElementById('social-tiktok').value.trim()
+                tiktok: document.getElementById('social-tiktok').value.trim(),
+                telegram: document.getElementById('social-telegram').value.trim(),
+                youtube: document.getElementById('social-youtube').value.trim()
             };
             try {
                 const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
@@ -1540,9 +1787,233 @@
                     showToast("No hay contenido guardado aún", 'warn');
                 }
             } catch (error) {
-                showToast("Error al cargar: " + error.message, 'danger');
+                showToast("Error al guardar: " + error.message, 'danger');
             }
         };
+
+        // ===================== IMPORTAR / EXPORTAR =====================
+        let importFileData = null;
+
+        window.exportData = async function() {
+            if (state.mode !== 'firebase' || !state.firebaseDb) {
+                showToast("Conéctate a Firebase primero", 'warn');
+                return;
+            }
+            const btn = document.getElementById('btn-export');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Exportando...';
+            try {
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+                const db = state.firebaseDb;
+
+                const prodSnap = await getDocs(query(collection(db, 'artifacts', appId, 'public', 'data', 'productos')));
+                const catSnap = await getDocs(query(collection(db, 'artifacts', appId, 'public', 'data', 'categorias')));
+                const socialSnap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'social'));
+                const contentSnap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'content'));
+
+                const data = {
+                    _meta: {
+                        app: 'Tecno Gamers Peru',
+                        exportedAt: new Date().toISOString(),
+                        version: '1.0'
+                    },
+                    products: [],
+                    categories: [],
+                    social: {},
+                    content: {}
+                };
+
+                prodSnap.forEach(d => {
+                    const p = d.data();
+                    p.id = d.id;
+                    data.products.push(p);
+                });
+
+                catSnap.forEach(d => {
+                    const c = d.data();
+                    c.id = d.id;
+                    data.categories.push(c);
+                });
+
+                if (socialSnap.exists()) data.social = socialSnap.data();
+                if (contentSnap.exists()) data.content = contentSnap.data();
+
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                const date = new Date().toISOString().slice(0, 10);
+                a.href = url;
+                a.download = 'tecnogamers-backup-' + date + '.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showToast("Datos exportados correctamente", 'success');
+            } catch (error) {
+                showToast("Error al exportar: " + error.message, 'danger');
+            }
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-download mr-2"></i> Exportar Todo a JSON';
+        };
+
+        window.handleImportFile = function(input) {
+            const file = input.files[0];
+            if (!file) return;
+            if (!file.name.endsWith('.json')) {
+                showToast("Selecciona un archivo .json", 'danger');
+                input.value = '';
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    importFileData = JSON.parse(e.target.result);
+                    if (!importFileData.products && !importFileData.categories && !importFileData.social && !importFileData.content) {
+                        showToast("El archivo no contiene datos válidos", 'danger');
+                        importFileData = null;
+                        return;
+                    }
+                    showImportPreview(importFileData);
+                } catch (err) {
+                    showToast("Archivo JSON inválido: " + err.message, 'danger');
+                    importFileData = null;
+                }
+            };
+            reader.readAsText(file);
+        };
+
+        function showImportPreview(data) {
+            const preview = document.getElementById('import-preview');
+            const content = document.getElementById('import-preview-content');
+            preview.classList.remove('hidden');
+
+            let html = '';
+            if (data.products) {
+                html += '<div class="flex justify-between"><span>Productos:</span><span class="text-zinc-200 font-bold">' + data.products.length + ' items</span></div>';
+            }
+            if (data.categories) {
+                html += '<div class="flex justify-between"><span>Categorías:</span><span class="text-zinc-200 font-bold">' + data.categories.length + ' items</span></div>';
+            }
+            if (data.social && Object.keys(data.social).length > 0) {
+                html += '<div class="flex justify-between"><span>Redes Sociales:</span><span class="text-zinc-200 font-bold">' + Object.keys(data.social).length + ' campos</span></div>';
+            }
+            if (data.content && Object.keys(data.content).length > 0) {
+                html += '<div class="flex justify-between"><span>Contenido:</span><span class="text-zinc-200 font-bold">' + Object.keys(data.content).length + ' secciones</span></div>';
+            }
+            if (data._meta) {
+                html += '<div class="flex justify-between mt-2 pt-2 border-t border-gamer-border"><span>Exportado:</span><span class="text-zinc-500">' + (data._meta.exportedAt || 'N/A') + '</span></div>';
+            }
+
+            content.innerHTML = html;
+        }
+
+        window.cancelImport = function() {
+            importFileData = null;
+            document.getElementById('import-preview').classList.add('hidden');
+            document.getElementById('import-file').value = '';
+        };
+
+        window.executeImport = async function() {
+            if (!importFileData) {
+                showToast("No hay archivo cargado", 'warn');
+                return;
+            }
+            if (state.mode !== 'firebase' || !state.firebaseDb) {
+                showToast("Conéctate a Firebase primero", 'warn');
+                return;
+            }
+
+            const mode = document.querySelector('input[name="import-mode"]:checked').value;
+            const btn = document.getElementById('btn-import');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Importando...';
+
+            try {
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+                const db = state.firebaseDb;
+
+                if (mode === 'replace') {
+                    const existingProds = await getDocs(query(collection(db, 'artifacts', appId, 'public', 'data', 'productos')));
+                    for (const d of existingProds.docs) {
+                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'productos', d.id));
+                    }
+                    const existingCats = await getDocs(query(collection(db, 'artifacts', appId, 'public', 'data', 'categorias')));
+                    for (const d of existingCats.docs) {
+                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categorias', d.id));
+                    }
+                }
+
+                if (importFileData.products) {
+                    for (const p of importFileData.products) {
+                        const id = p.id || ('TG-' + Math.random().toString(36).substr(2, 8).toUpperCase());
+                        delete p.id;
+                        if (mode === 'merge') {
+                            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'productos', id), p, { merge: true });
+                        } else {
+                            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'productos', id), p);
+                        }
+                    }
+                }
+
+                if (importFileData.categories) {
+                    for (const c of importFileData.categories) {
+                        const id = c.id || c.slug || ('cat-' + Math.random().toString(36).substr(2, 5));
+                        delete c.id;
+                        if (mode === 'merge') {
+                            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categorias', id), c, { merge: true });
+                        } else {
+                            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categorias', id), c);
+                        }
+                    }
+                }
+
+                if (importFileData.social && Object.keys(importFileData.social).length > 0) {
+                    if (mode === 'merge') {
+                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'social'), importFileData.social, { merge: true });
+                    } else {
+                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'social'), importFileData.social);
+                    }
+                }
+
+                if (importFileData.content && Object.keys(importFileData.content).length > 0) {
+                    if (mode === 'merge') {
+                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'content'), importFileData.content, { merge: true });
+                    } else {
+                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'content'), importFileData.content);
+                    }
+                }
+
+                showToast("Datos importados correctamente (" + mode + ")", 'success');
+                cancelImport();
+                loadAllContent();
+            } catch (error) {
+                showToast("Error al importar: " + error.message, 'danger');
+            }
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-upload mr-1"></i> Importar Datos';
+        };
+
+        // Drag & Drop para importación
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropZone = document.getElementById('import-drop-zone');
+            if (dropZone) {
+                dropZone.addEventListener('dragover', function(e) { e.preventDefault(); this.classList.add('border-blue-500/50'); });
+                dropZone.addEventListener('dragleave', function(e) { e.preventDefault(); this.classList.remove('border-blue-500/50'); });
+                dropZone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('border-blue-500/50');
+                    const file = e.dataTransfer.files[0];
+                    if (file) {
+                        const input = document.getElementById('import-file');
+                        const dt = new DataTransfer();
+                        dt.items.add(file);
+                        input.files = dt.files;
+                        handleImportFile(input);
+                    }
+                });
+            }
+        });
 
         window.saveContent = async function() {
             if (state.mode !== 'firebase' || !state.firebaseDb) {
@@ -1579,6 +2050,44 @@
                 showToast("Error al guardar: " + error.message, 'danger');
             }
         };
+
+        // ===================== ANALYTICS & SEO =====================
+        window.loadAnalyticsSettings = async function() {
+            if (state.mode !== 'firebase' || !state.firebaseDb) return;
+            try {
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+                const docSnap = await getDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'settings', 'analytics'));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    document.getElementById('analytics-ga-id').value = data.gaId || '';
+                    document.getElementById('analytics-ga-code').value = data.gaCode || '';
+                    document.getElementById('analytics-gsc-tag').value = data.gscTag || '';
+                    document.getElementById('analytics-fb-pixel').value = data.fbPixel || '';
+                }
+            } catch (e) { console.log('Error loading analytics:', e); }
+        };
+
+        document.getElementById('analytics-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            if (state.mode !== 'firebase' || !state.firebaseDb) {
+                showToast("Conéctate a Firebase primero", 'warn');
+                return;
+            }
+            try {
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+                const data = {
+                    gaId: document.getElementById('analytics-ga-id').value.trim(),
+                    gaCode: document.getElementById('analytics-ga-code').value.trim(),
+                    gscTag: document.getElementById('analytics-gsc-tag').value.trim(),
+                    fbPixel: document.getElementById('analytics-fb-pixel').value.trim(),
+                    updatedAt: new Date().toISOString()
+                };
+                await setDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'settings', 'analytics'), data);
+                showToast("Analytics & SEO guardados en Firebase", 'success');
+            } catch (error) {
+                showToast("Error al guardar: " + error.message, 'danger');
+            }
+        });
 
         // CONEXIÓN EN TIEMPO REAL CON FIREBASE FIRESTORE (RULE 1 STRICT PATHS)
         function initFirebaseSync() {
@@ -1632,6 +2141,7 @@
             loadSavedCldConfig();
             loadSavedSocialConfig();
             loadAllContent();
+            loadAnalyticsSettings();
         }
 
         window.switchTab = function(tabId) {
@@ -1645,9 +2155,11 @@
             document.getElementById('tab-cloudinary-settings').classList.add('hidden');
             document.getElementById('tab-social-settings').classList.add('hidden');
             document.getElementById('tab-content-settings').classList.add('hidden');
+            document.getElementById('tab-import-export').classList.add('hidden');
+            document.getElementById('tab-analytics-settings').classList.add('hidden');
             
             // Remover estilos activos de todos los botones de navegación
-            const navs = ['dashboard', 'products', 'categories', 'firebase-settings', 'cloudinary-settings', 'social-settings', 'content-settings'];
+                const navs = ['dashboard', 'products', 'categories', 'firebase-settings', 'cloudinary-settings', 'social-settings', 'content-settings', 'import-export', 'analytics-settings'];
             navs.forEach(nav => {
                 const btn = document.getElementById(`nav-${nav}`);
                 btn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 border-l-2 border-transparent";
@@ -1666,7 +2178,9 @@
                 'firebase-settings': 'Configuración de Firebase',
                 'cloudinary-settings': 'Configurar Imágenes',
                 'social-settings': 'Redes Sociales',
-                'content-settings': 'Gestión de Contenido'
+                'content-settings': 'Gestión de Contenido',
+                'import-export': 'Importar / Exportar',
+                'analytics-settings': 'Analytics & SEO'
             };
             document.getElementById('page-title').textContent = titles[tabId];
 
