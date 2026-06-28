@@ -1478,17 +1478,19 @@
             const templateParams = {
                 from_name: form.querySelectorAll('input[type="text"]')[0].value,
                 phone: form.querySelector('input[type="tel"]').value,
-                from_email: form.querySelector('input[type="email"]').value,
+                email: form.querySelector('input[type="email"]').value,
                 topic: form.querySelector('select').value,
                 message: form.querySelector('textarea').value,
             };
 
             emailjs.send("service_cabvc0u", "template_k8lcl7f", templateParams)
-                .then(() => {
+                .then((response) => {
+                    console.log("EmailJS OK:", response);
                     form.reset();
                     showToast("¡Mensaje enviado! Revisa tu correo para la confirmación.", "success");
                 })
-                .catch(() => {
+                .catch((error) => {
+                    console.error("EmailJS Error:", error);
                     showToast("Error al enviar. Intenta por WhatsApp.", "error");
                 })
                 .finally(() => {
