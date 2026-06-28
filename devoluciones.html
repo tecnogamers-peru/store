@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Devoluciones - Tecno Gamers Peru</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF4500',
+                            orangeHover: '#E03A00',
+                            darkBg: '#09090B',
+                            darkCard: '#151518',
+                            accentGray: '#242428',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        tech: ['Rajdhani', 'sans-serif'],
+                        orbitron: ['Orbitron', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-brand-darkBg text-gray-100 font-sans selection:bg-brand-orange selection:text-white overflow-x-hidden">
+
+    <!-- HEADER -->
+    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300" id="navbar">
+        <div class="backdrop-blur-md bg-brand-darkBg/80 border-b border-brand-accentGray/50 px-4 py-3 lg:px-8">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <div class="logo-tecno">
+                        <img src="images/logo_tecnogamers_1_f_oscuro.png" alt="logo tecnogamers" class="h-14 sm:h-16 md:h-20">
+                    </div>
+                </a>
+                <nav class="hidden md:flex items-center gap-8 font-tech text-lg uppercase tracking-wider">
+                    <a href="index.html" class="text-gray-300 hover:text-brand-orange transition-colors duration-200">Inicio</a>
+                    <a href="index.html#productos" class="text-gray-300 hover:text-brand-orange transition-colors duration-200">Catálogo</a>
+                    <a href="index.html#camisetas" class="text-gray-300 hover:text-brand-orange transition-colors duration-200">Camisetas</a>
+                    <a href="index.html#nosotros" class="text-gray-300 hover:text-brand-orange transition-colors duration-200">Nosotros</a>
+                    <a href="index.html#contacto" class="text-gray-300 hover:text-brand-orange transition-colors duration-200">Ubicación</a>
+                </nav>
+                <div class="flex items-center gap-4">
+                    <a href="https://wa.me/51999999999" target="_blank" class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-brand-orange to-red-600 hover:scale-105 active:scale-95 text-white px-5 py-2 rounded-xl font-bold font-tech text-base uppercase tracking-wider transition-all duration-200 shadow-lg shadow-brand-orange/20">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        WhatsApp
+                    </a>
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 rounded-xl bg-brand-darkCard hover:bg-brand-accentGray border border-brand-accentGray text-white transition-all duration-200">
+                        <i class="fa-solid fa-bars-staggered text-xl" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-brand-darkBg/95 border-b border-brand-accentGray backdrop-blur-xl transition-all duration-300">
+            <nav class="flex flex-col gap-4 p-6 font-tech text-xl uppercase tracking-wider">
+                <a href="index.html" class="text-white hover:text-brand-orange transition-colors py-2 border-b border-brand-accentGray/40">Inicio</a>
+                <a href="index.html#productos" class="text-gray-300 hover:text-brand-orange transition-colors py-2 border-b border-brand-accentGray/40">Catálogo</a>
+                <a href="index.html#camisetas" class="text-gray-300 hover:text-brand-orange transition-colors py-2 border-b border-brand-accentGray/40">Camisetas</a>
+                <a href="index.html#nosotros" class="text-gray-300 hover:text-brand-orange transition-colors py-2 border-b border-brand-accentGray/40">Nosotros</a>
+                <a href="index.html#contacto" class="text-gray-300 hover:text-brand-orange transition-colors py-2">Ubicación</a>
+                <a href="https://wa.me/51999999999" target="_blank" class="flex items-center justify-center gap-2 bg-brand-orange text-white py-3 rounded-xl font-bold font-tech mt-2">
+                    <i class="fa-brands fa-whatsapp text-xl"></i> Escríbenos Directo
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="pt-32 pb-24">
+        <div class="max-w-4xl mx-auto px-4 lg:px-8">
+
+            <!-- Título de la página -->
+            <div class="text-center mb-16">
+                <span class="text-brand-orange font-tech uppercase tracking-widest text-lg font-bold block mb-2">// DOCUMENTO LEGAL</span>
+                <h1 class="font-orbitron text-3xl sm:text-4xl font-extrabold text-white uppercase tracking-tight mb-4">Política de Devoluciones</h1>
+                <p class="text-gray-400 text-sm">Última actualización: Junio 2026</p>
+            </div>
+
+            <!-- Contenido de la política -->
+            <div class="space-y-10">
+
+                <!-- 1. Alcance -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">1. Alcance de esta Política</h2>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Esta Política de Devoluciones aplica a todos los productos adquiridos a través del sitio web de Tecno Gamers Peru, incluyendo videojuegos, consolas, merchandising (Funko Pops, figuras, accesorios) y camisetas personalizadas. Al realizar una compra, usted acepta los términos descritos en esta política.
+                    </p>
+                </section>
+
+                <!-- 2. Plazo para devoluciones -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">2. Plazo para Solicitar una Devolución</h2>
+                    <div class="text-gray-300 text-sm leading-relaxed space-y-3">
+                        <p>El cliente cuenta con un plazo de <strong class="text-white">7 días naturales</strong> posteriores a la recepción del producto para solicitar una devolución o cambio.</p>
+                        <p>Este plazo comienza a partir de la fecha de entrega registrada por la empresa de courier o de la fecha de recolección en tienda.</p>
+                        <p>Las solicitudes realizadas fuera de este plazo no serán aceptadas, salvo excepciones contempladas en la ley peruana.</p>
+                    </div>
+                </section>
+
+                <!-- 3. Condiciones para devoluciones -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">3. Condiciones para Aceptar una Devolución</h2>
+                    <div class="text-gray-300 text-sm leading-relaxed space-y-3">
+                        <p>Para que una devolución sea aceptada, el producto debe cumplir con las siguientes condiciones:</p>
+                        <ul class="list-disc list-inside space-y-1 ml-4">
+                            <li>Estar en su empaque original, sin abrir (para productos sellados)</li>
+                            <li>No presentar signos de uso, manipulación o daño por parte del cliente</li>
+                            <li>Incluir todos los accesorios, manuales y componentes originales</li>
+                            <li>Contar con la nota de venta o comprobante de compra</li>
+                            <li>En caso de defecto de fábrica, el cliente deberá evidenciar el daño mediante fotografías o video</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- 4. Productos con defecto de fábrica -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">4. Productos con Defecto de Fábrica</h2>
+                    <div class="text-gray-300 text-sm leading-relaxed space-y-3">
+                        <p>Si el producto presenta un defecto de fábrica, el cliente tiene derecho a:</p>
+                        <ul class="list-disc list-inside space-y-1 ml-4">
+                            <li><strong>Cambio:</strong> Por el mismo producto en perfectas condiciones, sujeto a disponibilidad de stock.</li>
+                            <li><strong>Reembolso:</strong> Devolución del monto total pagado mediante el mismo método de pago original.</li>
+                        </ul>
+                        <p>El costo del envío para devoluciones por defecto de fábrica será cubierto íntegramente por Tecno Gamers Peru.</p>
+                        <p>El proceso de evaluación del defecto tomará un máximo de 3 días hábiles desde la recepción del producto en nuestras instalaciones.</p>
+                    </div>
+                </section>
+
+                <!-- 5. Productos sin defecto -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">5. Devoluciones sin Defecto (Arrepentimiento)</h2>
+                    <div class="text-gray-300 text-sm leading-relaxed space-y-3">
+                        <p>Si el cliente desea devolver un producto sin defecto de fábrica por cambio de opinión, se aplican las siguientes condiciones:</p>
+                        <ul class="list-disc list-inside space-y-1 ml-4">
+                            <li>El producto debe estar sin abrir y en su empaque original</li>
+                            <li>Se realizará un cambio por otro producto de igual o mayor valor (con diferencia a favor del cliente)</li>
+                            <li>No se realiza reembolso en efectivo para devoluciones sin defecto</li>
+                            <li>El costo del envío de devolución corre por cuenta del cliente</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- 6. Camisetas personalizadas -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">6. Devoluciones de Camisetas Personalizadas</h2>
+                    <div class="text-gray-300 text-sm leading-relaxed space-y-3">
+                        <p>Las camisetas personalizadas son fabricadas bajo pedido específico del cliente, por lo que:</p>
+                        <ul class="list-disc list-inside space-y-1 ml-4">
+                            <li><strong>No se aceptan devoluciones</strong> por cambio de opinión en color, talla o diseño de estampa</li>
+                            <li><strong>Sí se aceptan devoluciones</strong> si el estampado presenta defectos de impresión (descolorido, descascaramiento, impresión incompleta)</li>
+                            <li>El cliente deberá enviar fotografías claras del defecto para evaluación</li>
+                            <li>En caso de defecto confirmado, se realizará una nueva camiseta sin costo adicional</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- 7. Productos excluidos -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">7. Productos Excluidos de Devolución</h2>
+                    <div class="text-gray-300 text-sm leading-relaxed space-y-3">
+                        <p>No se aceptan devoluciones en los siguientes casos:</p>
+                        <ul class="list-disc list-inside space-y-1 ml-4">
+                            <li>Productos que hayan sido utilizados, activados o registrados (consolas, videojuegos abiertos)</li>
+                            <li>Productos con daño causado por el cliente (caídas, líquidos, sobrecarga eléctrica)</li>
+                            <li>Productos que no cuenten con su empaque original o le falten accesorios</li>
+                            <li>Productos adquiridos en oferta o liquidación (salvo defecto de fábrica)</li>
+                            <li>Productos digitalmente descargados (códigos de juego digitales)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- 8. Proceso de devolución -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">8. Proceso para Realizar una Devolución</h2>
+                    <div class="text-gray-300 text-sm leading-relaxed space-y-3">
+                        <p>Para iniciar una devolución, siga estos pasos:</p>
+                        <ol class="list-decimal list-inside space-y-2 ml-4">
+                            <li><strong class="text-white">Contacte nuestro soporte:</strong> Envíe un mensaje por WhatsApp al +51 999 999 999 o al correo tecnogamers.ca@gmail.com indicando su nombre, número de pedido y motivo de la devolución.</li>
+                            <li><strong class="text-white">Envíe evidencia:</strong> Adjunte fotografías o video del producto (en caso de defecto) y la nota de venta.</li>
+                            <li><strong class="text-white">Espere la validación:</strong> Nuestro equipo revisará su solicitud y le notificará la aprobación dentro de 24-48 horas.</li>
+                            <li><strong class="text-white">Envíe o lleve el producto:</strong> Si la devolución es aprobada, coordine el envío del producto a nuestra tienda o solicite recolección a domicilio (solo Lima Metropolitana).</li>
+                            <li><strong class="text-white">Recepción y evaluación:</strong> Verificaremos el estado del producto en un plazo de 3 días hábiles.</li>
+                            <li><strong class="text-white">Resolución:</strong> Se realizará el cambio, reembolso o nueva fabricación según corresponda.</li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- 9. Tiempos de reembolso -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">9. Tiempos de Reembolso</h2>
+                    <div class="text-gray-300 text-sm leading-relaxed space-y-3">
+                        <p>Los reembolsos se procesan de la siguiente manera según el método de pago original:</p>
+                        <ul class="list-disc list-inside space-y-1 ml-4">
+                            <li><strong>Yape / Plin:</strong> Dentro de 24 horas hábiles tras la aprobación</li>
+                            <li><strong>Transferencia bancaria:</strong> Dentro de 3 a 5 días hábiles</li>
+                        </ul>
+                        <p>El reembolso se realizará exclusivamente al titular de la cuenta o método de pago original utilizado en la compra.</p>
+                    </div>
+                </section>
+
+                <!-- 10. Contacto -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">10. Contacto</h2>
+                    <div class="text-gray-300 text-sm leading-relaxed space-y-2">
+                        <p>Para solicitudes de devolución o consultas sobre esta política:</p>
+                        <p><i class="fa-solid fa-phone text-brand-orange mr-2"></i> +51 999 999 999</p>
+                        <p><i class="fa-solid fa-envelope text-brand-orange mr-2"></i> tecnogamers.ca@gmail.com</p>
+                        <p><i class="fa-brands fa-whatsapp text-brand-orange mr-2"></i> WhatsApp directo</p>
+                        <p class="text-[11px] text-gray-500 mt-3 border-t border-brand-accentGray pt-3">Horario de atención: Lunes a Sábado de 10:00 AM a 8:00 PM</p>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Botón volver -->
+            <div class="text-center mt-12">
+                <a href="index.html" class="inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orangeHover text-white font-tech font-bold uppercase tracking-widest px-8 py-3.5 rounded-xl transition-all duration-200 active:scale-95">
+                    <i class="fa-solid fa-arrow-left"></i> Volver al Inicio
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-darkBg border-t border-brand-accentGray/60 py-12">
+        <div class="max-w-7xl mx-auto px-4 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start">
+                <div class="flex flex-col items-center md:items-start gap-3">
+                    <img src="images/logo_tecnogamers_1_f_oscuro.png" alt="logo tecnogamers" class="h-14 sm:h-16 md:h-18">
+                    <p class="text-[11px] text-gray-500 font-tech uppercase tracking-wider text-center md:text-left">Technology Games Shop / Perú</p>
+                </div>
+                <div class="flex flex-col items-center gap-3">
+                    <h4 class="font-orbitron font-bold text-xs text-white uppercase tracking-widest">Navegación</h4>
+                    <div class="flex flex-wrap justify-center gap-x-5 gap-y-2 font-tech text-xs uppercase tracking-wider text-gray-400">
+                        <a href="index.html" class="hover:text-brand-orange transition-colors">Inicio</a>
+                        <a href="index.html#productos" class="hover:text-brand-orange transition-colors">Productos</a>
+                        <a href="index.html#camisetas" class="hover:text-brand-orange transition-colors">Camisetas</a>
+                        <a href="index.html#nosotros" class="hover:text-brand-orange transition-colors">Nosotros</a>
+                        <a href="index.html#contacto" class="hover:text-brand-orange transition-colors">Contacto</a>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center md:items-end gap-3">
+                    <h4 class="font-orbitron font-bold text-xs text-white uppercase tracking-widest">Legal</h4>
+                    <div class="flex flex-wrap justify-center md:justify-end gap-x-3 gap-y-1 text-[10px] text-gray-500">
+                        <a href="terminos.html" class="hover:text-gray-300 transition-colors">Términos y Condiciones</a>
+                        <span class="text-gray-700">|</span>
+                        <a href="privacidad.html" class="hover:text-gray-300 transition-colors">Política de Privacidad</a>
+                        <span class="text-gray-700">|</span>
+                        <a href="devoluciones.html" class="hover:text-gray-300 transition-colors">Devoluciones</a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-brand-accentGray/40 text-center">
+                <p class="text-[10px] text-gray-600 font-tech uppercase tracking-wider">&copy; 2026 Tecno Gamers Peru. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BOTÓN VOLVER ARRIBA -->
+    <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-50 w-12 h-12 bg-brand-orange hover:bg-brand-orangeHover text-white rounded-full flex items-center justify-center shadow-lg shadow-brand-orange/30 transition-all duration-300 border-2 border-brand-darkBg" title="Volver arriba">
+        <i class="fa-solid fa-arrow-up text-lg"></i>
+    </button>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            menu.classList.toggle('hidden');
+            document.body.classList.toggle('overflow-hidden');
+            if (menu.classList.contains('hidden')) {
+                icon.className = "fa-solid fa-bars-staggered text-xl";
+            } else {
+                icon.className = "fa-solid fa-xmark text-xl text-brand-orange";
+            }
+        }
+
+        window.addEventListener('scroll', function() {
+            const btn = document.getElementById('back-to-top');
+            if (window.scrollY > 400) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        });
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 768) {
+                const menu = document.getElementById('mobile-menu');
+                if (!menu.classList.contains('hidden')) {
+                    toggleMobileMenu();
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -51,66 +51,10 @@
     ============================================= -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <style>
-        /* ============================================================
-           ESTILOS PERSONALIZADOS
-           ============================================================ */
-
-        /* --- Scroll behavior: desactivado nativo, se usa JS custom --- */
-        html {
-            scroll-behavior: auto;
-        }
-
-        /* --- Efectos de brillo (glow) para textos y tarjetas --- */
-        .text-glow {
-            text-shadow: 0 0 15px rgba(255, 69, 0, 0.6);
-        }
-        /* Sombra naranja suave para tarjetas y contenedores */
-        .box-glow {
-            box-shadow: 0 0 25px rgba(255, 69, 0, 0.25);
-        }
-        /* Sombra naranja intensa para botones principales */
-        .box-glow-strong {
-            box-shadow: 0 0 35px rgba(255, 69, 0, 0.45);
-        }
-
-        /* --- Barra de scroll personalizada (temática gamer) --- */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #09090B;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #FF4500;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #E03A00;
-        }
-
-        /* --- Botón "Volver arriba": animación de aparición/desaparición --- */
-        #back-to-top {
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
-        }
-        #back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        #back-to-top:hover {
-            transform: translateY(-4px);
-        }
-
-        @supports (bottom: env(safe-area-inset-bottom)) {
-            #back-to-top { bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
-            #toast-container { bottom: calc(5rem + env(safe-area-inset-bottom)); }
-        }
-
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- EMAILJS - Envío de correos desde formulario estático -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script> emailjs.init({ publicKey: "EhAGSHcR5kkUZPpIb" }); </script>
 </head>
 <body class="bg-brand-darkBg text-gray-100 font-sans selection:bg-brand-orange selection:text-white overflow-x-hidden">
 
@@ -644,9 +588,9 @@
                                 <i class="fa-solid fa-phone text-brand-orange"></i>
                                 +51 999 999 999
                             </a>
-                            <a href="mailto:soporte@tecnogamers.com" class="flex items-center gap-3 text-sm text-gray-300 hover:text-brand-orange transition-colors">
+                            <a href="mailto:tecnogamers.ca@gmail.com" class="flex items-center gap-3 text-sm text-gray-300 hover:text-brand-orange transition-colors">
                                 <i class="fa-solid fa-envelope text-brand-orange"></i>
-                                soporte@tecnogamers.com
+                                tecnogamers.ca@gmail.com
                             </a>
                             <div class="flex items-center gap-4 pt-3">
                                 <a href="#" class="w-10 h-10 rounded-lg bg-brand-darkCard border border-brand-accentGray hover:border-brand-orange hover:text-brand-orange text-white flex items-center justify-center transition-colors"><i class="fa-brands fa-facebook"></i></a>
@@ -744,11 +688,11 @@
                 <div class="flex flex-col items-center md:items-end gap-3">
                     <h4 class="font-orbitron font-bold text-xs text-white uppercase tracking-widest">Legal</h4>
                     <div class="flex flex-wrap justify-center md:justify-end gap-x-3 gap-y-1 text-[10px] text-gray-500">
-                        <a href="#" class="hover:text-gray-300 transition-colors">Términos y Condiciones</a>
+                        <a href="terminos.html" class="hover:text-gray-300 transition-colors">Términos y Condiciones</a>
                         <span class="text-gray-700">|</span>
-                        <a href="#" class="hover:text-gray-300 transition-colors">Política de Privacidad</a>
+                        <a href="privacidad.html" class="hover:text-gray-300 transition-colors">Política de Privacidad</a>
                         <span class="text-gray-700">|</span>
-                        <a href="#" class="hover:text-gray-300 transition-colors">Devoluciones</a>
+                        <a href="devoluciones.html" class="hover:text-gray-300 transition-colors">Devoluciones</a>
                     </div>
                 </div>
 
@@ -1526,9 +1470,31 @@
         // =============================================
         function handleFormSubmit(event) {
             event.preventDefault();
-            // Reset form
-            document.getElementById('contact-form').reset();
-            showToast("¡Mensaje recibido! Nos comunicaremos contigo por WhatsApp de inmediato.", "success");
+            const form = document.getElementById('contact-form');
+            const btn = form.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+
+            const templateParams = {
+                from_name: form.querySelectorAll('input[type="text"]')[0].value,
+                phone: form.querySelector('input[type="tel"]').value,
+                from_email: form.querySelector('input[type="email"]').value,
+                topic: form.querySelector('select').value,
+                message: form.querySelector('textarea').value,
+            };
+
+            emailjs.send("service_cabvc0u", "template_k8lcl7f", templateParams)
+                .then(() => {
+                    form.reset();
+                    showToast("¡Mensaje enviado! Revisa tu correo para la confirmación.", "success");
+                })
+                .catch(() => {
+                    showToast("Error al enviar. Intenta por WhatsApp.", "error");
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = 'Enviar Consulta por Correo';
+                });
         }
 
         // =============================================

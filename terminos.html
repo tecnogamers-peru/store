@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Términos y Condiciones - Tecno Gamers Peru</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF4500',
+                            orangeHover: '#E03A00',
+                            darkBg: '#09090B',
+                            darkCard: '#151518',
+                            accentGray: '#242428',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        tech: ['Rajdhani', 'sans-serif'],
+                        orbitron: ['Orbitron', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-brand-darkBg text-gray-100 font-sans selection:bg-brand-orange selection:text-white overflow-x-hidden">
+
+    <!-- HEADER -->
+    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300" id="navbar">
+        <div class="backdrop-blur-md bg-brand-darkBg/80 border-b border-brand-accentGray/50 px-4 py-3 lg:px-8">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <div class="logo-tecno">
+                        <img src="images/logo_tecnogamers_1_f_oscuro.png" alt="logo tecnogamers" class="h-14 sm:h-16 md:h-20">
+                    </div>
+                </a>
+                <nav class="hidden md:flex items-center gap-8 font-tech text-lg uppercase tracking-wider">
+                    <a href="index.html" class="text-gray-300 hover:text-brand-orange transition-colors duration-200">Inicio</a>
+                    <a href="index.html#productos" class="text-gray-300 hover:text-brand-orange transition-colors duration-200">Catálogo</a>
+                    <a href="index.html#camisetas" class="text-gray-300 hover:text-brand-orange transition-colors duration-200">Camisetas</a>
+                    <a href="index.html#nosotros" class="text-gray-300 hover:text-brand-orange transition-colors duration-200">Nosotros</a>
+                    <a href="index.html#contacto" class="text-gray-300 hover:text-brand-orange transition-colors duration-200">Ubicación</a>
+                </nav>
+                <div class="flex items-center gap-4">
+                    <a href="https://wa.me/51999999999" target="_blank" class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-brand-orange to-red-600 hover:scale-105 active:scale-95 text-white px-5 py-2 rounded-xl font-bold font-tech text-base uppercase tracking-wider transition-all duration-200 shadow-lg shadow-brand-orange/20">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        WhatsApp
+                    </a>
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 rounded-xl bg-brand-darkCard hover:bg-brand-accentGray border border-brand-accentGray text-white transition-all duration-200">
+                        <i class="fa-solid fa-bars-staggered text-xl" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-brand-darkBg/95 border-b border-brand-accentGray backdrop-blur-xl transition-all duration-300">
+            <nav class="flex flex-col gap-4 p-6 font-tech text-xl uppercase tracking-wider">
+                <a href="index.html" class="text-white hover:text-brand-orange transition-colors py-2 border-b border-brand-accentGray/40">Inicio</a>
+                <a href="index.html#productos" class="text-gray-300 hover:text-brand-orange transition-colors py-2 border-b border-brand-accentGray/40">Catálogo</a>
+                <a href="index.html#camisetas" class="text-gray-300 hover:text-brand-orange transition-colors py-2 border-b border-brand-accentGray/40">Camisetas</a>
+                <a href="index.html#nosotros" class="text-gray-300 hover:text-brand-orange transition-colors py-2 border-b border-brand-accentGray/40">Nosotros</a>
+                <a href="index.html#contacto" class="text-gray-300 hover:text-brand-orange transition-colors py-2">Ubicación</a>
+                <a href="https://wa.me/51999999999" target="_blank" class="flex items-center justify-center gap-2 bg-brand-orange text-white py-3 rounded-xl font-bold font-tech mt-2">
+                    <i class="fa-brands fa-whatsapp text-xl"></i> Escríbenos Directo
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="pt-32 pb-24">
+        <div class="max-w-4xl mx-auto px-4 lg:px-8">
+
+            <!-- Título de la página -->
+            <div class="text-center mb-16">
+                <span class="text-brand-orange font-tech uppercase tracking-widest text-lg font-bold block mb-2">// DOCUMENTO LEGAL</span>
+                <h1 class="font-orbitron text-3xl sm:text-4xl font-extrabold text-white uppercase tracking-tight mb-4">Términos y Condiciones</h1>
+                <p class="text-gray-400 text-sm">Última actualización: Junio 2026</p>
+            </div>
+
+            <!-- Contenido de los términos -->
+            <div class="space-y-10">
+
+                <!-- 1. Aceptación -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">1. Aceptación de los Términos</h2>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Al acceder y utilizar el sitio web de Tecno Gamers Peru ("el Sitio"), usted acepta estos Términos y Condiciones en su totalidad. Si no está de acuerdo con alguno de estos términos, le solicitamos no utilizar nuestro Sitio. Nos reservamos el derecho de modificar estos términos en cualquier momento, siendo responsabilidad del usuario revisarlos periódicamente.
+                    </p>
+                </section>
+
+                <!-- 2. Productos y Precios -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">2. Productos y Precios</h2>
+                    <div class="text-gray-300 text-sm leading-relaxed space-y-3">
+                        <p>Todos los precios mostrados en el Sitio están expresados en Soles (S/.) e incluyen los impuestos aplicables, salvo indicación contraria. Los precios pueden ser modificados sin previo aviso.</p>
+                        <p>Las imágenes de los productos son de carácter ilustrativo. Aunque nos esforzamos por mostrar los colores y características con la mayor precisión posible, pueden existir variaciones en función del monitor o dispositivo desde el cual se visualicen.</p>
+                        <p>La disponibilidad de los productos está sujeta a existencias. En caso de un error de precios o disponibilidad, nos reservamos el derecho de cancelar el pedido y proceder con el reembolso correspondiente.</p>
+                    </div>
+                </section>
+
+                <!-- 3. Pedidos y Pagos -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">3. Pedidos y Pagos</h2>
+                    <div class="text-gray-300 text-sm leading-relaxed space-y-3">
+                        <p>Los pedidos se realizan a través de WhatsApp o del formulario de contacto del Sitio. Un pedido no está confirmado hasta que reciba una notificación explícita de nuestra parte.</p>
+                        <p>Los métodos de pago aceptados incluyen Yape, Plin y transferencia bancaria. El pago debe realizarse dentro de las 24 horas posteriores a la confirmación del pedido, de lo contrario este será cancelado automáticamente.</p>
+                        <p>Al realizar un pedido, usted declara que los datos proporcionados son correctos y completos.</p>
+                    </div>
+                </section>
+
+                <!-- 4. Envíos -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">4. Envíos y Entregas</h2>
+                    <div class="text-gray-300 text-sm leading-relaxed space-y-3">
+                        <p>Realizamos envíos a todo el Perú mediante Olva Courier y Shalom. En Lima Metropolitana ofrecemos delivery express con entrega el mismo día u horas posteriores.</p>
+                        <p>Los tiempos de entrega son estimados y pueden variar según la ubicación del cliente y disponibilidad de los servicios de courier. Tecno Gamers Peru no se hace responsable por retrasos atribuibles a las empresas de transporte.</p>
+                        <p>El costo del envío será cotizado al momento de confirmar el pedido según la ubicación del cliente.</p>
+                    </div>
+                </section>
+
+                <!-- 5. Garantías y Devoluciones -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">5. Garantías y Devoluciones</h2>
+                    <div class="text-gray-300 text-sm leading-relaxed space-y-3">
+                        <p>Todos los productos sellados cuentan con garantía directa de fábrica. En caso de defectos de fábrica, el cliente podrá solicitar el cambio o reembolso dentro de los primeros 7 días naturales posteriores a la recepción del producto.</p>
+                        <p>Para productos personalizados (camisetas con estampado), no se aceptan devoluciones salvo defectos de impresión. El cliente deberá evidenciar el defecto mediante fotografías.</p>
+                        <p>Las devoluciones no aplican para productos que hayan sido manipulados, dañados por el usuario o que no cuenten con su empaque original.</p>
+                    </div>
+                </section>
+
+                <!-- 6. Camisetas Personalizadas -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">6. Camisetas Personalizadas</h2>
+                    <div class="text-gray-300 text-sm leading-relaxed space-y-3">
+                        <p>El personalizador de camisetas permite al cliente seleccionar color, diseño de estampa, talla y posición del logo. Una vez confirmado el pedido, no se aceptan cambios de diseño o color.</p>
+                        <p>Los diseños de estampa proporcionados por el cliente deben cumplir con las dimensiones recomendadas (mínimo 200x200px, recomendado 500x500px, formato PNG con fondo transparente) para garantizar la calidad de impresión.</p>
+                        <p>El tiempo de producción para camisetas personalizadas es de 3 a 5 días hábiles posteriores a la confirmación del pago.</p>
+                    </div>
+                </section>
+
+                <!-- 7. Propiedad Intelectual -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">7. Propiedad Intelectual</h2>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Todo el contenido del Sitio, incluyendo pero no limitado a textos, gráficos, logotipos, iconos, imágenes, videos y software, es propiedad de Tecno Gamers Peru o de sus proveedores y está protegido por las leyes de propiedad intelectual del Perú e internacionales. Queda prohibida su reproducción, distribución o modificación sin autorización expresa.
+                    </p>
+                </section>
+
+                <!-- 8. Limitación de Responsabilidad -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">8. Limitación de Responsabilidad</h2>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Tecno Gamers Peru no será responsable por daños indirectos, incidentales o consecuentes que puedan derivarse del uso del Sitio o de los productos adquiridos. Nuestra responsabilidad se limita al monto total pagado por el producto en cuestión. No garantizamos que el Sitio estará disponible de forma ininterrumpida o libre de errores.
+                    </p>
+                </section>
+
+                <!-- 9. Protección de Datos -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">9. Protección de Datos Personales</h2>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Los datos personales proporcionados por el usuario serán tratados de acuerdo con la Ley de Protección de Datos Personales del Perú (Ley N° 29733). Utilizaremos su información exclusivamente para procesar pedidos, enviar comunicaciones relacionadas con sus compras y mejorar nuestros servicios. No compartiremos sus datos con terceros sin su consentimiento, salvo obligación legal.
+                    </p>
+                </section>
+
+                <!-- 10. Ley Aplicable -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">10. Ley Aplicable y Jurisdicción</h2>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Estos Términos y Condiciones se rigen por las leyes de la República del Perú. Cualquier controversia derivada del uso del Sitio será sometida a los tribunales competentes de la ciudad de Lima, Perú.
+                    </p>
+                </section>
+
+                <!-- 11. Contacto -->
+                <section class="bg-brand-darkCard/60 border border-brand-accentGray rounded-2xl p-6 sm:p-8">
+                    <h2 class="font-orbitron font-bold text-lg text-brand-orange uppercase mb-4">11. Contacto</h2>
+                    <div class="text-gray-300 text-sm leading-relaxed space-y-2">
+                        <p>Para consultas sobre estos Términos y Condiciones, comuníquese con nosotros:</p>
+                        <p><i class="fa-solid fa-phone text-brand-orange mr-2"></i> +51 999 999 999</p>
+                        <p><i class="fa-solid fa-envelope text-brand-orange mr-2"></i> tecnogamers.ca@gmail.com</p>
+                        <p><i class="fa-brands fa-whatsapp text-brand-orange mr-2"></i> WhatsApp directo</p>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Botón volver -->
+            <div class="text-center mt-12">
+                <a href="index.html" class="inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orangeHover text-white font-tech font-bold uppercase tracking-widest px-8 py-3.5 rounded-xl transition-all duration-200 active:scale-95">
+                    <i class="fa-solid fa-arrow-left"></i> Volver al Inicio
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-darkBg border-t border-brand-accentGray/60 py-12">
+        <div class="max-w-7xl mx-auto px-4 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start">
+                <div class="flex flex-col items-center md:items-start gap-3">
+                    <img src="images/logo_tecnogamers_1_f_oscuro.png" alt="logo tecnogamers" class="h-14 sm:h-16 md:h-18">
+                    <p class="text-[11px] text-gray-500 font-tech uppercase tracking-wider text-center md:text-left">Technology Games Shop / Perú</p>
+                </div>
+                <div class="flex flex-col items-center gap-3">
+                    <h4 class="font-orbitron font-bold text-xs text-white uppercase tracking-widest">Navegación</h4>
+                    <div class="flex flex-wrap justify-center gap-x-5 gap-y-2 font-tech text-xs uppercase tracking-wider text-gray-400">
+                        <a href="index.html" class="hover:text-brand-orange transition-colors">Inicio</a>
+                        <a href="index.html#productos" class="hover:text-brand-orange transition-colors">Productos</a>
+                        <a href="index.html#camisetas" class="hover:text-brand-orange transition-colors">Camisetas</a>
+                        <a href="index.html#nosotros" class="hover:text-brand-orange transition-colors">Nosotros</a>
+                        <a href="index.html#contacto" class="hover:text-brand-orange transition-colors">Contacto</a>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center md:items-end gap-3">
+                    <h4 class="font-orbitron font-bold text-xs text-white uppercase tracking-widest">Legal</h4>
+                    <div class="flex flex-wrap justify-center md:justify-end gap-x-3 gap-y-1 text-[10px] text-gray-500">
+                        <a href="terminos.html" class="hover:text-gray-300 transition-colors">Términos y Condiciones</a>
+                        <span class="text-gray-700">|</span>
+                        <a href="privacidad.html" class="hover:text-gray-300 transition-colors">Política de Privacidad</a>
+                        <span class="text-gray-700">|</span>
+                        <a href="devoluciones.html" class="hover:text-gray-300 transition-colors">Devoluciones</a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-brand-accentGray/40 text-center">
+                <p class="text-[10px] text-gray-600 font-tech uppercase tracking-wider">&copy; 2026 Tecno Gamers Peru. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BOTÓN VOLVER ARRIBA -->
+    <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-50 w-12 h-12 bg-brand-orange hover:bg-brand-orangeHover text-white rounded-full flex items-center justify-center shadow-lg shadow-brand-orange/30 transition-all duration-300 border-2 border-brand-darkBg" title="Volver arriba">
+        <i class="fa-solid fa-arrow-up text-lg"></i>
+    </button>
+
+    <script>
+        // Menú móvil
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            menu.classList.toggle('hidden');
+            document.body.classList.toggle('overflow-hidden');
+            if (menu.classList.contains('hidden')) {
+                icon.className = "fa-solid fa-bars-staggered text-xl";
+            } else {
+                icon.className = "fa-solid fa-xmark text-xl text-brand-orange";
+            }
+        }
+
+        // Botón volver arriba
+        window.addEventListener('scroll', function() {
+            const btn = document.getElementById('back-to-top');
+            if (window.scrollY > 400) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        });
+
+        // Cerrar menú al resize a desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 768) {
+                const menu = document.getElementById('mobile-menu');
+                if (!menu.classList.contains('hidden')) {
+                    toggleMobileMenu();
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
