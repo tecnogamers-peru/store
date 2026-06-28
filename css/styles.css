@@ -55,3 +55,13 @@ html {
     #back-to-top { bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
     #toast-container { bottom: calc(5rem + env(safe-area-inset-bottom)); }
 }
+
+/* --- Quill content in legal pages --- */
+.quill-content p { margin-bottom: 0.75rem; }
+.quill-content ul { list-style-type: disc; padding-left: 1.5rem; margin: 0.75rem 0; }
+.quill-content ol { list-style-type: decimal; padding-left: 1.5rem; margin: 0.75rem 0; }
+.quill-content li { margin-bottom: 0.25rem; }
+.quill-content strong { color: #fff; font-weight: 700; }
+.quill-content a { color: #FF4500; text-decoration: underline; }
+.quill-content a:hover { color: #FF6A33; }
+.quill-content blockquote { border-left: 3px solid #FF4500; padding-left: 1rem; margin: 0.75rem 0; color: #9ca3af; font-style: italic; }

@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Estilos exclusivos del admin -->
     <link rel="stylesheet" href="css/style-admin.css">
+    <!-- Quill.js - Editor WYSIWYG -->
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -110,6 +112,12 @@
                     <i class="fa-solid fa-right-to-bracket"></i>
                 </button>
             </form>
+
+            <div class="text-center mt-6 pt-4 border-t border-gamer-border">
+                <a href="index.html" class="text-xs text-zinc-500 hover:text-gamer-orange transition-colors">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> Volver a la tienda
+                </a>
+            </div>
         </div>
     </div>
 
@@ -151,6 +159,10 @@
             <button onclick="switchTab('social-settings')" id="nav-social-settings" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 border-l-2 border-transparent">
                 <i class="fa-solid fa-share-nodes w-5"></i>
                 <span>Redes Sociales</span>
+            </button>
+            <button onclick="switchTab('content-settings')" id="nav-content-settings" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 border-l-2 border-transparent">
+                <i class="fa-solid fa-file-lines w-5"></i>
+                <span>Gestión de Contenido</span>
             </button>
         </nav>
 
@@ -213,7 +225,7 @@
                     <div class="bg-gamer-card border border-gamer-border rounded-2xl p-5 shadow-glass flex items-center justify-between relative">
                         <div>
                             <p class="text-xs text-zinc-400 font-bold uppercase tracking-wider">Valor total del Stock</p>
-                            <h3 id="stat-stock-value" class="text-3xl font-black mt-1 text-zinc-100">S/. 0.00</h3>
+                            <h3 id="stat-stock-value" class="font-black mt-1 text-zinc-100 break-all" style="font-size: 21px; line-height: 1.4;">S/. 0.00</h3>
                         </div>
                         <div class="p-3 bg-gamer-orangeHover/10 border border-gamer-orangeHover/20 text-gamer-orangeHover rounded-xl">
                             <i class="fa-solid fa-coins text-xl"></i>
@@ -559,6 +571,249 @@
                             </button>
                         </div>
                     </form>
+                </div>
+            </section>
+
+            <!-- TAB 7: GESTIÓN DE CONTENIDO -->
+            <section id="tab-content-settings" class="space-y-6 hidden fade-in">
+                <div class="max-w-4xl bg-gamer-card border border-gamer-border rounded-2xl p-6 shadow-glass space-y-6">
+                    <div>
+                        <h2 class="text-lg font-black tracking-wide text-zinc-200">GESTIÓN DE CONTENIDO</h2>
+                        <p class="text-xs text-zinc-500 mt-1">Edita el contenido de las páginas legales, sección Nosotros y direcciones de ubicación. Se actualiza en tiempo real en la tienda.</p>
+                    </div>
+
+                    <!-- Sub-tabs de contenido -->
+                    <div class="flex flex-wrap gap-2 border-b border-gamer-border pb-3">
+                        <button onclick="switchContentTab('terminos')" id="ctab-terminos" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-gamer-orange/10 text-gamer-orange border border-gamer-orange/30 transition">Términos</button>
+                        <button onclick="switchContentTab('privacidad')" id="ctab-privacidad" class="px-3 py-1.5 text-xs font-bold rounded-lg text-zinc-400 hover:text-zinc-200 border border-transparent transition">Privacidad</button>
+                        <button onclick="switchContentTab('devoluciones')" id="ctab-devoluciones" class="px-3 py-1.5 text-xs font-bold rounded-lg text-zinc-400 hover:text-zinc-200 border border-transparent transition">Devoluciones</button>
+                        <button onclick="switchContentTab('nosotros')" id="ctab-nosotros" class="px-3 py-1.5 text-xs font-bold rounded-lg text-zinc-400 hover:text-zinc-200 border border-transparent transition">Nosotros</button>
+                        <button onclick="switchContentTab('ubicacion')" id="ctab-ubicacion" class="px-3 py-1.5 text-xs font-bold rounded-lg text-zinc-400 hover:text-zinc-200 border border-transparent transition">Ubicación</button>
+                    </div>
+
+                    <!-- Contenido: Términos -->
+                    <div id="content-panel-terminos" class="space-y-4">
+                        <p class="text-xs text-zinc-500">Edita cada sección de Términos y Condiciones.</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Título de Página</label>
+                                <input type="text" id="term-pagetitle" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" value="Términos y Condiciones">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Última Actualización</label>
+                                <input type="text" id="term-date" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" value="Junio 2026">
+                            </div>
+                        </div>
+                        <div id="term-sections" class="space-y-3"></div>
+                        <button type="button" onclick="addLegalSection('term')" class="w-full py-2 border border-dashed border-gamer-border rounded-lg text-xs text-zinc-500 hover:text-gamer-orange hover:border-gamer-orange/50 transition">
+                            <i class="fa-solid fa-plus mr-1"></i> Agregar Sección
+                        </button>
+                    </div>
+
+                    <!-- Contenido: Privacidad -->
+                    <div id="content-panel-privacidad" class="space-y-4 hidden">
+                        <p class="text-xs text-zinc-500">Edita cada sección de Política de Privacidad.</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Título de Página</label>
+                                <input type="text" id="priv-pagetitle" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" value="Política de Privacidad">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Última Actualización</label>
+                                <input type="text" id="priv-date" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" value="Junio 2026">
+                            </div>
+                        </div>
+                        <div id="priv-sections" class="space-y-3"></div>
+                        <button type="button" onclick="addLegalSection('priv')" class="w-full py-2 border border-dashed border-gamer-border rounded-lg text-xs text-zinc-500 hover:text-gamer-orange hover:border-gamer-orange/50 transition">
+                            <i class="fa-solid fa-plus mr-1"></i> Agregar Sección
+                        </button>
+                    </div>
+
+                    <!-- Contenido: Devoluciones -->
+                    <div id="content-panel-devoluciones" class="space-y-4 hidden">
+                        <p class="text-xs text-zinc-500">Edita cada sección de Política de Devoluciones.</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Título de Página</label>
+                                <input type="text" id="dev-pagetitle" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" value="Política de Devoluciones">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Última Actualización</label>
+                                <input type="text" id="dev-date" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" value="Junio 2026">
+                            </div>
+                        </div>
+                        <div id="dev-sections" class="space-y-3"></div>
+                        <button type="button" onclick="addLegalSection('dev')" class="w-full py-2 border border-dashed border-gamer-border rounded-lg text-xs text-zinc-500 hover:text-gamer-orange hover:border-gamer-orange/50 transition">
+                            <i class="fa-solid fa-plus mr-1"></i> Agregar Sección
+                        </button>
+                    </div>
+
+                    <!-- Contenido: Nosotros -->
+                    <div id="content-panel-nosotros" class="space-y-5 hidden">
+                        <p class="text-xs text-zinc-500">Edita cada elemento de la sección "Nosotros" de la página principal.</p>
+                        
+                        <!-- Identidad -->
+                        <div class="p-4 bg-zinc-900 border border-gamer-border rounded-xl space-y-3">
+                            <h4 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">Identidad</h4>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Subtítulo</label>
+                                <input type="text" id="nos-subtitle" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="// NUESTRA IDENTIDAD">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Título Principal</label>
+                                <input type="text" id="nos-title" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Pasión por los Videojuegos...">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Descripción</label>
+                                <textarea id="nos-desc" rows="3" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="En Tecno Gamers, no somos simplemente una tienda..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Frase de Misión (blockquote)</label>
+                                <textarea id="nos-mission" rows="2" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Nuestra misión es llevar la experiencia gaming..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Imágenes -->
+                        <div class="p-4 bg-zinc-900 border border-gamer-border rounded-xl space-y-3">
+                            <h4 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">Imágenes</h4>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Banner Principal</label>
+                                <div class="relative border-2 border-dashed border-gamer-border rounded-xl p-4 text-center hover:border-gamer-orange/50 transition-colors cursor-pointer" onclick="document.getElementById('nos-banner-file').click()">
+                                    <input type="file" id="nos-banner-file" accept="image/*" class="hidden" onchange="handleNosImageSelect('banner', event)">
+                                    <div id="nos-banner-placeholder">
+                                        <i class="fa-solid fa-cloud-arrow-up text-lg text-zinc-600 mb-1"></i>
+                                        <p class="text-[10px] text-zinc-500">Click para subir banner</p>
+                                    </div>
+                                    <div id="nos-banner-preview" class="hidden">
+                                        <img id="nos-banner-preview-img" class="max-h-20 mx-auto rounded-lg border border-gamer-border object-contain">
+                                        <button type="button" onclick="event.stopPropagation(); clearNosImage('banner')" class="mt-1 text-[9px] text-gamer-danger hover:text-red-400 font-bold">Eliminar</button>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="nos-banner">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Logo</label>
+                                <div class="relative border-2 border-dashed border-gamer-border rounded-xl p-4 text-center hover:border-gamer-orange/50 transition-colors cursor-pointer" onclick="document.getElementById('nos-logo-file').click()">
+                                    <input type="file" id="nos-logo-file" accept="image/*" class="hidden" onchange="handleNosImageSelect('logo', event)">
+                                    <div id="nos-logo-placeholder">
+                                        <i class="fa-solid fa-cloud-arrow-up text-lg text-zinc-600 mb-1"></i>
+                                        <p class="text-[10px] text-zinc-500">Click para subir logo</p>
+                                    </div>
+                                    <div id="nos-logo-preview" class="hidden">
+                                        <img id="nos-logo-preview-img" class="max-h-16 mx-auto rounded-lg border border-gamer-border object-contain">
+                                        <button type="button" onclick="event.stopPropagation(); clearNosImage('logo')" class="mt-1 text-[9px] text-gamer-danger hover:text-red-400 font-bold">Eliminar</button>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="nos-logo">
+                            </div>
+                        </div>
+
+                        <!-- Estadísticas -->
+                        <div class="p-4 bg-zinc-900 border border-gamer-border rounded-xl space-y-3">
+                            <h4 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">Estadísticas</h4>
+                            <div class="grid grid-cols-3 gap-3">
+                                <div class="space-y-2">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400">Valor 1</label>
+                                    <input type="text" id="nos-stat1-val" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="10K+">
+                                    <input type="text" id="nos-stat1-label" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-[10px] text-zinc-200 neon-input" placeholder="Clientes Felices">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400">Valor 2</label>
+                                    <input type="text" id="nos-stat2-val" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="500+">
+                                    <input type="text" id="nos-stat2-label" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-[10px] text-zinc-200 neon-input" placeholder="Funko Pops">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400">Valor 3</label>
+                                    <input type="text" id="nos-stat3-val" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="100%">
+                                    <input type="text" id="nos-stat3-label" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-[10px] text-zinc-200 neon-input" placeholder="Garantía Peruana">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tarjetas de Valores -->
+                        <div class="p-4 bg-zinc-900 border border-gamer-border rounded-xl space-y-3">
+                            <h4 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">Tarjetas de Valores</h4>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="space-y-2">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400">Tarjeta 1</label>
+                                    <input type="text" id="nos-card1-title" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Envíos Rápidos">
+                                    <input type="text" id="nos-card1-desc" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-[10px] text-zinc-200 neon-input" placeholder="Enviamos a todo el Perú...">
+                                    <input type="text" id="nos-card1-icon" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-[10px] text-zinc-200 neon-input" placeholder="fa-solid fa-truck-fast">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400">Tarjeta 2</label>
+                                    <input type="text" id="nos-card2-title" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Garantía Total">
+                                    <input type="text" id="nos-card2-desc" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-[10px] text-zinc-200 neon-input" placeholder="Productos sellados, con garantía...">
+                                    <input type="text" id="nos-card2-icon" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-[10px] text-zinc-200 neon-input" placeholder="fa-solid fa-shield-halved">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contenido: Ubicación -->
+                    <div id="content-panel-ubicacion" class="space-y-5 hidden">
+                        <p class="text-xs text-zinc-500">Edita las direcciones y horarios de las tiendas.</p>
+                        
+                        <!-- Encabezado -->
+                        <div class="p-4 bg-zinc-900 border border-gamer-border rounded-xl space-y-3">
+                            <h4 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">Encabezado</h4>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Subtítulo</label>
+                                <input type="text" id="ubi-subtitle" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="// CONTACTO DIRECTO">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Título</label>
+                                <input type="text" id="ubi-title" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="¿Listo para subir de nivel?">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Descripción</label>
+                                <input type="text" id="ubi-desc" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Visítanos en nuestras tiendas físicas...">
+                            </div>
+                        </div>
+
+                        <!-- Tienda 1 -->
+                        <div class="p-4 bg-zinc-900 border border-gamer-border rounded-xl space-y-3">
+                            <h4 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">Tienda 1</h4>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Nombre</label>
+                                <input type="text" id="ubi-store1-name" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Tienda Central - Lima Cercado">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Dirección</label>
+                                <input type="text" id="ubi-store1-addr" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Centro Comercial Polvos Azules...">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Horario</label>
+                                <input type="text" id="ubi-store1-hours" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Lun a Sab: 10:00 AM - 8:00 PM">
+                            </div>
+                        </div>
+
+                        <!-- Tienda 2 -->
+                        <div class="p-4 bg-zinc-900 border border-gamer-border rounded-xl space-y-3">
+                            <h4 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">Tienda 2</h4>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Nombre</label>
+                                <input type="text" id="ubi-store2-name" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Módulo Plaza Norte">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Dirección</label>
+                                <input type="text" id="ubi-store2-addr" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Av. Alfredo Mendiola 1400...">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Horario</label>
+                                <input type="text" id="ubi-store2-hours" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Dom a Dom: 11:00 AM - 9:00 PM">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-gamer-border flex gap-3">
+                        <button type="button" onclick="loadAllContent()" class="px-4 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-gamer-border text-zinc-400 rounded-xl text-xs font-bold transition">
+                            <i class="fa-solid fa-rotate-right mr-1"></i> Recargar
+                        </button>
+                        <button type="button" onclick="saveContent()" class="flex-1 py-2.5 bg-gradient-to-r from-gamer-orange to-gamer-orangeHover text-zinc-950 font-black uppercase tracking-wider rounded-xl text-xs shadow-neon-orange hover:brightness-110 transition">
+                            <i class="fa-solid fa-floppy-disk mr-1"></i> Guardar Contenido
+                        </button>
+                    </div>
                 </div>
             </section>
         </div>
@@ -1191,6 +1446,140 @@
             updateSocialStatus(false);
         };
 
+        // ===================== GESTIÓN DE CONTENIDO =====================
+        const contentPages = ['terminos', 'privacidad', 'devoluciones'];
+        const nosotrosFields = ['subtitle', 'title', 'desc', 'mission', 'banner', 'logo', 'stat1-val', 'stat1-label', 'stat2-val', 'stat2-label', 'stat3-val', 'stat3-label', 'card1-title', 'card1-desc', 'card1-icon', 'card2-title', 'card2-desc', 'card2-icon'];
+        const ubicacionFields = ['subtitle', 'title', 'desc', 'store1-name', 'store1-addr', 'store1-hours', 'store2-name', 'store2-addr', 'store2-hours'];
+
+        window.switchContentTab = function(page) {
+            contentPages.forEach(p => {
+                document.getElementById('content-panel-' + p).classList.add('hidden');
+                const btn = document.getElementById('ctab-' + p);
+                btn.className = "px-3 py-1.5 text-xs font-bold rounded-lg text-zinc-400 hover:text-zinc-200 border border-transparent transition";
+            });
+            ['nosotros', 'ubicacion'].forEach(p => {
+                document.getElementById('content-panel-' + p).classList.add('hidden');
+                const btn = document.getElementById('ctab-' + p);
+                btn.className = "px-3 py-1.5 text-xs font-bold rounded-lg text-zinc-400 hover:text-zinc-200 border border-transparent transition";
+            });
+            document.getElementById('content-panel-' + page).classList.remove('hidden');
+            const activeBtn = document.getElementById('ctab-' + page);
+            activeBtn.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-gamer-orange/10 text-gamer-orange border border-gamer-orange/30 transition";
+        };
+
+        window.handleNosImageSelect = async function(field, event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) { showToast("La imagen supera los 5MB", 'danger'); return; }
+
+            document.getElementById('nos-' + field + '-placeholder').classList.add('hidden');
+            document.getElementById('nos-' + field + '-preview').classList.remove('hidden');
+            document.getElementById('nos-' + field + '-preview-img').src = URL.createObjectURL(file);
+
+            const url = await uploadImageToCloudinary(file);
+            if (url) {
+                document.getElementById('nos-' + field).value = url;
+                showToast("Imagen subida", 'success');
+            } else {
+                clearNosImage(field);
+            }
+        };
+
+        window.clearNosImage = function(field) {
+            document.getElementById('nos-' + field + '-file').value = '';
+            document.getElementById('nos-' + field + '-placeholder').classList.remove('hidden');
+            document.getElementById('nos-' + field + '-preview').classList.add('hidden');
+            document.getElementById('nos-' + field).value = '';
+        };
+
+        window.loadAllContent = async function() {
+            if (state.mode !== 'firebase' || !state.firebaseDb) {
+                showToast("Conéctate a Firebase primero", 'warn');
+                return;
+            }
+            try {
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+                const docSnap = await getDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'settings', 'content'));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    contentPages.forEach(page => {
+                        const prefixMap = { terminos: 'term', privacidad: 'priv', devoluciones: 'dev' };
+                        const prefix = prefixMap[page];
+                        if (prefix) {
+                            const pageInput = document.getElementById(prefix + '-pagetitle');
+                            const dateInput = document.getElementById(prefix + '-date');
+                            if (pageInput && data[page + '_pagetitle']) pageInput.value = data[page + '_pagetitle'];
+                            if (dateInput && data[page + '_date']) dateInput.value = data[page + '_date'];
+                            if (data[page + '_sections']) setLegalSections(prefix, data[page + '_sections']);
+                        }
+                    });
+                    if (data.nosotros) {
+                        nosotrosFields.forEach(f => {
+                            const el = document.getElementById('nos-' + f);
+                            if (el && data.nosotros[f]) el.value = data.nosotros[f];
+                        });
+                        if (data.nosotros.banner) {
+                            document.getElementById('nos-banner-preview-img').src = data.nosotros.banner;
+                            document.getElementById('nos-banner-placeholder').classList.add('hidden');
+                            document.getElementById('nos-banner-preview').classList.remove('hidden');
+                        }
+                        if (data.nosotros.logo) {
+                            document.getElementById('nos-logo-preview-img').src = data.nosotros.logo;
+                            document.getElementById('nos-logo-placeholder').classList.add('hidden');
+                            document.getElementById('nos-logo-preview').classList.remove('hidden');
+                        }
+                    }
+                    if (data.ubicacion) {
+                        ubicacionFields.forEach(f => {
+                            const el = document.getElementById('ubi-' + f);
+                            if (el && data.ubicacion[f]) el.value = data.ubicacion[f];
+                        });
+                    }
+                    showToast("Contenido cargado desde Firebase", 'success');
+                } else {
+                    showToast("No hay contenido guardado aún", 'warn');
+                }
+            } catch (error) {
+                showToast("Error al cargar: " + error.message, 'danger');
+            }
+        };
+
+        window.saveContent = async function() {
+            if (state.mode !== 'firebase' || !state.firebaseDb) {
+                showToast("Conéctate a Firebase primero", 'warn');
+                return;
+            }
+            try {
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+                const data = {};
+                contentPages.forEach(page => {
+                    const prefixMap = { terminos: 'term', privacidad: 'priv', devoluciones: 'dev' };
+                    const prefix = prefixMap[page];
+                    if (prefix) {
+                        const pageInput = document.getElementById(prefix + '-pagetitle');
+                        const dateInput = document.getElementById(prefix + '-date');
+                        data[page + '_pagetitle'] = pageInput ? pageInput.value : '';
+                        data[page + '_date'] = dateInput ? dateInput.value : '';
+                        data[page + '_sections'] = getLegalSections(prefix);
+                    }
+                });
+                data.nosotros = {};
+                nosotrosFields.forEach(f => {
+                    const el = document.getElementById('nos-' + f);
+                    if (el) data.nosotros[f] = el.value;
+                });
+                data.ubicacion = {};
+                ubicacionFields.forEach(f => {
+                    const el = document.getElementById('ubi-' + f);
+                    if (el) data.ubicacion[f] = el.value;
+                });
+                await setDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'settings', 'content'), data);
+                showToast("Contenido guardado en Firebase", 'success');
+            } catch (error) {
+                showToast("Error al guardar: " + error.message, 'danger');
+            }
+        };
+
         // CONEXIÓN EN TIEMPO REAL CON FIREBASE FIRESTORE (RULE 1 STRICT PATHS)
         function initFirebaseSync() {
             // Ruta estricta de regla 1: /artifacts/{appId}/public/data/{collectionName}
@@ -1242,6 +1631,7 @@
             loadSavedFbConfig();
             loadSavedCldConfig();
             loadSavedSocialConfig();
+            loadAllContent();
         }
 
         window.switchTab = function(tabId) {
@@ -1254,9 +1644,10 @@
             document.getElementById('tab-firebase-settings').classList.add('hidden');
             document.getElementById('tab-cloudinary-settings').classList.add('hidden');
             document.getElementById('tab-social-settings').classList.add('hidden');
+            document.getElementById('tab-content-settings').classList.add('hidden');
             
             // Remover estilos activos de todos los botones de navegación
-            const navs = ['dashboard', 'products', 'categories', 'firebase-settings', 'cloudinary-settings', 'social-settings'];
+            const navs = ['dashboard', 'products', 'categories', 'firebase-settings', 'cloudinary-settings', 'social-settings', 'content-settings'];
             navs.forEach(nav => {
                 const btn = document.getElementById(`nav-${nav}`);
                 btn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 border-l-2 border-transparent";
@@ -1274,7 +1665,8 @@
                 categories: 'Gestionar Categorías',
                 'firebase-settings': 'Configuración de Firebase',
                 'cloudinary-settings': 'Configurar Imágenes',
-                'social-settings': 'Redes Sociales'
+                'social-settings': 'Redes Sociales',
+                'content-settings': 'Gestión de Contenido'
             };
             document.getElementById('page-title').textContent = titles[tabId];
 
@@ -1755,6 +2147,178 @@
                 prodSelect.innerHTML += `<option value="${c.slug}">${c.name}</option>`;
             });
         }
+    </script>
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    <script>
+        // ===================== LEGAL SECTIONS BUILDER =====================
+        const defaultLegalSections = {
+            term: [
+                { title: '1. Aceptación de los Términos', content: 'Al acceder y utilizar el sitio web de Tecno Gamers Peru ("el Sitio"), usted acepta estos Términos y Condiciones en su totalidad. Si no está de acuerdo con alguno de estos términos, le solicitamos no utilizar nuestro Sitio. Nos reservamos el derecho de modificar estos términos en cualquier momento, siendo responsabilidad del usuario revisarlos periódicamente.' },
+                { title: '2. Productos y Precios', content: 'Todos los precios mostrados en el Sitio están expresados en Soles (S/.) e incluyen los impuestos aplicables, salvo indicación contraria. Los precios pueden ser modificados sin previo aviso.\n\nLas imágenes de los productos son de carácter ilustrativo. Aunque nos esforzamos por mostrar los colores y características con la mayor precisión posible, pueden existir variaciones en función del monitor o dispositivo desde el cual se visualicen.\n\nLa disponibilidad de los productos está sujeta a existencias. En caso de un error de precios o disponibilidad, nos reservamos el derecho de cancelar el pedido y proceder con el reembolso correspondiente.' },
+                { title: '3. Pedidos y Pagos', content: 'Los pedidos se realizan a través de WhatsApp o del formulario de contacto del Sitio. Un pedido no está confirmado hasta que reciba una notificación explícita de nuestra parte.\n\nLos métodos de pago aceptados incluyen Yape, Plin y transferencia bancaria. El pago debe realizarse dentro de las 24 horas posteriores a la confirmación del pedido, de lo contrario este será cancelado automáticamente.\n\nAl realizar un pedido, usted declara que los datos proporcionados son correctos y completos.' },
+                { title: '4. Envíos y Entregas', content: 'Realizamos envíos a todo el Perú mediante Olva Courier y Shalom. En Lima Metropolitana ofrecemos delivery express con entrega el mismo día u horas posteriores.\n\nLos tiempos de entrega son estimados y pueden variar según la ubicación del cliente y disponibilidad de los servicios de courier. Tecno Gamers Peru no se hace responsable por retrasos atribuibles a las empresas de transporte.\n\nEl costo del envío será cotizado al momento de confirmar el pedido según la ubicación del cliente.' },
+                { title: '5. Garantías y Devoluciones', content: 'Todos los productos sellados cuentan con garantía directa de fábrica. En caso de defectos de fábrica, el cliente podrá solicitar el cambio o reembolso dentro de los primeros 7 días naturales posteriores a la recepción del producto.\n\nPara productos personalizados (camisetas con estampado), no se aceptan devoluciones salvo defectos de impresión. El cliente deberá evidenciar el defecto mediante fotografías.\n\nLas devoluciones no aplican para productos que hayan sido manipulados, dañados por el usuario o que no cuenten con su empaque original.' },
+                { title: '6. Camisetas Personalizadas', content: 'El personalizador de camisetas permite al cliente seleccionar color, diseño de estampa, talla y posición del logo. Una vez confirmado el pedido, no se aceptan cambios de diseño o color.\n\nLos diseños de estampa proporcionados por el cliente deben cumplir con las dimensiones recomendadas (mínimo 200x200px, recomendado 500x500px, formato PNG con fondo transparente) para garantizar la calidad de impresión.\n\nEl tiempo de producción para camisetas personalizadas es de 3 a 5 días hábiles posteriores a la confirmación del pago.' },
+                { title: '7. Propiedad Intelectual', content: 'Todo el contenido del Sitio, incluyendo pero no limitado a textos, gráficos, logotipos, iconos, imágenes, videos y software, es propiedad de Tecno Gamers Peru o de sus proveedores y está protegido por las leyes de propiedad intelectual del Perú e internacionales. Queda prohibida su reproducción, distribución o modificación sin autorización expresa.' },
+                { title: '8. Limitación de Responsabilidad', content: 'Tecno Gamers Peru no será responsable por daños indirectos, incidentales o consecuentes que puedan derivarse del uso del Sitio o de los productos adquiridos. Nuestra responsabilidad se limita al monto total pagado por el producto en cuestión. No garantizamos que el Sitio estará disponible de forma ininterrumpida o libre de errores.' },
+                { title: '9. Protección de Datos Personales', content: 'Los datos personales proporcionados por el usuario serán tratados de acuerdo con la Ley de Protección de Datos Personales del Perú (Ley N° 29733). Utilizaremos su información exclusivamente para procesar pedidos, enviar comunicaciones relacionadas con sus compras y mejorar nuestros servicios. No compartiremos sus datos con terceros sin su consentimiento, salvo obligación legal.' },
+                { title: '10. Ley Aplicable y Jurisdicción', content: 'Estos Términos y Condiciones se rigen por las leyes de la República del Perú. Cualquier controversia derivada del uso del Sitio será sometida a los tribunales competentes de la ciudad de Lima, Perú.' },
+                { title: '11. Contacto', content: 'Para consultas sobre estos Términos y Condiciones, comuníquese con nosotros:\n- +51 999 999 999\n- tecnogamers.ca@gmail.com\n- WhatsApp directo' }
+            ],
+            priv: [
+                { title: '1. Información que Recopilamos', content: 'Para procesar sus pedidos y brindarle un servicio personalizado, podemos recopilar la siguiente información personal:\n- Nombres y apellidos completos\n- Número de teléfono / WhatsApp\n- Correo electrónico\n- Dirección de envío (ciudad, distrito, dirección completa)\n- Datos de pago (únicamente método de pago utilizado, no almacenamos datos de tarjetas)\n\nTambién podemos recopilar información no personal como tipo de navegador, sistema operativo y páginas visitadas, con fines de mejora del Sitio.' },
+                { title: '2. Uso de la Información', content: 'Utilizamos su información personal para:\n- Procesar y enviar sus pedidos\n- Comunicarnos con usted sobre el estado de su pedido\n- Enviar cotizaciones y presupuestos solicitados\n- Coordinar entregas y envíos\n- Resolver consultas y brindar soporte al cliente\n- Mejorar nuestros productos y servicios\n- Enviar promociones y ofertas exclusivas (solo si usted ha dado su consentimiento)' },
+                { title: '3. Protección de sus Datos', content: 'Implementamos medidas de seguridad técnicas y organizativas para proteger su información personal contra acceso no autorizado, pérdida, uso indebido o alteración. Estas medidas incluyen:\n- Acceso restringido únicamente a personal autorizado\n- Uso de canales seguros de comunicación (WhatsApp cifrado)\n- No almacenamiento de datos sensibles de pago\n\nSin embargo, ningún método de transmisión por Internet o almacenamiento electrónico es 100% seguro, por lo que no podemos garantizar seguridad absoluta.' },
+                { title: '4. Compartir Información con Terceros', content: 'No vendemos, alquilamos ni compartimos su información personal con terceros, excepto en los siguientes casos:\n- Empresas de courier: Compartimos nombre, teléfono y dirección exclusivamente para procesar la entrega de su pedido (Olva Courier, Shalom).\n- Obligación legal: Cuando sea requerido por autoridad competente o por orden judicial.' },
+                { title: '5. Cookies y Tecnologías de Rastreo', content: 'Actualmente nuestro Sitio no utiliza cookies propias. Sin embargo, servicios de terceros integrados (como Google Analytics o YouTube) pueden emplear cookies para recopilar información anónima sobre su navegación.\n\nPuede configurar su navegador para rechazar cookies o recibir una notificación cuando se envíen. Tenga en cuenta que algunas funcionalidades del Sitio podrían no funcionar correctamente sin cookies.' },
+                { title: '6. Sus Derechos', content: 'De acuerdo con la Ley de Protección de Datos Personales del Perú (Ley N° 29733), usted tiene derecho a:\n- Acceso: Solicitar una copia de los datos personales que tenemos sobre usted.\n- Rectificación: Solicitar la corrección de datos inexactos o incompletos.\n- Eliminación: Solicitar la eliminación de sus datos personales cuando ya no sean necesarios.\n- Oposición: Oponerse al procesamiento de sus datos para fines de marketing directo.\n- Revocación: Retirar su consentimiento en cualquier momento.\n\nPara ejercer estos derechos, contáctenos a través de nuestros canales oficiales.' },
+                { title: '7. Retención de Datos', content: 'Conservamos su información personal únicamente durante el tiempo necesario para cumplir con los fines para los que fue recopilada, o según lo requiera la legislación aplicable. Los datos de pedidos se conservan por un período mínimo de 5 años con fines contables y legales. Una vez vencido este plazo, los datos serán eliminados de forma segura.' },
+                { title: '8. Menores de Edad', content: 'Nuestros servicios están dirigidos a personas mayores de 18 años. No recopilamos intencionadamente información personal de menores de edad. Si usted es padre o tutor y sabe que su hijo nos ha proporcionado datos personales, contáctenos para que podamos eliminar dicha información.' },
+                { title: '9. Cambios en esta Política', content: 'Nos reservamos el derecho de actualizar esta Política de Privacidad en cualquier momento. Los cambios serán publicados en esta página con una fecha de "Última actualización" revisada. Le recomendamos revisar esta política periódicamente. El uso continuado del Sitio después de los cambios constituye su aceptación de los mismos.' },
+                { title: '10. Contacto', content: 'Si tiene preguntas sobre esta Política de Privacidad o desea ejercer sus derechos, comuníquese con nosotros:\n- +51 999 999 999\n- tecnogamers.ca@gmail.com\n- WhatsApp directo' }
+            ],
+            dev: [
+                { title: '1. Alcance de esta Política', content: 'Esta Política de Devoluciones aplica a todos los productos adquiridos a través del sitio web de Tecno Gamers Peru, incluyendo videojuegos, consolas, merchandising (Funko Pops, figuras, accesorios) y camisetas personalizadas. Al realizar una compra, usted acepta los términos descritos en esta política.' },
+                { title: '2. Plazo para Solicitar una Devolución', content: 'El cliente cuenta con un plazo de 7 días naturales posteriores a la recepción del producto para solicitar una devolución o cambio.\n\nEste plazo comienza a partir de la fecha de entrega registrada por la empresa de courier o de la fecha de recolección en tienda.\n\nLas solicitudes realizadas fuera de este plazo no serán aceptadas, salvo excepciones contempladas en la ley peruana.' },
+                { title: '3. Condiciones para Aceptar una Devolución', content: 'Para que una devolución sea aceptada, el producto debe cumplir con las siguientes condiciones:\n- Estar en su empaque original, sin abrir (para productos sellados)\n- No presentar signos de uso, manipulación o daño por parte del cliente\n- Incluir todos los accesorios, manuales y componentes originales\n- Contar con la nota de venta o comprobante de compra\n- En caso de defecto de fábrica, el cliente deberá evidenciar el daño mediante fotografías o video' },
+                { title: '4. Productos con Defecto de Fábrica', content: 'Si el producto presenta un defecto de fábrica, el cliente tiene derecho a:\n- Cambio: Por el mismo producto en perfectas condiciones, sujeto a disponibilidad de stock.\n- Reembolso: Devolución del monto total pagado mediante el mismo método de pago original.\n\nEl costo del envío para devoluciones por defecto de fábrica será cubierto íntegramente por Tecno Gamers Peru.\n\nEl proceso de evaluación del defecto tomará un máximo de 3 días hábiles desde la recepción del producto en nuestras instalaciones.' },
+                { title: '5. Devoluciones sin Defecto (Arrepentimiento)', content: 'Si el cliente desea devolver un producto sin defecto de fábrica por cambio de opinión, se aplican las siguientes condiciones:\n- El producto debe estar sin abrir y en su empaque original\n- Se realizará un cambio por otro producto de igual o mayor valor (con diferencia a favor del cliente)\n- No se realiza reembolso en efectivo para devoluciones sin defecto\n- El costo del envío de devolución corre por cuenta del cliente' },
+                { title: '6. Devoluciones de Camisetas Personalizadas', content: 'Las camisetas personalizadas son fabricadas bajo pedido específico del cliente, por lo que:\n- No se aceptan devoluciones por cambio de opinión en color, talla o diseño de estampa\n- Sí se aceptan devoluciones si el estampado presenta defectos de impresión (descolorido, descascaramiento, impresión incompleta)\n- El cliente deberá enviar fotografías claras del defecto para evaluación\n- En caso de defecto confirmado, se realizará una nueva camiseta sin costo adicional' },
+                { title: '7. Productos Excluidos de Devolución', content: 'No se aceptan devoluciones en los siguientes casos:\n- Productos que hayan sido utilizados, activados o registrados (consolas, videojuegos abiertos)\n- Productos con daño causado por el cliente (caídas, líquidos, sobrecarga eléctrica)\n- Productos que no cuenten con su empaque original o le falten accesorios\n- Productos adquiridos en oferta o liquidación (salvo defecto de fábrica)\n- Productos digitalmente descargados (códigos de juego digitales)' },
+                { title: '8. Proceso para Realizar una Devolución', content: 'Para iniciar una devolución, siga estos pasos:\n1. Contacte nuestro soporte: Envíe un mensaje por WhatsApp al +51 999 999 999 o al correo tecnogamers.ca@gmail.com indicando su nombre, número de pedido y motivo de la devolución.\n2. Envíe evidencia: Adjunte fotografías o video del producto (en caso de defecto) y la nota de venta.\n3. Espere la validación: Nuestro equipo revisará su solicitud y le notificará la aprobación dentro de 24-48 horas.\n4. Envíe o lleve el producto: Si la devolución es aprobada, coordine el envío del producto a nuestra tienda o solicite recolección a domicilio (solo Lima Metropolitana).\n5. Recepción y evaluación: Verificaremos el estado del producto en un plazo de 3 días hábiles.\n6. Resolución: Se realizará el cambio, reembolso o nueva fabricación según corresponda.' },
+                { title: '9. Tiempos de Reembolso', content: 'Los reembolsos se procesan de la siguiente manera según el método de pago original:\n- Yape / Plin: Dentro de 24 horas hábiles tras la aprobación\n- Transferencia bancaria: Dentro de 3 a 5 días hábiles\n\nEl reembolso se realizará exclusivamente al titular de la cuenta o método de pago original utilizado en la compra.' },
+                { title: '10. Contacto', content: 'Para solicitudes de devolución o consultas sobre esta política:\n- +51 999 999 999\n- tecnogamers.ca@gmail.com\n- WhatsApp directo\n- Horario de atención: Lunes a Sábado de 10:00 AM a 8:00 PM' }
+            ]
+        };
+
+        const sectionQuillInstances = {};
+
+        function createSectionHTML(prefix, index, title, content) {
+            const id = prefix + '-sec-' + index;
+            return `
+                <div class="p-3 bg-zinc-900 border border-gamer-border rounded-xl space-y-2" data-section-id="${id}">
+                    <div class="flex items-center justify-between">
+                        <input type="text" value="${title.replace(/"/g, '&quot;')}" class="flex-1 bg-zinc-950 border border-gamer-border rounded-lg px-3 py-1.5 text-xs text-zinc-200 neon-input font-bold section-title-input" placeholder="Título de la sección">
+                        <button type="button" onclick="removeLegalSection('${prefix}', ${index})" class="ml-2 text-zinc-600 hover:text-red-500 transition text-xs" title="Eliminar sección">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                    <div id="quill-${id}" class="bg-white rounded-lg min-h-[80px]"></div>
+                </div>
+            `;
+        }
+
+        function initSectionQuill(prefix, index, content) {
+            const id = prefix + '-sec-' + index;
+            const container = document.getElementById('quill-' + id);
+            if (!container) return;
+            const quill = new Quill('#quill-' + id, {
+                theme: 'snow',
+                placeholder: 'Contenido de la sección...',
+                modules: {
+                    toolbar: [
+                        [{ header: [2, 3, 4, false] }],
+                        ['bold', 'italic', 'underline'],
+                        [{ list: 'ordered' }, { list: 'bullet' }],
+                        ['blockquote'],
+                        ['link'],
+                        ['clean']
+                    ]
+                }
+            });
+            if (content) quill.root.innerHTML = content;
+            sectionQuillInstances[id] = quill;
+        }
+
+        window.addLegalSection = function(prefix, title = '', content = '') {
+            const container = document.getElementById(prefix + '-sections');
+            const index = container.children.length;
+            container.insertAdjacentHTML('beforeend', createSectionHTML(prefix, index, title, content));
+            setTimeout(() => initSectionQuill(prefix, index, content), 100);
+        };
+
+        window.removeLegalSection = function(prefix, index) {
+            const container = document.getElementById(prefix + '-sections');
+            const sections = container.querySelectorAll('[data-section-id]');
+            if (sections.length <= 1) { showToast("Debe haber al menos una sección", 'warn'); return; }
+            const id = prefix + '-sec-' + index;
+            if (sectionQuillInstances[id]) delete sectionQuillInstances[id];
+            sections[index].remove();
+            rebuildSectionIndices(prefix);
+        };
+
+        function rebuildSectionIndices(prefix) {
+            const container = document.getElementById(prefix + '-sections');
+            const sections = container.querySelectorAll('[data-section-id]');
+            const newInstances = {};
+            sections.forEach((sec, i) => {
+                const newId = prefix + '-sec-' + i;
+                sec.setAttribute('data-section-id', newId);
+                sec.querySelector('button[onclick]').setAttribute('onclick', `removeLegalSection('${prefix}', ${i})`);
+                const quillContainer = sec.querySelector('[id^="quill-"]');
+                const oldId = quillContainer.id;
+                quillContainer.id = 'quill-' + newId;
+                if (sectionQuillInstances[oldId]) {
+                    newInstances[newId] = sectionQuillInstances[oldId];
+                    delete sectionQuillInstances[oldId];
+                }
+            });
+            Object.assign(sectionQuillInstances, newInstances);
+        }
+
+        function getLegalSections(prefix) {
+            const container = document.getElementById(prefix + '-sections');
+            const sections = container.querySelectorAll('[data-section-id]');
+            const result = [];
+            sections.forEach((sec, i) => {
+                const id = prefix + '-sec-' + i;
+                const titleInput = sec.querySelector('.section-title-input');
+                const quill = sectionQuillInstances[id];
+                result.push({
+                    title: titleInput ? titleInput.value : '',
+                    content: quill ? quill.root.innerHTML : ''
+                });
+            });
+            return result;
+        }
+
+        function setLegalSections(prefix, sectionsData) {
+            const container = document.getElementById(prefix + '-sections');
+            container.innerHTML = '';
+            Object.keys(sectionQuillInstances).forEach(k => { if (k.startsWith(prefix)) delete sectionQuillInstances[k]; });
+            if (sectionsData && sectionsData.length > 0) {
+                sectionsData.forEach((sec, i) => {
+                    container.insertAdjacentHTML('beforeend', createSectionHTML(prefix, i, sec.title || '', sec.content || ''));
+                });
+                setTimeout(() => {
+                    sectionsData.forEach((sec, i) => {
+                        initSectionQuill(prefix, i, sec.content || '');
+                    });
+                }, 150);
+            }
+        }
+
+        function initDefaultLegalSections() {
+            Object.keys(defaultLegalSections).forEach(prefix => {
+                const container = document.getElementById(prefix + '-sections');
+                if (container && container.children.length === 0) {
+                    defaultLegalSections[prefix].forEach((sec, i) => {
+                        container.insertAdjacentHTML('beforeend', createSectionHTML(prefix, i, sec.title, sec.content));
+                    });
+                }
+            });
+            setTimeout(() => {
+                Object.keys(defaultLegalSections).forEach(prefix => {
+                    defaultLegalSections[prefix].forEach((sec, i) => {
+                        initSectionQuill(prefix, i, sec.content);
+                    });
+                });
+            }, 300);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(initDefaultLegalSections, 600);
+        });
     </script>
 
 </body>
