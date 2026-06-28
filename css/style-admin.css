@@ -1,0 +1,51 @@
+/* =============================================
+   STYLE-ADMIN.CSS
+   Estilos exclusivos del Panel de Administración
+   Tecno Gamers Peru
+   ============================================= */
+
+/* Scrollbar personalizado estilo cyberpunk */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #09090b;
+}
+::-webkit-scrollbar-thumb {
+    background: #27272a;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #FF4500;
+    box-shadow: 0 0 10px #FF4500;
+}
+
+/* Animación fade-in para transiciones de UI */
+.fade-in {
+    animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Efecto de pulso neón para elementos interactivos */
+.neon-glow-hover:hover {
+    box-shadow: 0 0 20px rgba(255, 69, 0, 0.4);
+    border-color: #FF4500;
+}
+
+/* Inputs con foco neón naranja */
+.neon-input:focus {
+    border-color: #FF4500;
+    box-shadow: 0 0 10px rgba(255, 69, 0, 0.2);
+    outline: none;
+}
+
+/* Inputs de configuración Firebase: monospace para distinguir caracteres */
+#firebase-config-form .neon-input {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}

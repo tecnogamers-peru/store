@@ -1,0 +1,57 @@
+/* ============================================================
+   ESTILOS PERSONALIZADOS - Tecno Gamers Peru
+   Archivo: css/styles.css
+   ============================================================ */
+
+/* --- Scroll behavior: desactivado nativo, se usa JS custom --- */
+html {
+    scroll-behavior: auto;
+}
+
+/* --- Efectos de brillo (glow) para textos y tarjetas --- */
+.text-glow {
+    text-shadow: 0 0 15px rgba(255, 69, 0, 0.6);
+}
+.box-glow {
+    box-shadow: 0 0 25px rgba(255, 69, 0, 0.25);
+}
+.box-glow-strong {
+    box-shadow: 0 0 35px rgba(255, 69, 0, 0.45);
+}
+
+/* --- Barra de scroll personalizada (temática gamer) --- */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #09090B;
+}
+::-webkit-scrollbar-thumb {
+    background: #FF4500;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #E03A00;
+}
+
+/* --- Botón "Volver arriba": animación de aparición/desaparición --- */
+#back-to-top {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
+}
+#back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+#back-to-top:hover {
+    transform: translateY(-4px);
+}
+
+/* --- Safe area inset para iOS --- */
+@supports (bottom: env(safe-area-inset-bottom)) {
+    #back-to-top { bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
+    #toast-container { bottom: calc(5rem + env(safe-area-inset-bottom)); }
+}

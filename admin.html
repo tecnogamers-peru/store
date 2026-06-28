@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tecno Gamers Peru | Panel de Control</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <!-- Tailwind CSS para diseño rápido, moderno y responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos exclusivos del admin -->
+    <link rel="stylesheet" href="css/style-admin.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        tech: ['Rajdhani', 'sans-serif'],
+                        orbitron: ['Orbitron', 'sans-serif'],
+                    },
+                    colors: {
+                        gamer: {
+                            dark: '#09090b',
+                            card: '#141417',
+                            border: '#27272a',
+                            orange: '#FF4500',
+                            orangeHover: '#E03A00',
+                            success: '#10b981',
+                            danger: '#ef4444',
+                            warn: '#f59e0b'
+                        }
+                    },
+                    boxShadow: {
+                        'neon-orange': '0 0 15px rgba(255, 69, 0, 0.25)',
+                        'neon-success': '0 0 15px rgba(16, 185, 129, 0.25)',
+                        'neon-danger': '0 0 15px rgba(239, 68, 68, 0.25)',
+                        'glass': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.05)'
+                    }
+                }
+            }
+        }
+    </script>
+    
+</head>
+<body class="bg-gamer-dark text-zinc-100 font-sans min-h-screen antialiased flex flex-col md:flex-row overflow-x-hidden">
+
+    <!-- Contenedor para notificaciones flotantes (Toasts) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
+
+    <!-- PANTALLA DE INICIO DE SESIÓN / CONEXIÓN -->
+    <div id="login-screen" class="fixed inset-0 bg-gamer-dark/95 z-40 flex items-center justify-center p-4 fade-in">
+        <div class="bg-gamer-card border border-gamer-border p-8 rounded-2xl w-full max-w-md shadow-neon-orange relative overflow-hidden">
+            <!-- Efecto decorativo neón de fondo -->
+            <div class="absolute -top-24 -left-24 w-48 h-48 bg-gamer-orange/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-gamer-orangeHover/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="text-center mb-8 relative">
+                <div class="inline-flex p-3 rounded-xl bg-gamer-orange/10 text-gamer-orange mb-3 border border-gamer-orange/20">
+                    <i class="fa-solid fa-gamepad text-3xl animate-pulse"></i>
+                </div>
+                <h1 class="text-2xl font-extrabold tracking-wider bg-gradient-to-r from-gamer-orange to-gamer-orangeHover bg-clip-text text-transparent font-orbitron">TECNOGAMERS PERÚ</h1>
+                <p class="text-zinc-400 text-sm mt-1">Panel de Control & Inventario</p>
+            </div>
+
+            <!-- Selector de Modo de Inicio de Sesión -->
+            <div class="flex bg-zinc-950 p-1 rounded-xl border border-gamer-border mb-6">
+                <button id="btn-mode-demo" onclick="switchLoginMode('demo')" class="flex-1 text-center py-2.5 text-xs font-semibold rounded-lg bg-gamer-orange text-zinc-950 transition-all duration-300">
+                    Modo Demo (Prueba)
+                </button>
+                <button id="btn-mode-firebase" onclick="switchLoginMode('firebase')" class="flex-1 text-center py-2.5 text-xs font-semibold rounded-lg text-zinc-400 hover:text-zinc-200 transition-all duration-300">
+                    Conectar Firebase
+                </button>
+            </div>
+
+            <!-- Formulario de Login -->
+            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
+                <div id="demo-info-box" class="p-3 bg-gamer-orange/5 border border-gamer-orange/20 rounded-xl text-xs text-gamer-orange leading-relaxed mb-4">
+                    <i class="fa-solid fa-circle-info mr-1"></i>
+                    <strong>Modo Demo Activo:</strong> Puedes entrar sin configurar nada. Esto guardará todo localmente para que interactúes y pruebes todos los controles.
+                </div>
+
+                <div id="firebase-credentials-inputs" class="hidden space-y-4">
+                    <p class="text-xs text-zinc-400 mb-2 leading-relaxed">
+                        Ingresa con las credenciales de administrador para conectarte a Firebase.
+                    </p>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Usuario Admin</label>
+                        <input type="text" id="login-user" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-4 py-3 text-sm neon-input text-zinc-200" placeholder="admin" value="admin">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Contraseña</label>
+                        <input type="password" id="login-pass" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-4 py-3 text-sm neon-input text-zinc-200" placeholder="••••••••">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="login-remember" class="w-4 h-4 rounded text-gamer-orange bg-zinc-950 border-gamer-border focus:ring-gamer-orange">
+                        <label for="login-remember" class="text-xs text-zinc-400">Recordar contraseña en este navegador</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-gamer-orange to-gamer-orangeHover hover:from-orange-500 hover:to-red-600 text-zinc-950 font-extrabold uppercase tracking-widest py-3.5 rounded-xl text-xs transition duration-300 transform active:scale-95 shadow-neon-orange flex justify-center items-center gap-2">
+                    <span>Ingresar al Sistema</span>
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- BARRA LATERAL (SIDEBAR) -->
+    <aside id="main-sidebar" class="hidden w-full md:w-64 bg-gamer-card border-b md:border-b-0 md:border-r border-gamer-border flex flex-col shrink-0 z-30 transition-all duration-300">
+        <!-- Logo Header -->
+        <div class="p-5 border-b border-gamer-border">
+            <div class="flex items-center gap-3 mb-2">
+                <img src="images/logo_tecnogamers_1_f_oscuro.png" alt="Tecno Gamers" class="h-10 w-auto shrink-0">
+                <span class="text-[10px] text-gamer-orange uppercase tracking-widest font-bold whitespace-nowrap">Admin Panel</span>
+            </div>
+            <div id="connection-badge" class="inline-block px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                DEMO
+            </div>
+        </div>
+
+        <!-- Menú de navegación principal -->
+        <nav class="p-4 flex-1 space-y-1">
+            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 bg-gamer-orange/10 text-gamer-orange border-l-2 border-gamer-orange">
+                <i class="fa-solid fa-chart-pie w-5"></i>
+                <span>Dashboard</span>
+            </button>
+            <button onclick="switchTab('products')" id="nav-products" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 border-l-2 border-transparent">
+                <i class="fa-solid fa-boxes-stacked w-5"></i>
+                <span>Productos</span>
+            </button>
+            <button onclick="switchTab('categories')" id="nav-categories" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 border-l-2 border-transparent">
+                <i class="fa-solid fa-tags w-5"></i>
+                <span>Categorías</span>
+            </button>
+            <button onclick="switchTab('firebase-settings')" id="nav-firebase-settings" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 border-l-2 border-transparent">
+                <i class="fa-solid fa-sliders w-5"></i>
+                <span>Configurar Firebase</span>
+            </button>
+            <button onclick="switchTab('cloudinary-settings')" id="nav-cloudinary-settings" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 border-l-2 border-transparent">
+                <i class="fa-solid fa-cloud-arrow-up w-5"></i>
+                <span>Configurar Imágenes</span>
+            </button>
+            <button onclick="switchTab('social-settings')" id="nav-social-settings" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 border-l-2 border-transparent">
+                <i class="fa-solid fa-share-nodes w-5"></i>
+                <span>Redes Sociales</span>
+            </button>
+        </nav>
+
+        <!-- Información de Usuario & Cerrar Sesión -->
+        <div class="p-4 border-t border-gamer-border bg-zinc-950/40">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-full bg-zinc-800 border border-gamer-border flex items-center justify-center text-zinc-300">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <div class="overflow-hidden">
+                    <p class="text-xs font-bold text-zinc-200 truncate animate-pulse" id="admin-user-email">Invitado de Pruebas</p>
+                    <p class="text-[10px] text-zinc-500 truncate">Administrador</p>
+                </div>
+            </div>
+            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold bg-gamer-danger/10 text-gamer-danger border border-gamer-danger/20 hover:bg-gamer-danger hover:text-white transition-all duration-200">
+                <i class="fa-solid fa-power-off"></i>
+                <span>Cerrar Sesión</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main id="main-content" class="hidden flex-1 flex flex-col min-h-screen overflow-y-auto">
+        <!-- HEADER SUPERIOR -->
+        <header class="h-16 border-b border-gamer-border bg-gamer-card/80 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-20">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleMobileSidebar()" class="md:hidden text-zinc-400 hover:text-zinc-200 text-xl">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h1 id="page-title" class="text-sm md:text-base font-bold tracking-wider text-zinc-200 uppercase">Dashboard General</h1>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="relative hidden sm:block">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 text-xs"></i>
+                    <input type="text" id="global-search" oninput="handleGlobalSearch(this.value)" placeholder="Buscar por SKU o Nombre..." class="bg-zinc-950 border border-gamer-border rounded-xl pl-9 pr-4 py-2 text-xs w-48 md:w-64 neon-input text-zinc-200" />
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="sync-status" class="w-2.5 h-2.5 rounded-full bg-gamer-success animate-pulse"></span>
+                    <span class="text-xs text-zinc-400 font-medium hidden sm:inline" id="sync-text">Sincronizado</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-6 flex-1 space-y-6">
+
+            <!-- TAB 1: DASHBOARD -->
+            <section id="tab-dashboard" class="space-y-6 fade-in">
+                <!-- Tarjetas de Métricas Rápidas -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div class="bg-gamer-card border border-gamer-border rounded-2xl p-5 shadow-glass flex items-center justify-between relative">
+                        <div>
+                            <p class="text-xs text-zinc-400 font-bold uppercase tracking-wider">Productos Totales</p>
+                            <h3 id="stat-total-products" class="text-3xl font-black mt-1 text-zinc-100">0</h3>
+                        </div>
+                        <div class="p-3 bg-gamer-orange/10 border border-gamer-orange/20 text-gamer-orange rounded-xl">
+                            <i class="fa-solid fa-boxes-stacked text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="bg-gamer-card border border-gamer-border rounded-2xl p-5 shadow-glass flex items-center justify-between relative">
+                        <div>
+                            <p class="text-xs text-zinc-400 font-bold uppercase tracking-wider">Valor total del Stock</p>
+                            <h3 id="stat-stock-value" class="text-3xl font-black mt-1 text-zinc-100">S/. 0.00</h3>
+                        </div>
+                        <div class="p-3 bg-gamer-orangeHover/10 border border-gamer-orangeHover/20 text-gamer-orangeHover rounded-xl">
+                            <i class="fa-solid fa-coins text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="bg-gamer-card border border-gamer-border rounded-2xl p-5 shadow-glass flex items-center justify-between relative">
+                        <div>
+                            <p class="text-xs text-zinc-400 font-bold uppercase tracking-wider">Sin Stock (Agotado)</p>
+                            <h3 id="stat-out-of-stock" class="text-3xl font-black mt-1 text-gamer-danger">0</h3>
+                        </div>
+                        <div class="p-3 bg-gamer-danger/10 border border-gamer-danger/20 text-gamer-danger rounded-xl">
+                            <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="bg-gamer-card border border-gamer-border rounded-2xl p-5 shadow-glass flex items-center justify-between relative">
+                        <div>
+                            <p class="text-xs text-zinc-400 font-bold uppercase tracking-wider">Borradores</p>
+                            <h3 id="stat-drafts" class="text-3xl font-black mt-1 text-zinc-500">0</h3>
+                        </div>
+                        <div class="p-3 bg-zinc-700/20 border border-zinc-600/30 text-zinc-400 rounded-xl">
+                            <i class="fa-solid fa-file-pen text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="bg-gamer-card border border-gamer-border rounded-2xl p-5 shadow-glass flex items-center justify-between relative">
+                        <div>
+                            <p class="text-xs text-zinc-400 font-bold uppercase tracking-wider">Categorías Activas</p>
+                            <h3 id="stat-total-categories" class="text-3xl font-black mt-1 text-zinc-100">0</h3>
+                        </div>
+                        <div class="p-3 bg-gamer-orange/10 border border-gamer-orange/20 text-gamer-orange rounded-xl">
+                            <i class="fa-solid fa-tags text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bloques Interactivos Principales del Dashboard -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Tabla de productos con bajo stock -->
+                    <div class="bg-gamer-card border border-gamer-border rounded-2xl p-5 lg:col-span-2 shadow-glass space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-sm font-bold tracking-wide text-zinc-200 uppercase">Alertas de Bajo Stock</h3>
+                                <p class="text-xs text-zinc-500">Productos que necesitan reabastecimiento urgente</p>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-gamer-warn/10 text-gamer-warn border border-gamer-warn/20">Revisión Requerida</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-gamer-border text-[10px] text-zinc-500 uppercase tracking-widest font-black">
+                                        <th class="pb-3">Producto</th>
+                                        <th class="pb-3">Categoría</th>
+                                        <th class="pb-3 text-center">Stock Actual</th>
+                                        <th class="pb-3 text-right">Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashboard-low-stock-body" class="text-xs divide-y divide-gamer-border/40 text-zinc-300">
+                                    <!-- Dinámico por JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Accesos Rápidos de Control / Utilidades -->
+                    <div class="bg-gamer-card border border-gamer-border rounded-2xl p-5 shadow-glass space-y-4">
+                        <div>
+                            <h3 class="text-sm font-bold tracking-wide text-zinc-200 uppercase font-black">Acciones Rápidas</h3>
+                            <p class="text-xs text-zinc-500 font-medium">Gestión veloz del inventario</p>
+                        </div>
+                        <div class="grid grid-cols-1 gap-3">
+                            <button onclick="openAddProductModal()" class="flex items-center justify-between p-3.5 rounded-xl bg-gradient-to-r from-gamer-orange/10 to-gamer-orange/5 hover:from-gamer-orange/20 hover:to-gamer-orange/10 border border-gamer-orange/30 text-gamer-orange transition-all duration-200 font-bold text-xs">
+                                <span>Agregar Nuevo Producto</span>
+                                <i class="fa-solid fa-plus-circle text-base"></i>
+                            </button>
+                            <button onclick="switchTab('categories')" class="flex items-center justify-between p-3.5 rounded-xl bg-gradient-to-r from-gamer-orangeHover/10 to-gamer-orangeHover/5 hover:from-gamer-orangeHover/20 hover:to-gamer-orangeHover/10 border border-gamer-orangeHover/30 text-gamer-orangeHover transition-all duration-200 font-bold text-xs">
+                                <span>Crear Categorías</span>
+                                <i class="fa-solid fa-folder-open text-base"></i>
+                            </button>
+                            <div class="p-4 rounded-xl bg-zinc-950/60 border border-gamer-border text-center space-y-2">
+                                <span class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block">Configuración de Tienda</span>
+                                <p class="text-[11px] text-zinc-400 leading-relaxed">Conecta tu código frontend con las credenciales que cargues en Firebase.</p>
+                                <button onclick="switchTab('firebase-settings')" class="w-full mt-2 py-2 px-3 bg-zinc-900 hover:bg-zinc-800 border border-gamer-border rounded-lg text-[10px] font-bold tracking-wide text-zinc-300 flex items-center justify-center gap-1.5 transition">
+                                    <i class="fa-solid fa-sliders"></i>
+                                    <span>Ver Credenciales</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: PRODUCTOS -->
+            <section id="tab-products" class="space-y-6 hidden fade-in">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-black tracking-wide text-zinc-200">INVENTARIO DE PRODUCTOS</h2>
+                        <p class="text-xs text-zinc-500">Agrega, edita o elimina productos del catálogo que se mostrarán en tu tienda.</p>
+                    </div>
+                    <button onclick="openAddProductModal()" class="w-full sm:w-auto bg-gradient-to-r from-gamer-orange to-gamer-orangeHover hover:from-orange-500 hover:to-red-600 text-zinc-950 font-bold text-xs uppercase tracking-widest px-5 py-3 rounded-xl shadow-neon-orange flex items-center justify-center gap-2 transition duration-200">
+                        <i class="fa-solid fa-plus-circle"></i>
+                        <span>Agregar Producto</span>
+                    </button>
+                </div>
+
+                <!-- Barra de Filtrados -->
+                <div class="bg-gamer-card border border-gamer-border rounded-2xl p-4 flex flex-col md:flex-row gap-4 items-center justify-between">
+                    <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                        <div class="relative flex-1 sm:w-48">
+                            <select id="filter-category" onchange="applyFilters()" class="w-full bg-zinc-950 border border-gamer-border rounded-xl px-3 py-2.5 text-xs text-zinc-300 focus:outline-none focus:border-gamer-orange">
+                                <option value="all">Todas las Categorías</option>
+                            </select>
+                        </div>
+                        <div class="relative flex-1 sm:w-48">
+                            <select id="filter-stock" onchange="applyFilters()" class="w-full bg-zinc-950 border border-gamer-border rounded-xl px-3 py-2.5 text-xs text-zinc-300 focus:outline-none focus:border-gamer-orange">
+                                <option value="all">Todos los Stocks</option>
+                                <option value="instock">Con Stock disponible</option>
+                                <option value="outofstock">Agotados</option>
+                                <option value="lowstock">Bajo Stock (&lt; 5)</option>
+                            </select>
+                        </div>
+                        <div class="relative flex-1 sm:w-48">
+                            <select id="filter-status" onchange="applyFilters()" class="w-full bg-zinc-950 border border-gamer-border rounded-xl px-3 py-2.5 text-xs text-zinc-300 focus:outline-none focus:border-gamer-orange">
+                                <option value="all">Todos los Estados</option>
+                                <option value="published">Publicados</option>
+                                <option value="draft">Borradores</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full md:w-auto text-xs text-zinc-500 font-semibold text-right">
+                        Mostrando <span id="filtered-count" class="text-gamer-orange">0</span> de <span id="total-count" class="text-zinc-300">0</span> productos
+                    </div>
+                </div>
+
+                <!-- Grid de Productos -->
+                <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <!-- Renderizado dinámico desde Javascript -->
+                </div>
+                
+                <!-- Estado vacío -->
+                <div id="products-empty-state" class="hidden text-center py-12 bg-gamer-card border border-gamer-border rounded-2xl border-dashed">
+                    <i class="fa-solid fa-box-open text-4xl text-zinc-600 mb-3"></i>
+                    <h3 class="text-sm font-bold text-zinc-400">No se encontraron productos</h3>
+                    <p class="text-xs text-zinc-600 mt-1">Intenta ajustando los filtros o registra tu primer producto en el botón superior.</p>
+                </div>
+            </section>
+
+            <!-- TAB 3: CATEGORÍAS -->
+            <section id="tab-categories" class="space-y-6 hidden fade-in">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Formulario de nueva categoría -->
+                    <div class="bg-gamer-card border border-gamer-border rounded-2xl p-5 shadow-glass space-y-4 h-fit">
+                        <div>
+                            <h3 id="category-form-title" class="text-sm font-black tracking-wide text-zinc-200 uppercase">Nueva Categoría</h3>
+                            <p class="text-xs text-zinc-500">Agrupa tus productos para ordenarlos en el menú de la tienda.</p>
+                        </div>
+                        <form id="category-form" onsubmit="handleCategorySubmit(event)" class="space-y-4">
+                            <input type="hidden" id="category-edit-id">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Nombre de la Categoría</label>
+                                <input type="text" id="category-name" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="Ej. Tarjetas de Video">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Identificador Slug</label>
+                                <input type="text" id="category-slug" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="ej-tarjetas-de-video">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Icono FontAwesome</label>
+                                <input type="text" id="category-icon" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="fa-solid fa-microchip">
+                            </div>
+                            <div class="flex gap-2">
+                                <button type="button" id="btn-cancel-category-edit" onclick="resetCategoryForm()" class="hidden flex-1 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-gamer-border text-zinc-400 rounded-lg text-xs font-bold">
+                                    Cancelar
+                                </button>
+                                <button type="submit" class="flex-1 py-2.5 bg-gamer-orange hover:bg-gamer-orangeHover text-zinc-950 rounded-lg text-xs font-black uppercase tracking-wider shadow-neon-orange">
+                                    Guardar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Tabla de listado de categorías -->
+                    <div class="bg-gamer-card border border-gamer-border rounded-2xl p-5 shadow-glass lg:col-span-2 space-y-4">
+                        <h3 class="text-sm font-black tracking-wide text-zinc-200 uppercase">Categorías Registradas</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-gamer-border text-[10px] text-zinc-500 uppercase tracking-widest font-black">
+                                        <th class="pb-3">Icono</th>
+                                        <th class="pb-3">Nombre</th>
+                                        <th class="pb-3">Slug</th>
+                                        <th class="pb-3 text-right">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="categories-table-body" class="text-xs divide-y divide-gamer-border/40 text-zinc-300">
+                                    <!-- Dinámico por JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: CONFIGURACIÓN FIREBASE -->
+            <section id="tab-firebase-settings" class="space-y-6 hidden fade-in">
+                <div class="max-w-2xl bg-gamer-card border border-gamer-border rounded-2xl p-6 shadow-glass space-y-6">
+                    <div>
+                        <h2 class="text-lg font-black tracking-wide text-zinc-200">CONECTAR MI PROPIA BASE DE DATOS</h2>
+                        <p class="text-xs text-zinc-500 mt-1">Conecta este panel con tu proyecto de Firebase de forma directa. La configuración se guardará localmente en tu navegador de forma segura para tus futuras visitas.</p>
+                    </div>
+
+                    <form id="firebase-config-form" onsubmit="saveFirebaseConfig(event)" class="space-y-4">
+                        <div class="p-4 bg-gamer-orangeHover/5 border border-gamer-orangeHover/20 rounded-xl text-xs text-gamer-orangeHover leading-relaxed">
+                            <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+                            <strong>Guía Rápida:</strong> Crea un proyecto web en <a href="https://console.firebase.google.com/" target="_blank" class="underline font-bold text-gamer-orange">Firebase Console</a>, activa **Firestore Database** en modo de lectura/escritura pública para tu tienda y pega aquí los datos de inicialización.
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">API Key</label>
+                                <input type="text" id="fb-apiKey" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="AIzaSyA1...">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Auth Domain</label>
+                                <input type="text" id="fb-authDomain" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="tu-tienda.firebaseapp.com">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Project ID</label>
+                                <input type="text" id="fb-projectId" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="tu-tienda">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Storage Bucket</label>
+                                <input type="text" id="fb-storageBucket" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="tu-tienda.appspot.com">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Messaging Sender ID</label>
+                                <input type="text" id="fb-messagingSenderId" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="987654321012">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">App ID</label>
+                                <input type="text" id="fb-appId" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="1:987654321012:web:ab12cd34ef56">
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-gamer-border flex gap-3">
+                            <button type="button" onclick="clearFirebaseConfig()" class="px-4 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-gamer-border text-zinc-400 rounded-xl text-xs font-bold transition">
+                                Limpiar Datos
+                            </button>
+                            <button type="submit" class="flex-1 py-2.5 bg-gradient-to-r from-gamer-orange to-gamer-orangeHover text-zinc-950 font-black uppercase tracking-wider rounded-xl text-xs shadow-neon-orange hover:brightness-110 transition">
+                                Guardar y Sincronizar Base de Datos
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- TAB 5: CONFIGURACIÓN CLOUDINARY -->
+            <section id="tab-cloudinary-settings" class="space-y-6 hidden fade-in">
+                <div class="max-w-2xl bg-gamer-card border border-gamer-border rounded-2xl p-6 shadow-glass space-y-6">
+                    <div>
+                        <h2 class="text-lg font-black tracking-wide text-zinc-200">CONFIGURAR IMÁGENES (CLOUDINARY)</h2>
+                        <p class="text-xs text-zinc-500 mt-1">Conecta tu cuenta de Cloudinary para subir imágenes de productos directamente desde este panel. Gratis: 25GB de almacenamiento.</p>
+                    </div>
+
+                    <div id="cloudinary-status" class="p-4 bg-zinc-900 border border-gamer-border rounded-xl text-xs text-zinc-400">
+                        <i class="fa-solid fa-circle-question mr-1 text-zinc-500"></i>
+                        No configurado. Ingresa tus datos para activar la subida de imágenes.
+                    </div>
+
+                    <form id="cloudinary-config-form" onsubmit="saveCloudinaryConfig(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Cloud Name</label>
+                                <input type="text" id="cld-cloudName" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="tu-cloud-name">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Upload Preset</label>
+                                <input type="text" id="cld-uploadPreset" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="tecnogamers_preset">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Carpeta (opcional)</label>
+                                <input type="text" id="cld-folder" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="productos">
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-gamer-border flex gap-3">
+                            <button type="button" onclick="clearCloudinaryConfig()" class="px-4 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-gamer-border text-zinc-400 rounded-xl text-xs font-bold transition">
+                                Limpiar Datos
+                            </button>
+                            <button type="submit" class="flex-1 py-2.5 bg-gradient-to-r from-gamer-orange to-gamer-orangeHover text-zinc-950 font-black uppercase tracking-wider rounded-xl text-xs shadow-neon-orange hover:brightness-110 transition">
+                                Guardar Configuración
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- TAB 6: REDES SOCIALES -->
+            <section id="tab-social-settings" class="space-y-6 hidden fade-in">
+                <div class="max-w-2xl bg-gamer-card border border-gamer-border rounded-2xl p-6 shadow-glass space-y-6">
+                    <div>
+                        <h2 class="text-lg font-black tracking-wide text-zinc-200">REDES SOCIALES</h2>
+                        <p class="text-xs text-zinc-500 mt-1">Configura los enlaces de tus redes sociales. Se actualizarán automáticamente en la tienda.</p>
+                    </div>
+
+                    <div id="social-status" class="p-4 bg-zinc-900 border border-gamer-border rounded-xl text-xs text-zinc-400">
+                        <i class="fa-solid fa-circle-question mr-1 text-zinc-500"></i>
+                        No configurado. Guarda los enlaces para activarlos en la tienda.
+                    </div>
+
+                    <form id="social-config-form" onsubmit="saveSocialConfig(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">
+                                <i class="fa-brands fa-whatsapp mr-1 text-green-500"></i> WhatsApp (número con código de país)
+                            </label>
+                            <input type="text" id="social-whatsapp" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="51999999999">
+                            <p class="text-[10px] text-zinc-600 mt-1">Ejemplo: 51999999999 (código Peru + número)</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">
+                                <i class="fa-brands fa-facebook mr-1 text-blue-500"></i> Facebook URL
+                            </label>
+                            <input type="url" id="social-facebook" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="https://facebook.com/tu-pagina">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">
+                                <i class="fa-brands fa-instagram mr-1 text-pink-500"></i> Instagram URL
+                            </label>
+                            <input type="url" id="social-instagram" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="https://instagram.com/tu-cuenta">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">
+                                <i class="fa-brands fa-tiktok mr-1 text-zinc-200"></i> TikTok URL
+                            </label>
+                            <input type="url" id="social-tiktok" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="https://tiktok.com/@tu-cuenta">
+                        </div>
+
+                        <div class="pt-4 border-t border-gamer-border flex gap-3">
+                            <button type="button" onclick="clearSocialConfig()" class="px-4 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-gamer-border text-zinc-400 rounded-xl text-xs font-bold transition">
+                                Limpiar
+                            </button>
+                            <button type="submit" class="flex-1 py-2.5 bg-gradient-to-r from-gamer-orange to-gamer-orangeHover text-zinc-950 font-black uppercase tracking-wider rounded-xl text-xs shadow-neon-orange hover:brightness-110 transition">
+                                Guardar Redes Sociales
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer: Créditos del Desarrollador -->
+        <div class="border-t border-gamer-border py-4 px-6 text-right bg-gamer-card/50">
+            <p class="text-[10px] text-zinc-500">
+                Desarrollado por: <a href="https://adolfogelabert.github.io/" target="_blank" class="text-gamer-orange hover:text-gamer-orangeHover transition-colors font-bold">Adolfo J. Gelabert Semeco</a>
+            </p>
+            <p class="text-[9px] text-zinc-600 mt-0.5">Digital Visual Consultant & Designer</p>
+        </div>
+    </main>
+
+    <!-- MODAL: AGREGAR / EDITAR PRODUCTO -->
+    <div id="product-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden fade-in">
+        <div class="bg-gamer-card border border-gamer-border rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-neon-orange space-y-6">
+            <div class="flex items-center justify-between border-b border-gamer-border pb-4">
+                <h3 id="product-modal-title" class="text-base font-black tracking-wider text-zinc-200 uppercase">Agregar Producto</h3>
+                <button onclick="closeProductModal()" class="text-zinc-500 hover:text-zinc-300">
+                    <i class="fa-solid fa-times text-lg"></i>
+                </button>
+            </div>
+
+            <form id="product-form" class="space-y-4">
+                <input type="hidden" id="product-edit-id">
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Nombre del Producto</label>
+                        <input type="text" id="prod-name" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="Teclado Mecánico RGB">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Código SKU</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="prod-sku" required class="flex-1 bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input font-mono" placeholder="TG-KB-01">
+                            <button type="button" onclick="generateSKU()" class="px-3 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-gamer-border text-zinc-400 hover:text-gamer-orange rounded-lg text-xs font-bold transition whitespace-nowrap" title="Generar SKU automáticamente">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </button>
+                        </div>
+                        <p class="text-[10px] text-zinc-600 mt-1">Haz click en el icono para generar uno automáticamente</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Categoría</label>
+                        <select id="prod-category" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 focus:outline-none focus:border-gamer-orange">
+                            <!-- Dinámico -->
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Precio (S/.)</label>
+                            <input type="number" step="0.01" id="prod-price" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="189.90">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Stock</label>
+                            <input type="number" id="prod-stock" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="15">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Imagen del Producto</label>
+                    
+                    <!-- Zona de subida de archivo -->
+                    <div id="image-upload-zone" class="relative border-2 border-dashed border-gamer-border rounded-xl p-6 text-center hover:border-gamer-orange/50 transition-colors cursor-pointer mb-3" onclick="document.getElementById('prod-image-file').click()" ondragover="event.preventDefault(); this.classList.add('border-gamer-orange')" ondragleave="this.classList.remove('border-gamer-orange')" ondrop="event.preventDefault(); this.classList.remove('border-gamer-orange'); if(event.dataTransfer.files.length){document.getElementById('prod-image-file').files=event.dataTransfer.files; handleImageFileSelect({target:{files:event.dataTransfer.files}})}">
+                        <input type="file" id="prod-image-file" accept="image/*" class="hidden" onchange="handleImageFileSelect(event)">
+                        <div id="upload-placeholder">
+                            <i class="fa-solid fa-cloud-arrow-up text-2xl text-zinc-600 mb-2"></i>
+                            <p class="text-xs text-zinc-400">Arrastra una imagen o haz click para seleccionar</p>
+                            <p class="text-[10px] text-zinc-600 mt-1">JPG, PNG, WebP — Máx. 5MB</p>
+                        </div>
+                        <div id="upload-preview" class="hidden">
+                            <img id="upload-preview-img" class="max-h-32 mx-auto rounded-lg border border-gamer-border object-contain">
+                            <p id="upload-file-name" class="text-[10px] text-zinc-500 mt-2 truncate max-w-xs mx-auto"></p>
+                            <button type="button" onclick="event.stopPropagation(); clearImageUpload()" class="mt-2 text-[10px] text-gamer-danger hover:text-red-400 font-bold">Eliminar imagen</button>
+                        </div>
+                        <div id="upload-progress" class="hidden">
+                            <div class="w-full bg-zinc-800 rounded-full h-1.5 mb-2">
+                                <div id="upload-progress-bar" class="bg-gamer-orange h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                            <p class="text-[10px] text-zinc-500">Subiendo...</p>
+                        </div>
+                    </div>
+
+                    <!-- Separador o alternativa -->
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="flex-1 border-t border-gamer-border"></div>
+                        <span class="text-[10px] text-zinc-600 uppercase font-bold">o pega una URL</span>
+                        <div class="flex-1 border-t border-gamer-border"></div>
+                    </div>
+
+                    <input type="url" id="prod-image" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="https://placehold.co/600x400/18181b/FF4500?text=Producto">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Descripción Corta</label>
+                    <input type="text" id="prod-short-desc" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="Teclado mecánico switches Outemu Blue, RGB personalizable.">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Características / Descripción Detallada</label>
+                    <textarea id="prod-long-desc" rows="3" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 neon-input" placeholder="Switches: Blue mecánicos intercambiables. Retroiluminación: 18 modos RGB cromáticos. Conexión USB..."></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="flex items-center gap-2 py-2">
+                        <input type="checkbox" id="prod-featured" class="w-4 h-4 rounded text-gamer-orange bg-zinc-950 border-gamer-border focus:ring-gamer-orange">
+                        <label for="prod-featured" class="text-xs font-bold text-zinc-300">Producto Destacado (Banner Principal)</label>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Estado</label>
+                        <select id="prod-status" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2.5 text-xs text-zinc-200 focus:outline-none focus:border-gamer-orange">
+                            <option value="draft">Borrador</option>
+                            <option value="published">Publicado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="border-t border-gamer-border pt-4 flex justify-end gap-3">
+                    <button type="button" onclick="closeProductModal()" class="px-4 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-gamer-border text-zinc-400 rounded-xl text-xs font-bold transition">
+                        Cancelar
+                    </button>
+                    <button type="button" onclick="submitProduct('draft')" class="px-5 py-2.5 bg-zinc-800 hover:bg-zinc-700 border border-gamer-border text-zinc-300 rounded-xl text-xs font-bold uppercase tracking-wider transition">
+                        <i class="fa-solid fa-save mr-1"></i> Guardar Borrador
+                    </button>
+                    <button type="button" onclick="submitProduct('published')" class="px-6 py-2.5 bg-gradient-to-r from-gamer-orange to-gamer-orangeHover text-zinc-950 font-black uppercase tracking-wider rounded-xl text-xs shadow-neon-orange hover:brightness-110 transition">
+                        <i class="fa-solid fa-rocket mr-1"></i> Publicar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: CONFIRMACIÓN DE BORRADO -->
+    <div id="delete-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden fade-in">
+        <div class="bg-gamer-card border border-gamer-border rounded-2xl w-full max-w-sm p-6 shadow-neon-danger space-y-4">
+            <div class="text-center">
+                <div class="inline-flex p-3 rounded-full bg-gamer-danger/10 text-gamer-danger border border-gamer-danger/20 mb-3">
+                    <i class="fa-solid fa-trash-can text-2xl"></i>
+                </div>
+                <h3 class="text-base font-black tracking-wider text-zinc-100 uppercase">¿Confirmar Eliminación?</h3>
+                <p class="text-xs text-zinc-400 mt-2 leading-relaxed">Esta acción es irreversible. Se eliminará del inventario permanentemente.</p>
+            </div>
+            <div class="flex gap-2 pt-2">
+                <button onclick="closeDeleteModal()" class="flex-1 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-gamer-border text-zinc-400 rounded-xl text-xs font-bold transition">
+                    Cancelar
+                </button>
+                <button id="btn-confirm-delete" class="flex-1 py-2.5 bg-gamer-danger hover:bg-red-600 text-zinc-100 font-bold uppercase tracking-wider rounded-xl text-xs shadow-lg transition">
+                    Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT DE INICIALIZACIÓN Y CONFIGURACIÓN FIREBASE -->
+    <script type="module">
+        import { initializeApp, getApp, deleteApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, deleteDoc, onSnapshot, collection, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // APP STATE (Memoria de ejecución)
+        const state = {
+            mode: 'demo', // 'demo' o 'firebase'
+            products: [],
+            categories: [
+                { id: 'cat-1', name: 'Teclados', slug: 'teclados', icon: 'fa-solid fa-keyboard' },
+                { id: 'cat-2', name: 'Mouses', slug: 'mouses', icon: 'fa-solid fa-mouse' },
+                { id: 'cat-3', name: 'Audífonos', slug: 'audifonos', icon: 'fa-solid fa-headphones' },
+                { id: 'cat-4', name: 'Componentes', slug: 'componentes', icon: 'fa-solid fa-microchip' }
+            ],
+            firebaseInitialized: false,
+            firebaseApp: null,
+            firebaseDb: null,
+            firebaseAuth: null,
+            currentTab: 'dashboard',
+            deleteTargetId: null,
+            deleteTargetType: null, // 'product' o 'category'
+            searchQuery: '',
+            activeFilters: {
+                category: 'all',
+                stock: 'all'
+            },
+            unsubscribes: []
+        };
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+
+        // Productos Demo Iniciales
+        const initialDemoProducts = [
+            {
+                id: 'prod-demo-1',
+                sku: 'TG-KB-APEX',
+                name: 'Teclado Apex Pro Mini Wireless',
+                category: 'teclados',
+                price: 849.90,
+                stock: 12,
+                image: 'https://placehold.co/600x400/18181b/06b6d4?text=Apex+Pro+Mini',
+                shortDesc: 'Teclado wireless con switches mecánicos OmniPoint 2.0 analógicos.',
+                longDesc: 'El teclado para gaming más rápido del mundo. Los interruptores OmniPoint 2.0 ofrecen un tiempo de respuesta ultra veloz y actuación personalizable.',
+                featured: true,
+                status: 'published'
+            },
+            {
+                id: 'prod-demo-2',
+                sku: 'TG-MS-PROX',
+                name: 'Mouse G Pro X Superlight 2',
+                category: 'mouses',
+                price: 599.90,
+                stock: 3,
+                image: 'https://placehold.co/600x400/18181b/a855f7?text=G+Pro+X+Superlight',
+                shortDesc: 'Mouse ultraligero inalámbrico para esports con sensor HERO 2.',
+                longDesc: 'Diseñado en colaboración con profesionales del gaming. Peso ultra reducido de menos de 60 gramos y sensor de máxima precisión con 32,000 DPI.',
+                featured: true,
+                status: 'published'
+            },
+            {
+                id: 'prod-demo-3',
+                sku: 'TG-AU-BLACK',
+                name: 'Audífonos Razer BlackShark V2 Pro',
+                category: 'audifonos',
+                price: 489.90,
+                stock: 0,
+                image: 'https://placehold.co/600x400/18181b/d946ef?text=BlackShark+V2+Pro',
+                shortDesc: 'Audífonos esports inalámbricos con sonido envolvente espacial.',
+                longDesc: 'Aislamiento pasivo de ruido optimizado. Micrófono supercardioide de alta definición para una comunicación nítida.',
+                featured: false,
+                status: 'published'
+            }
+        ];
+
+        // SISTEMA DE NOTIFICACIONES TOAST (MANDATORIO: NO USAR ALERTS)
+        window.showToast = function(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let bgClass = 'bg-gamer-card border-gamer-success text-gamer-success shadow-neon-success';
+            let iconClass = 'fa-circle-check';
+            if (type === 'danger') {
+                bgClass = 'bg-gamer-card border-gamer-danger text-gamer-danger shadow-neon-danger';
+                iconClass = 'fa-triangle-exclamation';
+            } else if (type === 'warn') {
+                bgClass = 'bg-gamer-card border-gamer-warn text-gamer-warn shadow-neon-orange';
+                iconClass = 'fa-circle-exclamation';
+            }
+
+            toast.className = `p-4 rounded-xl border flex items-center justify-between shadow-lg fade-in ${bgClass}`;
+            toast.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid ${iconClass} text-lg"></i>
+                    <p class="text-xs font-bold tracking-wide">${message}</p>
+                </div>
+                <button class="text-zinc-500 hover:text-zinc-300 ml-4 pointer-events-auto">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            `;
+            
+            toast.querySelector('button').addEventListener('click', () => toast.remove());
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.classList.add('opacity-0');
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 4500);
+        };
+
+        // CONEXIÓN Y AUTENTICACIÓN FIREBASE
+        window.switchLoginMode = function(mode) {
+            state.mode = mode;
+            const btnDemo = document.getElementById('btn-mode-demo');
+            const btnFb = document.getElementById('btn-mode-firebase');
+            const infoBox = document.getElementById('demo-info-box');
+            const credentialsInputs = document.getElementById('firebase-credentials-inputs');
+
+            if (mode === 'demo') {
+                btnDemo.className = "flex-1 text-center py-2.5 text-xs font-semibold rounded-lg bg-gamer-orange text-zinc-950 transition-all duration-300";
+                btnFb.className = "flex-1 text-center py-2.5 text-xs font-semibold rounded-lg text-zinc-400 hover:text-zinc-200 transition-all duration-300";
+                infoBox.classList.remove('hidden');
+                credentialsInputs.classList.add('hidden');
+            } else {
+                btnFb.className = "flex-1 text-center py-2.5 text-xs font-semibold rounded-lg bg-gamer-orangeHover text-zinc-100 transition-all duration-300 shadow-neon-orange";
+                btnDemo.className = "flex-1 text-center py-2.5 text-xs font-semibold rounded-lg text-zinc-400 hover:text-zinc-200 transition-all duration-300";
+                infoBox.classList.add('hidden');
+                credentialsInputs.classList.remove('hidden');
+
+                const savedPass = localStorage.getItem('tg_admin_pass');
+                if (savedPass) {
+                    document.getElementById('login-pass').value = savedPass;
+                    document.getElementById('login-remember').checked = true;
+                }
+            }
+        };
+
+        window.handleLogin = async function(event) {
+            event.preventDefault();
+            
+            if (state.mode === 'demo') {
+                // Cargar datos locales de prueba
+                const savedProducts = localStorage.getItem('tg_demo_products');
+                const savedCategories = localStorage.getItem('tg_demo_categories');
+                
+                state.products = savedProducts ? JSON.parse(savedProducts) : [...initialDemoProducts];
+                if (savedCategories) state.categories = JSON.parse(savedCategories);
+
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('main-sidebar').classList.remove('hidden');
+                document.getElementById('main-content').classList.remove('hidden');
+                
+                document.getElementById('connection-badge').className = "px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20";
+                document.getElementById('connection-badge').textContent = "DEMO";
+                document.getElementById('admin-user-email').textContent = "Administrador Demo";
+                document.getElementById('sync-text').textContent = "Simulado";
+                document.getElementById('sync-status').className = "w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse";
+                
+                showToast("Acceso concedido en Modo Demo", 'success');
+                initAppUI();
+            } else {
+                // Validar contraseña Firebase
+                const pass = document.getElementById('login-pass').value;
+                if (pass !== 'admin123') {
+                    showToast("Contraseña incorrecta. Contraseña por defecto: admin123", 'danger');
+                    return;
+                }
+
+                // Guardar contraseña si "Recordar" está marcado
+                if (document.getElementById('login-remember').checked) {
+                    localStorage.setItem('tg_admin_pass', pass);
+                } else {
+                    localStorage.removeItem('tg_admin_pass');
+                }
+
+                // Cargar e inicializar Firebase con los datos guardados
+                const hasConfig = loadSavedFbConfig();
+                if (!hasConfig) {
+                    showToast("No tienes credenciales de Firebase configuradas. Entra en Modo Demo primero para guardarlas.", 'warn');
+                    return;
+                }
+
+                try {
+                    // Inicializar la conexión Firebase
+                    const config = JSON.parse(localStorage.getItem('tg_fb_config'));
+                    
+                    // Evitar error duplicate-app: eliminar app anterior si existe
+                    try { 
+                        const existingApp = getApp();
+                        if (existingApp) deleteApp(existingApp); 
+                    } catch(e) { /* no existía */ }
+                    
+                    state.firebaseApp = initializeApp(config);
+                    state.firebaseDb = getFirestore(state.firebaseApp);
+                    state.firebaseAuth = getAuth(state.firebaseApp);
+
+                    // Autenticarse de manera anónima antes de hacer consultas
+                    await signInAnonymously(state.firebaseAuth);
+
+                    document.getElementById('login-screen').classList.add('hidden');
+                    document.getElementById('main-sidebar').classList.remove('hidden');
+                    document.getElementById('main-content').classList.remove('hidden');
+                    
+                    document.getElementById('connection-badge').className = "px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-gamer-success/10 text-gamer-success border border-gamer-success/20 shadow-neon-success";
+                    document.getElementById('connection-badge').textContent = "LIVE";
+                    document.getElementById('admin-user-email').textContent = "Administrador Real";
+                    document.getElementById('sync-text').textContent = "Sincronizado";
+                    document.getElementById('sync-status').className = "w-2.5 h-2.5 rounded-full bg-gamer-success animate-pulse";
+
+                    showToast("Conectado con éxito a Firebase", 'success');
+                    initFirebaseSync();
+                } catch (error) {
+                    console.error(error);
+                    showToast("Fallo al conectar Firebase: " + error.message, 'danger');
+                }
+            }
+        };
+
+        window.logout = function() {
+            // Cancelar suscripciones activas
+            state.unsubscribes.forEach(unsub => unsub());
+            state.unsubscribes = [];
+            
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('main-sidebar').classList.add('hidden');
+            document.getElementById('main-content').classList.add('hidden');
+            showToast("Sesión cerrada", 'warn');
+        };
+
+        // GESTIÓN DE CONFIGURACIÓN FIREBASE EN LOCALSTORAGE
+        function loadSavedFbConfig() {
+            const config = localStorage.getItem('tg_fb_config');
+            if (!config) return false;
+            
+            try {
+                const parsed = JSON.parse(config);
+                document.getElementById('fb-apiKey').value = parsed.apiKey || '';
+                document.getElementById('fb-authDomain').value = parsed.authDomain || '';
+                document.getElementById('fb-projectId').value = parsed.projectId || '';
+                document.getElementById('fb-storageBucket').value = parsed.storageBucket || '';
+                document.getElementById('fb-messagingSenderId').value = parsed.messagingSenderId || '';
+                document.getElementById('fb-appId').value = parsed.appId || '';
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        window.saveFirebaseConfig = function(event) {
+            event.preventDefault();
+            const config = {
+                apiKey: document.getElementById('fb-apiKey').value.trim(),
+                authDomain: document.getElementById('fb-authDomain').value.trim(),
+                projectId: document.getElementById('fb-projectId').value.trim(),
+                storageBucket: document.getElementById('fb-storageBucket').value.trim(),
+                messagingSenderId: document.getElementById('fb-messagingSenderId').value.trim(),
+                appId: document.getElementById('fb-appId').value.trim()
+            };
+
+            localStorage.setItem('tg_fb_config', JSON.stringify(config));
+            showToast("Configuración guardada. Reconectando...", 'success');
+            
+            // Cerrar sesión actual y volver al login en modo Firebase
+            setTimeout(() => {
+                state.unsubscribes.forEach(unsub => unsub());
+                state.unsubscribes = [];
+                state.firebaseApp = null;
+                state.firebaseDb = null;
+                state.firebaseAuth = null;
+                
+                document.getElementById('login-screen').classList.remove('hidden');
+                document.getElementById('main-sidebar').classList.add('hidden');
+                document.getElementById('main-content').classList.add('hidden');
+                
+                // Activar modo Firebase en el login
+                switchLoginMode('firebase');
+            }, 1000);
+        };
+
+        window.clearFirebaseConfig = function() {
+            localStorage.removeItem('tg_fb_config');
+            document.getElementById('firebase-config-form').reset();
+            showToast("Datos de Firebase eliminados", 'warn');
+        };
+
+        // ===================== CLOUDINARY IMAGE UPLOAD =====================
+        function loadSavedCldConfig() {
+            const config = localStorage.getItem('tg_cld_config');
+            if (!config) return false;
+            try {
+                const parsed = JSON.parse(config);
+                document.getElementById('cld-cloudName').value = parsed.cloudName || '';
+                document.getElementById('cld-uploadPreset').value = parsed.uploadPreset || '';
+                document.getElementById('cld-folder').value = parsed.folder || '';
+                updateCloudinaryStatus(true);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function updateCloudinaryStatus(connected) {
+            const el = document.getElementById('cloudinary-status');
+            if (connected) {
+                const config = JSON.parse(localStorage.getItem('tg_cld_config') || '{}');
+                el.className = 'p-4 bg-gamer-success/10 border border-gamer-success/20 rounded-xl text-xs text-gamer-success';
+                el.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> <strong>Conectado</strong> — Cloud: ' + (config.cloudName || 'N/A') + ' | Preset: ' + (config.uploadPreset || 'N/A');
+            } else {
+                el.className = 'p-4 bg-zinc-900 border border-gamer-border rounded-xl text-xs text-zinc-400';
+                el.innerHTML = '<i class="fa-solid fa-circle-question mr-1 text-zinc-500"></i> No configurado. Ingresa tus datos para activar la subida de imágenes.';
+            }
+        }
+
+        window.saveCloudinaryConfig = function(event) {
+            event.preventDefault();
+            const config = {
+                cloudName: document.getElementById('cld-cloudName').value.trim(),
+                uploadPreset: document.getElementById('cld-uploadPreset').value.trim(),
+                folder: document.getElementById('cld-folder').value.trim()
+            };
+            localStorage.setItem('tg_cld_config', JSON.stringify(config));
+            updateCloudinaryStatus(true);
+            showToast("Configuración de Cloudinary guardada", 'success');
+        };
+
+        window.clearCloudinaryConfig = function() {
+            localStorage.removeItem('tg_cld_config');
+            document.getElementById('cloudinary-config-form').reset();
+            updateCloudinaryStatus(false);
+            showToast("Datos de Cloudinary eliminados", 'warn');
+        };
+
+        window.handleImageFileSelect = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) {
+                showToast("La imagen supera los 5MB", 'danger');
+                event.target.value = '';
+                return;
+            }
+            if (!file.type.startsWith('image/')) {
+                showToast("Solo se permiten archivos de imagen", 'danger');
+                event.target.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('upload-preview-img').src = e.target.result;
+                document.getElementById('upload-file-name').textContent = file.name;
+                document.getElementById('upload-placeholder').classList.add('hidden');
+                document.getElementById('upload-preview').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.clearImageUpload = function() {
+            document.getElementById('prod-image-file').value = '';
+            document.getElementById('upload-placeholder').classList.remove('hidden');
+            document.getElementById('upload-preview').classList.add('hidden');
+            document.getElementById('upload-progress').classList.add('hidden');
+            document.getElementById('prod-image').value = '';
+        };
+
+        async function uploadImageToCloudinary(file) {
+            const config = JSON.parse(localStorage.getItem('tg_cld_config') || '{}');
+            if (!config.cloudName || !config.uploadPreset) {
+                showToast("Cloudinary no está configurado. Ve a Configurar Imágenes.", 'danger');
+                return null;
+            }
+
+            const placeholder = document.getElementById('upload-placeholder');
+            const preview = document.getElementById('upload-preview');
+            const progress = document.getElementById('upload-progress');
+            const progressBar = document.getElementById('upload-progress-bar');
+
+            placeholder.classList.add('hidden');
+            preview.classList.add('hidden');
+            progress.classList.remove('hidden');
+            progressBar.style.width = '0%';
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', config.uploadPreset);
+            if (config.folder) {
+                formData.append('folder', config.folder);
+            }
+
+            try {
+                progressBar.style.width = '30%';
+                const response = await fetch(`https://api.cloudinary.com/v1_1/${config.cloudName}/image/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                progressBar.style.width = '80%';
+
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.error?.message || 'Error al subir imagen');
+                }
+
+                const data = await response.json();
+                progressBar.style.width = '100%';
+
+                setTimeout(() => {
+                    progress.classList.add('hidden');
+                    document.getElementById('upload-preview-img').src = data.secure_url;
+                    document.getElementById('upload-file-name').textContent = file.name;
+                    preview.classList.remove('hidden');
+                }, 300);
+
+                return data.secure_url;
+            } catch (error) {
+                console.error(error);
+                progress.classList.add('hidden');
+                placeholder.classList.remove('hidden');
+                showToast("Error al subir: " + error.message, 'danger');
+                return null;
+            }
+        }
+
+        // ===================== REDES SOCIALES =====================
+        function loadSavedSocialConfig() {
+            if (state.mode !== 'firebase' || !state.firebaseDb) return;
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+            const settingsRef = doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'settings', 'social');
+            getDoc(settingsRef).then((snap) => {
+                if (snap.exists()) {
+                    const data = snap.data();
+                    document.getElementById('social-whatsapp').value = data.whatsapp || '';
+                    document.getElementById('social-facebook').value = data.facebook || '';
+                    document.getElementById('social-instagram').value = data.instagram || '';
+                    document.getElementById('social-tiktok').value = data.tiktok || '';
+                    updateSocialStatus(true);
+                }
+            }).catch(() => {});
+        }
+
+        function updateSocialStatus(connected) {
+            const el = document.getElementById('social-status');
+            if (connected) {
+                el.className = 'p-4 bg-gamer-success/10 border border-gamer-success/20 rounded-xl text-xs text-gamer-success';
+                el.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> <strong>Configurado</strong> — Los enlaces se sincronizan con la tienda en tiempo real.';
+            } else {
+                el.className = 'p-4 bg-zinc-900 border border-gamer-border rounded-xl text-xs text-zinc-400';
+                el.innerHTML = '<i class="fa-solid fa-circle-question mr-1 text-zinc-500"></i> No configurado. Guarda los enlaces para activarlos en la tienda.';
+            }
+        }
+
+        window.saveSocialConfig = async function(event) {
+            event.preventDefault();
+            if (state.mode !== 'firebase' || !state.firebaseDb) {
+                showToast("Conéctate a Firebase primero para guardar redes sociales", 'warn');
+                return;
+            }
+            const data = {
+                whatsapp: document.getElementById('social-whatsapp').value.trim(),
+                facebook: document.getElementById('social-facebook').value.trim(),
+                instagram: document.getElementById('social-instagram').value.trim(),
+                tiktok: document.getElementById('social-tiktok').value.trim()
+            };
+            try {
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+                await setDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'settings', 'social'), data);
+                updateSocialStatus(true);
+                showToast("Redes sociales guardadas en Firebase", 'success');
+            } catch (error) {
+                showToast("Error al guardar: " + error.message, 'danger');
+            }
+        };
+
+        window.clearSocialConfig = function() {
+            document.getElementById('social-config-form').reset();
+            updateSocialStatus(false);
+        };
+
+        // CONEXIÓN EN TIEMPO REAL CON FIREBASE FIRESTORE (RULE 1 STRICT PATHS)
+        function initFirebaseSync() {
+            // Ruta estricta de regla 1: /artifacts/{appId}/public/data/{collectionName}
+            const productsPath = `/artifacts/${appId}/public/data/productos`;
+            const categoriesPath = `/artifacts/${appId}/public/data/categorias`;
+
+            const productsQuery = query(collection(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'productos'));
+            const categoriesQuery = query(collection(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'categorias'));
+
+            // Escuchar cambios de Productos en tiempo real
+            const unsubProducts = onSnapshot(productsQuery, (snapshot) => {
+                const items = [];
+                snapshot.forEach((doc) => {
+                    items.push({ id: doc.id, ...doc.data() });
+                });
+                state.products = items;
+                renderProducts();
+                renderDashboard();
+                updateCategoryDropdowns();
+            }, (error) => {
+                console.error(error);
+                showToast("Error al sincronizar productos de Firestore", 'danger');
+            });
+
+            // Escuchar cambios de Categorías en tiempo real
+            const unsubCategories = onSnapshot(categoriesQuery, (snapshot) => {
+                const items = [];
+                snapshot.forEach((doc) => {
+                    items.push({ id: doc.id, ...doc.data() });
+                });
+                state.categories = items.length > 0 ? items : state.categories;
+                renderCategories();
+                updateCategoryDropdowns();
+            }, (error) => {
+                console.error(error);
+                showToast("Error al sincronizar categorías de Firestore", 'danger');
+            });
+
+            state.unsubscribes.push(unsubProducts, unsubCategories);
+            initAppUI();
+        }
+
+        // BINDING DE LA INTERFAZ Y VISTAS (TABS)
+        function initAppUI() {
+            renderDashboard();
+            renderProducts();
+            renderCategories();
+            updateCategoryDropdowns();
+            loadSavedFbConfig();
+            loadSavedCldConfig();
+            loadSavedSocialConfig();
+        }
+
+        window.switchTab = function(tabId) {
+            state.currentTab = tabId;
+            
+            // Ocultar todas las secciones
+            document.getElementById('tab-dashboard').classList.add('hidden');
+            document.getElementById('tab-products').classList.add('hidden');
+            document.getElementById('tab-categories').classList.add('hidden');
+            document.getElementById('tab-firebase-settings').classList.add('hidden');
+            document.getElementById('tab-cloudinary-settings').classList.add('hidden');
+            document.getElementById('tab-social-settings').classList.add('hidden');
+            
+            // Remover estilos activos de todos los botones de navegación
+            const navs = ['dashboard', 'products', 'categories', 'firebase-settings', 'cloudinary-settings', 'social-settings'];
+            navs.forEach(nav => {
+                const btn = document.getElementById(`nav-${nav}`);
+                btn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 border-l-2 border-transparent";
+            });
+
+            // Mostrar pestaña seleccionada y marcar botón de navegación
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            activeBtn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 bg-gamer-orange/10 text-gamer-orange border-l-2 border-gamer-orange";
+
+            // Cambiar título del header
+            const titles = {
+                dashboard: 'Dashboard General',
+                products: 'Catálogo de Productos',
+                categories: 'Gestionar Categorías',
+                'firebase-settings': 'Configuración de Firebase',
+                'cloudinary-settings': 'Configurar Imágenes',
+                'social-settings': 'Redes Sociales'
+            };
+            document.getElementById('page-title').textContent = titles[tabId];
+
+            // Cerrar sidebar de móvil al navegar
+            const sidebar = document.getElementById('main-sidebar');
+            if (window.innerWidth < 768) {
+                sidebar.classList.add('hidden');
+            }
+        };
+
+        window.toggleMobileSidebar = function() {
+            const sidebar = document.getElementById('main-sidebar');
+            sidebar.classList.toggle('hidden');
+        };
+
+        // CONTROL DE PRODUCTOS (CRUD)
+        window.generateSKU = function() {
+            const name = document.getElementById('prod-name').value.trim();
+            const category = document.getElementById('prod-category').value;
+            if (!name) {
+                showToast("Escribe el nombre del producto primero", 'warn');
+                return;
+            }
+            const catMap = { teclados: 'KB', mouses: 'MS', audifonos: 'AU', componentes: 'CP' };
+            const catCode = catMap[category] || 'PR';
+            const words = name.split(/\s+/).filter(w => w.length > 2);
+            const suffix = words.slice(0, 2).map(w => w.substring(0, 3).toUpperCase()).join('');
+            const num = String(Math.floor(Math.random() * 99) + 1).padStart(2, '0');
+            const sku = `TG-${catCode}-${suffix}-${num}`;
+            document.getElementById('prod-sku').value = sku;
+            showToast("SKU generado: " + sku, 'success');
+        };
+
+        window.submitProduct = function(status) {
+            document.getElementById('prod-status').value = status;
+            handleProductSubmit();
+        };
+
+        window.openAddProductModal = function() {
+            document.getElementById('product-modal-title').textContent = "Agregar Producto";
+            document.getElementById('product-form').reset();
+            document.getElementById('product-edit-id').value = '';
+            document.getElementById('prod-status').value = 'draft';
+            clearImageUpload();
+            document.getElementById('product-modal').classList.remove('hidden');
+        };
+
+        window.closeProductModal = function() {
+            document.getElementById('product-modal').classList.add('hidden');
+        };
+
+        window.handleProductSubmit = async function() {
+            const id = document.getElementById('product-edit-id').value;
+            const fileInput = document.getElementById('prod-image-file');
+            const hasFile = fileInput.files && fileInput.files.length > 0;
+            const urlValue = document.getElementById('prod-image').value.trim();
+
+            if (!hasFile && !urlValue) {
+                showToast("Debes subir una imagen o pegar una URL", 'warn');
+                return;
+            }
+
+            let imageUrl = urlValue;
+
+            if (hasFile) {
+                imageUrl = await uploadImageToCloudinary(fileInput.files[0]);
+                if (!imageUrl) return;
+            }
+
+            const statusVal = document.getElementById('prod-status').value;
+
+            const productData = {
+                name: document.getElementById('prod-name').value,
+                sku: document.getElementById('prod-sku').value,
+                category: document.getElementById('prod-category').value,
+                price: parseFloat(document.getElementById('prod-price').value),
+                stock: parseInt(document.getElementById('prod-stock').value),
+                image: imageUrl,
+                shortDesc: document.getElementById('prod-short-desc').value,
+                longDesc: document.getElementById('prod-long-desc').value,
+                featured: document.getElementById('prod-featured').checked,
+                status: statusVal
+            };
+
+            const isPublished = statusVal === 'published';
+
+            if (state.mode === 'demo') {
+                if (id) {
+                    const index = state.products.findIndex(p => p.id === id);
+                    if (index !== -1) {
+                        state.products[index] = { id, ...productData };
+                        showToast(isPublished ? "Producto publicado (Demo)" : "Borrador guardado (Demo)", 'success');
+                    }
+                } else {
+                    const newId = 'prod-demo-' + Date.now();
+                    state.products.push({ id: newId, ...productData });
+                    showToast(isPublished ? "Producto publicado (Demo)" : "Borrador guardado (Demo)", 'success');
+                }
+                localStorage.setItem('tg_demo_products', JSON.stringify(state.products));
+                renderProducts();
+                renderDashboard();
+                clearImageUpload();
+                closeProductModal();
+            } else {
+                try {
+                    const docId = id ? id : 'prod-' + crypto.randomUUID();
+                    await setDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'productos', docId), productData);
+                    showToast(id ? "Producto actualizado" : (isPublished ? "Producto publicado en Firebase" : "Borrador guardado en Firebase"), 'success');
+                    clearImageUpload();
+                    closeProductModal();
+                } catch (error) {
+                    console.error(error);
+                    showToast("Error de Firestore: " + error.message, 'danger');
+                }
+            }
+        };
+
+        window.openEditProduct = function(productId) {
+            const product = state.products.find(p => p.id === productId);
+            if (!product) return;
+
+            document.getElementById('product-modal-title').textContent = "Editar Producto";
+            document.getElementById('product-edit-id').value = product.id;
+            document.getElementById('prod-name').value = product.name;
+            document.getElementById('prod-sku').value = product.sku;
+            document.getElementById('prod-category').value = product.category;
+            document.getElementById('prod-price').value = product.price;
+            document.getElementById('prod-stock').value = product.stock;
+            document.getElementById('prod-image').value = product.image || '';
+            document.getElementById('prod-short-desc').value = product.shortDesc;
+            document.getElementById('prod-long-desc').value = product.longDesc || '';
+            document.getElementById('prod-featured').checked = !!product.featured;
+            document.getElementById('prod-status').value = product.status || 'published';
+
+            clearImageUpload();
+            if (product.image) {
+                document.getElementById('prod-image').value = product.image;
+                document.getElementById('upload-preview-img').src = product.image;
+                document.getElementById('upload-file-name').textContent = 'Imagen actual del producto';
+                document.getElementById('upload-placeholder').classList.add('hidden');
+                document.getElementById('upload-preview').classList.remove('hidden');
+            }
+
+            document.getElementById('product-modal').classList.remove('hidden');
+        };
+
+        window.openDeleteConfirm = function(id, type) {
+            state.deleteTargetId = id;
+            state.deleteTargetType = type;
+            document.getElementById('delete-modal').classList.remove('hidden');
+        };
+
+        window.closeDeleteModal = function() {
+            document.getElementById('delete-modal').classList.add('hidden');
+            state.deleteTargetId = null;
+            state.deleteTargetType = null;
+        };
+
+        document.getElementById('btn-confirm-delete').addEventListener('click', async () => {
+            const { deleteTargetId, deleteTargetType, mode } = state;
+            if (!deleteTargetId) return;
+
+            if (deleteTargetType === 'product') {
+                if (mode === 'demo') {
+                    state.products = state.products.filter(p => p.id !== deleteTargetId);
+                    localStorage.setItem('tg_demo_products', JSON.stringify(state.products));
+                    renderProducts();
+                    renderDashboard();
+                    showToast("Producto eliminado del Modo Demo", 'warn');
+                } else {
+                    try {
+                        await deleteDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'productos', deleteTargetId));
+                        showToast("Producto eliminado de Firebase", 'warn');
+                    } catch (error) {
+                        showToast("Error al borrar: " + error.message, 'danger');
+                    }
+                }
+            } else if (deleteTargetType === 'category') {
+                if (mode === 'demo') {
+                    state.categories = state.categories.filter(c => c.id !== deleteTargetId);
+                    localStorage.setItem('tg_demo_categories', JSON.stringify(state.categories));
+                    renderCategories();
+                    updateCategoryDropdowns();
+                    showToast("Categoría eliminada del Modo Demo", 'warn');
+                } else {
+                    try {
+                        await deleteDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'categorias', deleteTargetId));
+                        showToast("Categoría eliminada de Firebase", 'warn');
+                    } catch (error) {
+                        showToast("Error al borrar: " + error.message, 'danger');
+                    }
+                }
+            }
+            closeDeleteModal();
+        });
+
+        // CONTROL DE CATEGORÍAS (CRUD)
+        window.handleCategorySubmit = async function(event) {
+            event.preventDefault();
+            const id = document.getElementById('category-edit-id').value;
+            const categoryData = {
+                name: document.getElementById('category-name').value,
+                slug: document.getElementById('category-slug').value,
+                icon: document.getElementById('category-icon').value || 'fa-solid fa-tag'
+            };
+
+            if (state.mode === 'demo') {
+                if (id) {
+                    const index = state.categories.findIndex(c => c.id === id);
+                    if (index !== -1) {
+                        state.categories[index] = { id, ...categoryData };
+                        showToast("Categoría actualizada", 'success');
+                    }
+                } else {
+                    const newId = 'cat-demo-' + Date.now();
+                    state.categories.push({ id: newId, ...categoryData });
+                    showToast("Categoría agregada con éxito", 'success');
+                }
+                localStorage.setItem('tg_demo_categories', JSON.stringify(state.categories));
+                renderCategories();
+                updateCategoryDropdowns();
+                resetCategoryForm();
+            } else {
+                try {
+                    const docId = id ? id : 'cat-' + crypto.randomUUID();
+                    await setDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'categorias', docId), categoryData);
+                    showToast("Categoría guardada en Firebase", 'success');
+                    resetCategoryForm();
+                } catch (error) {
+                    showToast("Error de Firestore: " + error.message, 'danger');
+                }
+            }
+        };
+
+        window.openEditCategory = function(categoryId) {
+            const category = state.categories.find(c => c.id === categoryId);
+            if (!category) return;
+
+            document.getElementById('category-form-title').textContent = "Editar Categoría";
+            document.getElementById('category-edit-id').value = category.id;
+            document.getElementById('category-name').value = category.name;
+            document.getElementById('category-slug').value = category.slug;
+            document.getElementById('category-icon').value = category.icon;
+            document.getElementById('btn-cancel-category-edit').classList.remove('hidden');
+        };
+
+        window.resetCategoryForm = function() {
+            document.getElementById('category-form-title').textContent = "Nueva Categoría";
+            document.getElementById('category-form').reset();
+            document.getElementById('category-edit-id').value = '';
+            document.getElementById('btn-cancel-category-edit').classList.add('hidden');
+        };
+
+        // AUTO-SLUG DE CATEGORÍAS
+        document.getElementById('category-name').addEventListener('input', function() {
+            const editId = document.getElementById('category-edit-id').value;
+            if (!editId) {
+                const slugified = this.value
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .replace(/[^a-z0-9 -]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-');
+                document.getElementById('category-slug').value = slugified;
+            }
+        });
+
+        // RENDERIZADO DE CONTENIDO DINÁMICO
+        function renderDashboard() {
+            const { products, categories } = state;
+            const totalProducts = products.length;
+            const totalStockValue = products.reduce((acc, p) => acc + (p.price * p.stock), 0);
+            const outOfStock = products.filter(p => p.stock <= 0).length;
+            const drafts = products.filter(p => p.status === 'draft').length;
+            const totalCategories = categories.length;
+
+            document.getElementById('stat-total-products').textContent = totalProducts;
+            document.getElementById('stat-stock-value').textContent = 'S/. ' + totalStockValue.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('stat-out-of-stock').textContent = outOfStock;
+            document.getElementById('stat-drafts').textContent = drafts;
+            document.getElementById('stat-total-categories').textContent = totalCategories;
+
+            // Tabla de bajo stock (menor a 5 unidades)
+            const lowStockProducts = products.filter(p => p.stock < 5);
+            const body = document.getElementById('dashboard-low-stock-body');
+            body.innerHTML = '';
+
+            if (lowStockProducts.length === 0) {
+                body.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="py-4 text-center text-zinc-500 text-xs">
+                            <i class="fa-solid fa-square-check text-gamer-success mr-2"></i> Todo el inventario está correctamente abastecido
+                        </td>
+                    </tr>
+                `;
+            } else {
+                lowStockProducts.forEach(p => {
+                    const badgeClass = p.stock === 0 ? 'bg-gamer-danger/10 text-gamer-danger border-gamer-danger/20' : 'bg-gamer-warn/10 text-gamer-warn border-gamer-warn/20';
+                    const badgeText = p.stock === 0 ? 'AGOTADO' : `${p.stock} Unid.`;
+                    
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-zinc-900/40 border-b border-gamer-border/20 transition-all";
+                    tr.innerHTML = `
+                        <td class="py-3 flex items-center gap-3">
+                            <img src="${p.image}" class="w-8 h-8 rounded bg-zinc-900 object-cover border border-gamer-border" onerror="this.src='https://placehold.co/100x100/18181b/06b6d4?text=TG'">
+                            <div class="overflow-hidden">
+                                <p class="font-bold text-zinc-200 truncate max-w-[150px] md:max-w-[200px]">${p.name}</p>
+                                <span class="text-[9px] text-zinc-500 font-mono tracking-wider">${p.sku}</span>
+                            </div>
+                        </td>
+                        <td class="py-3 text-zinc-400 capitalize">${p.category}</td>
+                        <td class="py-3 text-center">
+                            <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold border ${badgeClass}">
+                                ${badgeText}
+                            </span>
+                        </td>
+                        <td class="py-3 text-right">
+                            <button onclick="openEditProduct('${p.id}')" class="text-gamer-orange hover:text-gamer-orangeHover font-bold hover:underline">Reabastecer</button>
+                        </td>
+                    `;
+                    body.appendChild(tr);
+                });
+            }
+        }
+
+        window.applyFilters = function() {
+            renderProducts();
+        };
+
+        window.handleGlobalSearch = function(query) {
+            state.searchQuery = query;
+            renderProducts();
+        };
+
+        function renderProducts() {
+            const { products, searchQuery } = state;
+            const filterCat = document.getElementById('filter-category').value;
+            const filterStock = document.getElementById('filter-stock').value;
+            const filterStatus = document.getElementById('filter-status').value;
+
+            // Filtrar productos
+            const filtered = products.filter(p => {
+                const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.sku.toLowerCase().includes(searchQuery.toLowerCase());
+                const matchesCat = filterCat === 'all' || p.category === filterCat;
+                
+                let matchesStock = true;
+                if (filterStock === 'instock') matchesStock = p.stock > 0;
+                else if (filterStock === 'outofstock') matchesStock = p.stock <= 0;
+                else if (filterStock === 'lowstock') matchesStock = p.stock < 5 && p.stock > 0;
+
+                const matchesStatus = filterStatus === 'all' || (p.status || 'published') === filterStatus;
+
+                return matchesSearch && matchesCat && matchesStock && matchesStatus;
+            });
+
+            document.getElementById('filtered-count').textContent = filtered.length;
+            document.getElementById('total-count').textContent = products.length;
+
+            const grid = document.getElementById('products-grid');
+            const emptyState = document.getElementById('products-empty-state');
+            grid.innerHTML = '';
+
+            if (filtered.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                filtered.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = "bg-gamer-card border border-gamer-border hover:border-gamer-orange/40 rounded-2xl overflow-hidden p-4 flex flex-col justify-between transition-all duration-300 relative group shadow-glass";
+                    
+                    // Badge destacado
+                    const featuredBadge = p.featured ? `<span class="absolute top-3 left-3 bg-gamer-orangeHover text-white text-[9px] font-black tracking-widest px-2.5 py-0.5 rounded-full shadow-neon-orange z-10">DESTACADO</span>` : '';
+
+                    // Badge de estado
+                    const isDraft = p.status === 'draft';
+                    const statusBadge = isDraft 
+                        ? `<span class="absolute top-3 right-3 bg-zinc-700 text-zinc-300 text-[9px] font-black tracking-widest px-2.5 py-0.5 rounded-full z-10">BORRADOR</span>` 
+                        : '';
+
+                    // Badge de stock
+                    let stockBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-gamer-success/10 text-gamer-success border border-gamer-success/20">En Stock: ${p.stock}</span>`;
+                    if (p.stock === 0) {
+                        stockBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-gamer-danger/10 text-gamer-danger border border-gamer-danger/20">AGOTADO</span>`;
+                    } else if (p.stock < 5) {
+                        stockBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-gamer-warn/10 text-gamer-warn border border-gamer-warn/20">Bajo Stock: ${p.stock}</span>`;
+                    }
+
+                    card.innerHTML = `
+                        ${featuredBadge}
+                        ${statusBadge}
+                        <div class="relative overflow-hidden rounded-xl bg-zinc-950 aspect-video mb-4 border border-gamer-border flex items-center justify-center ${isDraft ? 'opacity-60' : ''}">
+                            <img src="${p.image}" class="w-full h-full object-cover transition duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/600x400/18181b/06b6d4?text=No+Imagen'">
+                        </div>
+                        <div class="space-y-2 flex-1 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between gap-2 mb-1">
+                                    <span class="text-[9px] text-gamer-orange font-black uppercase tracking-wider font-mono">${p.sku}</span>
+                                    ${stockBadge}
+                                </div>
+                                <h4 class="font-extrabold text-sm text-zinc-100 leading-snug line-clamp-2">${p.name}</h4>
+                                <p class="text-xs text-zinc-500 mt-1 line-clamp-2">${p.shortDesc || ''}</p>
+                            </div>
+                            
+                            <div class="pt-3 border-t border-gamer-border/50 flex items-center justify-between mt-auto">
+                                <span class="text-base font-black text-zinc-100">S/. ${p.price.toFixed(2)}</span>
+                                <div class="flex gap-1.5">
+                                    <button onclick="openEditProduct('${p.id}')" class="p-2 rounded-xl bg-zinc-900 border border-gamer-border hover:border-gamer-orange text-zinc-400 hover:text-gamer-orange transition" title="Editar">
+                                        <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                    </button>
+                                    <button onclick="openDeleteConfirm('${p.id}', 'product')" class="p-2 rounded-xl bg-zinc-900 border border-gamer-border hover:border-gamer-danger text-zinc-400 hover:text-gamer-danger transition" title="Eliminar">
+                                        <i class="fa-solid fa-trash-can text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+        }
+
+        function renderCategories() {
+            const { categories } = state;
+            const body = document.getElementById('categories-table-body');
+            body.innerHTML = '';
+
+            if (categories.length === 0) {
+                body.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="py-4 text-center text-zinc-500 text-xs">No hay categorías registradas</td>
+                    </tr>
+                `;
+            } else {
+                categories.forEach(c => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-zinc-900/40 border-b border-gamer-border/20 transition-all";
+                    tr.innerHTML = `
+                        <td class="py-3.5 pl-2">
+                            <div class="w-8 h-8 rounded-lg bg-gamer-orangeHover/10 text-gamer-orangeHover border border-gamer-orangeHover/20 flex items-center justify-center">
+                                <i class="${c.icon || 'fa-solid fa-tag'} text-xs"></i>
+                            </div>
+                        </td>
+                        <td class="py-3.5 font-bold text-zinc-200">${c.name}</td>
+                        <td class="py-3.5 font-mono text-xs text-zinc-500">${c.slug}</td>
+                        <td class="py-3.5 text-right pr-2">
+                            <div class="inline-flex gap-1.5">
+                                <button onclick="openEditCategory('${c.id}')" class="p-1.5 rounded-lg bg-zinc-900 border border-gamer-border hover:border-gamer-orange text-zinc-400 hover:text-gamer-orange transition" title="Editar">
+                                    <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                </button>
+                                <button onclick="openDeleteConfirm('${c.id}', 'category')" class="p-1.5 rounded-lg bg-zinc-900 border border-gamer-border hover:border-gamer-danger text-zinc-400 hover:text-gamer-danger transition" title="Eliminar">
+                                    <i class="fa-solid fa-trash-can text-xs"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    body.appendChild(tr);
+                });
+            }
+        }
+
+        function updateCategoryDropdowns() {
+            const { categories } = state;
+            
+            // Actualizar select de filtro
+            const filterSelect = document.getElementById('filter-category');
+            const savedFilterValue = filterSelect.value;
+            filterSelect.innerHTML = '<option value="all">Todas las Categorías</option>';
+            categories.forEach(c => {
+                filterSelect.innerHTML += `<option value="${c.slug}">${c.name}</option>`;
+            });
+            filterSelect.value = savedFilterValue;
+
+            // Actualizar select del modal producto
+            const prodSelect = document.getElementById('prod-category');
+            prodSelect.innerHTML = '<option value="" disabled selected>Selecciona una categoría</option>';
+            categories.forEach(c => {
+                prodSelect.innerHTML += `<option value="${c.slug}">${c.name}</option>`;
+            });
+        }
+    </script>
+
+</body>
+</html>

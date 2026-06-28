@@ -781,6 +781,9 @@
     <button id="back-to-top" onclick="scrollToTop()" class="fixed bottom-6 right-6 z-50 w-12 h-12 bg-brand-orange hover:bg-brand-orangeHover text-white rounded-full flex items-center justify-center shadow-lg shadow-brand-orange/30 transition-all duration-300 border-2 border-brand-darkBg" title="Volver arriba">
         <i class="fa-solid fa-arrow-up text-lg"></i>
     </button>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script>
     <script>
         /* ============================================================
            JAVASCRIPT - LÓGICA PRINCIPAL DE LA APLICACIÓN
@@ -804,6 +807,7 @@
           13. Checkout por WhatsApp
           14. Formulario de contacto
           15. Menú móvil (hamburger)
+          16. Firebase: carga de productos y redes sociales
         ============================================================ */
 
         // =============================================
@@ -844,7 +848,7 @@
                         <button onclick="addToCart(${product.id}); closeProductModal();" class="flex-1 bg-brand-orange hover:bg-brand-orangeHover text-white font-tech font-bold uppercase tracking-widest py-3.5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 active:scale-95">
                             <i class="fa-solid fa-cart-plus"></i> Añadir al Carrito
                         </button>
-                        <a href="https://wa.me/51999999999?text=${encodeURIComponent('Hola! Me interesa el producto: ' + product.name + ' - S/. ' + product.price.toFixed(2))}" target="_blank" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-tech font-bold uppercase tracking-widest py-3.5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 active:scale-95 text-center">
+                        <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hola! Me interesa el producto: ' + product.name + ' - S/. ' + product.price.toFixed(2))}" target="_blank" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-tech font-bold uppercase tracking-widest py-3.5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 active:scale-95 text-center">
                             <i class="fa-brands fa-whatsapp text-xl"></i> WhatsApp
                         </a>
                     </div>
@@ -952,7 +956,7 @@
         // Catálogo completo: videojuegos, merchandising y camisetas
         // Imágenes en: images/productos/
         // =============================================
-        const PRODUCTS_DATABASE = [
+        window.PRODUCTS_DATABASE = [
             {
                 id: 1,
                 name: "PlayStation 5 Slim Edition Console",
@@ -1032,6 +1036,7 @@
         // Variables de estado del carrito y personalizador
         // =============================================
         let cart = [];
+        let WHATSAPP_NUMBER = '51999999999';
         let selectedTshirtColor = '#0D0D0D';
         let selectedTshirtColorName = 'Negro';
         let selectedTshirtPrint = 'images/logo_500x500px.png';
@@ -1074,8 +1079,8 @@
             grid.innerHTML = '';
 
             const filtered = categoryFilter === 'todos' 
-                ? PRODUCTS_DATABASE 
-                : PRODUCTS_DATABASE.filter(p => p.category === categoryFilter);
+                ? PRODUCTS_DATABASE.filter(p => p.status !== 'draft')
+                : PRODUCTS_DATABASE.filter(p => p.category === categoryFilter && p.status !== 'draft');
 
             filtered.forEach(product => {
                 const productCard = document.createElement('div');
@@ -1458,7 +1463,7 @@
 
             // Encode string for WhatsApp standard API
             const encodedText = encodeURIComponent(message);
-            const whatsappUrl = `https://wa.me/51999999999?text=${encodedText}`;
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedText}`;
 
             // Open window tab
             window.open(whatsappUrl, '_blank');
@@ -1526,6 +1531,103 @@
                 }
             }
         });
+
+        // =============================================
+        // FIREBASE: Cargar productos desde Firestore
+        // =============================================
+        (function initFirebaseProducts() {
+            const configRaw = localStorage.getItem('tg_fb_config');
+            if (!configRaw) return;
+
+            try {
+                const config = JSON.parse(configRaw);
+                if (!config.apiKey || !config.projectId) return;
+
+                let app;
+                try { app = firebase.app(); } catch(e) { app = firebase.initializeApp(config); }
+                const db = firebase.firestore();
+                const auth = firebase.auth();
+
+                auth.signInAnonymously().then(() => {
+                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+                    const productsRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('productos');
+
+                    productsRef.onSnapshot((snapshot) => {
+                        if (snapshot.empty) return;
+
+                        const firebaseProducts = [];
+                        let idCounter = 9000;
+
+                        snapshot.forEach((doc) => {
+                            const p = doc.data();
+                            if (p.status === 'draft') return;
+
+                            firebaseProducts.push({
+                                id: idCounter++,
+                                name: p.name || 'Sin nombre',
+                                category: p.category || 'sin-categoria',
+                                price: p.price || 0,
+                                desc: p.shortDesc || p.longDesc || '',
+                                longDesc: p.longDesc || '',
+                                badge: (p.category || 'producto').charAt(0).toUpperCase() + (p.category || 'producto').slice(1),
+                                image: p.image || 'https://placehold.co/600x400/18181b/FF4500?text=Producto',
+                                sku: p.sku || '',
+                                stock: p.stock || 0,
+                                featured: !!p.featured,
+                                status: p.status || 'published',
+                                _fbId: doc.id
+                            });
+                        });
+
+                        if (firebaseProducts.length > 0) {
+                            window.PRODUCTS_DATABASE = firebaseProducts;
+                            renderProducts('todos');
+                            document.querySelectorAll('.filter-tab').forEach(tab => {
+                                tab.className = "filter-tab bg-brand-darkCard text-gray-300 border border-brand-accentGray hover:border-brand-orange hover:text-white px-5 py-2 rounded-xl transition-all duration-300";
+                            });
+                            const allTab = document.getElementById('btn-tab-todos');
+                            if (allTab) allTab.className = "filter-tab bg-brand-orange text-white border border-brand-orange px-5 py-2 rounded-xl transition-all duration-300 active";
+                        }
+                    });
+                }).catch((err) => {
+                    console.log('Firebase Anon Auth fallback:', err.message);
+                });
+
+                // Cargar redes sociales desde Firestore
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+                db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('social').onSnapshot((snap) => {
+                    if (!snap.exists()) return;
+                    const s = snap.data();
+                    
+                    if (s.whatsapp) {
+                        WHATSAPP_NUMBER = s.whatsapp;
+                        const waUrl = 'https://wa.me/' + s.whatsapp;
+                        document.querySelectorAll('a[href*="wa.me"]').forEach(a => {
+                            const url = new URL(a.href);
+                            const text = url.searchParams.get('text');
+                            a.href = text ? waUrl + '?text=' + text : waUrl;
+                        });
+                    }
+                    if (s.facebook) {
+                        document.querySelectorAll('a[href*="facebook.com"], a[href="#"]').forEach(a => {
+                            if (a.querySelector('.fa-facebook')) a.href = s.facebook;
+                        });
+                    }
+                    if (s.instagram) {
+                        document.querySelectorAll('a[href*="instagram.com"], a[href="#"]').forEach(a => {
+                            if (a.querySelector('.fa-instagram')) a.href = s.instagram;
+                        });
+                    }
+                    if (s.tiktok) {
+                        document.querySelectorAll('a[href*="tiktok.com"], a[href="#"]').forEach(a => {
+                            if (a.querySelector('.fa-tiktok')) a.href = s.tiktok;
+                        });
+                    }
+                });
+            } catch (e) {
+                console.log('Firebase no configurado:', e.message);
+            }
+        })();
     </script>
 </body>
 </html>
