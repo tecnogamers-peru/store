@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Tecno Gamers Peru | Panel de Control</title>
     <link rel="icon" type="image/png" href="images/favicon.png">
     <!-- Tailwind CSS para diseño rápido, moderno y responsivo -->
@@ -699,7 +702,10 @@
                         <div class="p-4 bg-zinc-900 border border-gamer-border rounded-xl space-y-3">
                             <h4 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">Imágenes</h4>
                             <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Banner Principal</label>
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400">Banner Principal</label>
+                                    <span class="text-[9px] text-gamer-orange font-bold">Recomendado: 800x500px (16:10)</span>
+                                </div>
                                 <div class="relative border-2 border-dashed border-gamer-border rounded-xl p-4 text-center hover:border-gamer-orange/50 transition-colors cursor-pointer" onclick="document.getElementById('nos-banner-file').click()">
                                     <input type="file" id="nos-banner-file" accept="image/*" class="hidden" onchange="handleNosImageSelect('banner', event)">
                                     <div id="nos-banner-placeholder">
@@ -707,14 +713,17 @@
                                         <p class="text-[10px] text-zinc-500">Click para subir banner</p>
                                     </div>
                                     <div id="nos-banner-preview" class="hidden">
-                                        <img id="nos-banner-preview-img" class="max-h-20 mx-auto rounded-lg border border-gamer-border object-contain">
+                                        <img id="nos-banner-preview-img" class="max-h-24 w-full max-w-xs mx-auto rounded-lg border border-gamer-border object-cover">
                                         <button type="button" onclick="event.stopPropagation(); clearNosImage('banner')" class="mt-1 text-[9px] text-gamer-danger hover:text-red-400 font-bold">Eliminar</button>
                                     </div>
                                 </div>
                                 <input type="hidden" id="nos-banner">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Logo</label>
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400">Logo (Overlay en Banner)</label>
+                                    <span class="text-[9px] text-gamer-orange font-bold">Recomendado: 256x256px (cuadrado)</span>
+                                </div>
                                 <div class="relative border-2 border-dashed border-gamer-border rounded-xl p-4 text-center hover:border-gamer-orange/50 transition-colors cursor-pointer" onclick="document.getElementById('nos-logo-file').click()">
                                     <input type="file" id="nos-logo-file" accept="image/*" class="hidden" onchange="handleNosImageSelect('logo', event)">
                                     <div id="nos-logo-placeholder">
@@ -722,7 +731,10 @@
                                         <p class="text-[10px] text-zinc-500">Click para subir logo</p>
                                     </div>
                                     <div id="nos-logo-preview" class="hidden">
-                                        <img id="nos-logo-preview-img" class="max-h-16 mx-auto rounded-lg border border-gamer-border object-contain">
+                                        <div class="w-16 h-16 mx-auto rounded-xl bg-brand-orange p-1 flex items-center justify-center">
+                                            <img id="nos-logo-preview-img" class="w-full h-full object-contain rounded-lg">
+                                        </div>
+                                        <p class="text-[9px] text-zinc-500 mt-1">Así se verá en la web</p>
                                         <button type="button" onclick="event.stopPropagation(); clearNosImage('logo')" class="mt-1 text-[9px] text-gamer-danger hover:text-red-400 font-bold">Eliminar</button>
                                     </div>
                                 </div>
@@ -793,37 +805,28 @@
                             </div>
                         </div>
 
-                        <!-- Tienda 1 -->
+                        <!-- Tiendas dinámicas -->
                         <div class="p-4 bg-zinc-900 border border-gamer-border rounded-xl space-y-3">
-                            <h4 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">Tienda 1</h4>
-                            <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Nombre</label>
-                                <input type="text" id="ubi-store1-name" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Tienda Central - Lima Cercado">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">Tiendas Físicas</h4>
+                                <button type="button" onclick="addUbiStore()" class="px-3 py-1.5 bg-gamer-orange/10 hover:bg-gamer-orange/20 border border-gamer-orange/30 text-gamer-orange rounded-lg text-[10px] font-bold transition">
+                                    <i class="fa-solid fa-plus mr-1"></i> Agregar Tienda
+                                </button>
                             </div>
-                            <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Dirección</label>
-                                <input type="text" id="ubi-store1-addr" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Centro Comercial Polvos Azules...">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Horario</label>
-                                <input type="text" id="ubi-store1-hours" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Lun a Sab: 10:00 AM - 8:00 PM">
-                            </div>
+                            <div id="ubi-stores" class="space-y-3"></div>
+                            <p class="text-[10px] text-zinc-500">Mínimo 1 tienda. Activa/desactiva con el interruptor.</p>
                         </div>
 
-                        <!-- Tienda 2 -->
+                        <!-- Datos de Contacto -->
                         <div class="p-4 bg-zinc-900 border border-gamer-border rounded-xl space-y-3">
-                            <h4 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">Tienda 2</h4>
+                            <h4 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">Datos de Contacto</h4>
                             <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Nombre</label>
-                                <input type="text" id="ubi-store2-name" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Módulo Plaza Norte">
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Teléfono</label>
+                                <input type="text" id="ubi-phone" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="+51 999 999 999">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Dirección</label>
-                                <input type="text" id="ubi-store2-addr" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Av. Alfredo Mendiola 1400...">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Horario</label>
-                                <input type="text" id="ubi-store2-hours" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Dom a Dom: 11:00 AM - 9:00 PM">
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Email</label>
+                                <input type="text" id="ubi-email" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="tecnogamers.ca@gmail.com">
                             </div>
                         </div>
                     </div>
@@ -1640,7 +1643,7 @@
             const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
             const settingsRef = doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'settings', 'social');
             getDoc(settingsRef).then((snap) => {
-                if (snap.exists()) {
+                if (snap.exists) {
                     const data = snap.data();
                     document.getElementById('social-whatsapp').value = data.whatsapp || '';
                     document.getElementById('social-facebook').value = data.facebook || '';
@@ -1696,7 +1699,8 @@
         // ===================== GESTIÓN DE CONTENIDO =====================
         const contentPages = ['terminos', 'privacidad', 'devoluciones'];
         const nosotrosFields = ['subtitle', 'title', 'desc', 'mission', 'banner', 'logo', 'stat1-val', 'stat1-label', 'stat2-val', 'stat2-label', 'stat3-val', 'stat3-label', 'card1-title', 'card1-desc', 'card1-icon', 'card2-title', 'card2-desc', 'card2-icon'];
-        const ubicacionFields = ['subtitle', 'title', 'desc', 'store1-name', 'store1-addr', 'store1-hours', 'store2-name', 'store2-addr', 'store2-hours'];
+        const ubicacionFields = ['subtitle', 'title', 'desc', 'phone', 'email'];
+        let ubicacionStores = [];
 
         window.switchContentTab = function(page) {
             contentPages.forEach(p => {
@@ -1779,8 +1783,14 @@
                     if (data.ubicacion) {
                         ubicacionFields.forEach(f => {
                             const el = document.getElementById('ubi-' + f);
-                            if (el && data.ubicacion[f]) el.value = data.ubicacion[f];
+                            if (el && data.ubicacion[f] !== undefined) el.value = data.ubicacion[f];
                         });
+                        if (Array.isArray(data.ubicacion.stores) && data.ubicacion.stores.length > 0) {
+                            ubicacionStores = data.ubicacion.stores;
+                        } else {
+                            ubicacionStores = getDefaultStores();
+                        }
+                        renderUbiStores();
                     }
                     showToast("Contenido cargado desde Firebase", 'success');
                 } else {
@@ -1789,6 +1799,96 @@
             } catch (error) {
                 showToast("Error al guardar: " + error.message, 'danger');
             }
+        };
+
+        // ===================== TIENDAS DINÁMICAS =====================
+        function getDefaultStores() {
+            return [
+                { id: 'store-1', name: 'Tienda Central - Lima Cercado', address: 'Centro Comercial Polvos Azules, Sótano Pasaje 15, Tienda 8.', hours: 'Lun a Sab: 10:00 AM - 8:00 PM', active: true },
+                { id: 'store-2', name: 'Módulo Plaza Norte', address: 'Av. Alfredo Mendiola 1400, Independencia (Frente a Falabella).', hours: 'Dom a Dom: 11:00 AM - 9:00 PM', active: true }
+            ];
+        }
+
+        function renderUbiStores() {
+            const container = document.getElementById('ubi-stores');
+            if (!container) return;
+            if (!ubicacionStores || ubicacionStores.length === 0) {
+                ubicacionStores = getDefaultStores();
+            }
+            container.innerHTML = '';
+            ubicacionStores.forEach((s, i) => {
+                const id = s.id || ('store-' + Date.now() + '-' + i);
+                s.id = id;
+                const html = `
+                    <div class="p-3 bg-zinc-950 border border-gamer-border rounded-lg space-y-2" data-store-id="${id}">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-bold text-gamer-orange uppercase">Tienda ${i + 1}</span>
+                                <label class="flex items-center gap-1.5 cursor-pointer">
+                                    <input type="checkbox" class="store-active accent-gamer-orange" ${s.active ? 'checked' : ''}>
+                                    <span class="text-[10px] text-zinc-400">Activa</span>
+                                </label>
+                            </div>
+                            <button type="button" onclick="removeUbiStore('${id}')" class="text-zinc-600 hover:text-red-500 transition text-xs" title="Eliminar tienda">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Nombre</label>
+                            <input type="text" value="${(s.name || '').replace(/"/g, '&quot;')}" class="w-full bg-zinc-900 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input store-name" placeholder="Nombre de la tienda">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Dirección</label>
+                            <input type="text" value="${(s.address || '').replace(/"/g, '&quot;')}" class="w-full bg-zinc-900 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input store-address" placeholder="Dirección completa">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Horario</label>
+                            <input type="text" value="${(s.hours || '').replace(/"/g, '&quot;')}" class="w-full bg-zinc-900 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input store-hours" placeholder="Lun a Sab: 10:00 AM - 8:00 PM">
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+            });
+            attachStoreListeners();
+        }
+
+        function attachStoreListeners() {
+            const container = document.getElementById('ubi-stores');
+            if (!container) return;
+            container.querySelectorAll('[data-store-id]').forEach(div => {
+                const id = div.getAttribute('data-store-id');
+                const store = ubicacionStores.find(s => s.id === id);
+                if (!store) return;
+                const activeEl = div.querySelector('.store-active');
+                const nameEl = div.querySelector('.store-name');
+                const addrEl = div.querySelector('.store-address');
+                const hoursEl = div.querySelector('.store-hours');
+                if (activeEl) activeEl.onchange = () => { store.active = activeEl.checked; };
+                if (nameEl) nameEl.oninput = () => { store.name = nameEl.value; };
+                if (addrEl) addrEl.oninput = () => { store.address = addrEl.value; };
+                if (hoursEl) hoursEl.oninput = () => { store.hours = hoursEl.value; };
+            });
+        }
+
+        window.addUbiStore = function() {
+            const newStore = {
+                id: 'store-' + Date.now(),
+                name: '',
+                address: '',
+                hours: '',
+                active: true
+            };
+            ubicacionStores.push(newStore);
+            renderUbiStores();
+        };
+
+        window.removeUbiStore = function(id) {
+            if (ubicacionStores.length <= 1) {
+                showToast("Debe haber al menos 1 tienda", 'warn');
+                return;
+            }
+            ubicacionStores = ubicacionStores.filter(s => s.id !== id);
+            renderUbiStores();
         };
 
         // ===================== IMPORTAR / EXPORTAR =====================
@@ -2044,6 +2144,7 @@
                     const el = document.getElementById('ubi-' + f);
                     if (el) data.ubicacion[f] = el.value;
                 });
+                data.ubicacion.stores = ubicacionStores;
                 await setDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'settings', 'content'), data);
                 showToast("Contenido guardado en Firebase", 'success');
             } catch (error) {
@@ -2832,6 +2933,12 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(initDefaultLegalSections, 600);
+            setTimeout(function() {
+                if (ubicacionStores.length === 0) {
+                    ubicacionStores = getDefaultStores();
+                    renderUbiStores();
+                }
+            }, 700);
         });
     </script>
 

@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Términos y Condiciones - Tecno Gamers Peru</title>
     <link rel="icon" type="image/png" href="images/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -294,7 +297,7 @@
                 firebase.auth().signInAnonymously().then(function() {
                     var appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
                     db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('content').onSnapshot(function(snap) {
-                        if (!snap.exists()) return;
+                        if (!snap.exists) return;
                         var data = snap.data();
                         if (data.terminos_pagetitle) {
                             var h1 = document.querySelector('h1');
@@ -318,34 +321,57 @@
                         }
                     });
 
-                    // Analytics & SEO
-                    db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('analytics').onSnapshot(function(snap) {
-                        if (!snap.exists()) return;
-                        var a = snap.data();
-                        if (a.gscTag) {
-                            var meta = document.querySelector('meta[name="google-site-verification"]');
-                            if (!meta) { meta = document.createElement('meta'); meta.name = 'google-site-verification'; document.head.appendChild(meta); }
-                            meta.content = a.gscTag;
-                        }
-                        if (a.gaCode && !document.getElementById('custom-ga-script')) {
-                            var s = document.createElement('script');
-                            s.id = 'custom-ga-script';
-                            s.text = a.gaCode;
-                            document.head.appendChild(s);
-                        } else if (a.gaId && !document.getElementById('ga-loader')) {
-                            var s1 = document.createElement('script');
-                            s1.id = 'ga-loader';
-                            s1.async = true;
-                            s1.src = 'https://www.googletagmanager.com/gtag/js?id=' + a.gaId;
-                            document.head.appendChild(s1);
-                            var s2 = document.createElement('script');
-                            s2.id = 'ga-init';
-                            s2.text = 'window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag("js", new Date());gtag("config", "' + a.gaId + '");';
-                            document.head.appendChild(s2);
-                        }
-                    });
+                    // Analytics & SEO (solo con consentimiento)
+                    function loadAnalytics() {
+                        db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('analytics').onSnapshot(function(snap) {
+                            if (!snap.exists) return;
+                            var a = snap.data();
+                            if (a.gscTag) {
+                                var meta = document.querySelector('meta[name="google-site-verification"]');
+                                if (!meta) { meta = document.createElement('meta'); meta.name = 'google-site-verification'; document.head.appendChild(meta); }
+                                meta.content = a.gscTag;
+                            }
+                            if (a.gaCode && !document.getElementById('custom-ga-script')) {
+                                var s = document.createElement('script');
+                                s.id = 'custom-ga-script';
+                                s.text = a.gaCode;
+                                document.head.appendChild(s);
+                            } else if (a.gaId && !document.getElementById('ga-loader')) {
+                                var s1 = document.createElement('script');
+                                s1.id = 'ga-loader';
+                                s1.async = true;
+                                s1.src = 'https://www.googletagmanager.com/gtag/js?id=' + a.gaId;
+                                document.head.appendChild(s1);
+                                var s2 = document.createElement('script');
+                                s2.id = 'ga-init';
+                                s2.text = 'window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag("js", new Date());gtag("config", "' + a.gaId + '");';
+                                document.head.appendChild(s2);
+                            }
+                        });
+                    }
+                    var _c = localStorage.getItem('tg_cookie_consent');
+                    if (_c) { try { if (JSON.parse(_c).accepted) loadAnalytics(); } catch(e) {} }
+                    window.addEventListener('cookie-consent-granted', loadAnalytics);
                 });
             } catch(e) {}
+        })();
+
+        // Cookie Consent
+        (function() {
+            var CONSENT_KEY = 'tg_cookie_consent';
+            var consent = localStorage.getItem(CONSENT_KEY);
+            function hideBanner() { var b = document.getElementById('cookie-banner'); if (b) b.classList.add('hidden'); }
+            function showBanner() { var b = document.getElementById('cookie-banner'); if (b) b.classList.remove('hidden'); }
+            function setConsent(v) { localStorage.setItem(CONSENT_KEY, JSON.stringify({ accepted: v, timestamp: Date.now() })); hideBanner(); if (v) window.dispatchEvent(new Event('cookie-consent-granted')); }
+            window.acceptCookies = function() { setConsent(true); };
+            window.rejectCookies = function() { setConsent(false); };
+            window.openCookieSettings = function() { showBanner(); };
+            var banner = document.createElement('div');
+            banner.id = 'cookie-banner';
+            banner.className = 'hidden';
+            banner.innerHTML = '<div class="cookie-content"><div class="cookie-text"><p style="font-size:0.75rem;color:#d1d5db;line-height:1.4;margin:0;"><strong style="color:#FF4500;font-weight:800;">🍪 Usamos cookies</strong><br>Este sitio utiliza cookies de terceros (Google Analytics, Meta Pixel) para mejorar tu experiencia. Puedes aceptar o rechazar.</p></div><div class="cookie-buttons"><button class="cookie-btn cookie-btn-accept" onclick="acceptCookies()">Aceptar</button><button class="cookie-btn cookie-btn-reject" onclick="rejectCookies()">Rechazar</button></div></div>';
+            document.body.appendChild(banner);
+            if (!consent) setTimeout(showBanner, 1500);
         })();
     </script>
 
