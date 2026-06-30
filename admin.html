@@ -75,42 +75,34 @@
                 <p class="text-zinc-400 text-sm mt-1">Panel de Control & Inventario</p>
             </div>
 
-            <!-- Selector de Modo de Inicio de Sesión -->
-            <div class="flex bg-zinc-950 p-1 rounded-xl border border-gamer-border mb-6">
-                <button id="btn-mode-demo" onclick="switchLoginMode('demo')" class="flex-1 text-center py-2.5 text-xs font-semibold rounded-lg bg-gamer-orange text-zinc-950 transition-all duration-300">
-                    Modo Demo (Prueba)
-                </button>
-                <button id="btn-mode-firebase" onclick="switchLoginMode('firebase')" class="flex-1 text-center py-2.5 text-xs font-semibold rounded-lg text-zinc-400 hover:text-zinc-200 transition-all duration-300">
-                    Conectar Firebase
-                </button>
+            <!-- Bootstrap info: solo se muestra la primera vez -->
+            <div id="bootstrap-info" class="hidden p-3 bg-blue-500/10 border border-blue-500/30 rounded-xl text-xs text-blue-300 leading-relaxed mb-4">
+                <i class="fa-solid fa-circle-info mr-1"></i>
+                <strong>Primer inicio:</strong> Se creará automáticamente un Super Admin.
+                <div class="mt-2 text-[10px] text-zinc-400">
+                    Email: <code class="text-zinc-200">admin@tecnogamers.com</code><br>
+                    Contraseña: <code class="text-zinc-200">admin123</code>
+                </div>
             </div>
 
             <!-- Formulario de Login -->
             <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
-                <div id="demo-info-box" class="p-3 bg-gamer-orange/5 border border-gamer-orange/20 rounded-xl text-xs text-gamer-orange leading-relaxed mb-4">
-                    <i class="fa-solid fa-circle-info mr-1"></i>
-                    <strong>Modo Demo Activo:</strong> Puedes entrar sin configurar nada. Esto guardará todo localmente para que interactúes y pruebes todos los controles.
+                <p class="text-xs text-zinc-400 mb-2 leading-relaxed">
+                    Ingresa con tus credenciales de administrador.
+                </p>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Email</label>
+                    <input type="email" id="login-email" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-4 py-3 text-sm neon-input text-zinc-200" placeholder="admin@tecnogamers.com" autocomplete="email">
                 </div>
-
-                <div id="firebase-credentials-inputs" class="hidden space-y-4">
-                    <p class="text-xs text-zinc-400 mb-2 leading-relaxed">
-                        Ingresa con las credenciales de administrador para conectarte a Firebase.
-                    </p>
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Usuario Admin</label>
-                        <input type="text" id="login-user" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-4 py-3 text-sm neon-input text-zinc-200" placeholder="admin" value="admin">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Contraseña</label>
-                        <input type="password" id="login-pass" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-4 py-3 text-sm neon-input text-zinc-200" placeholder="••••••••">
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" id="login-remember" class="w-4 h-4 rounded text-gamer-orange bg-zinc-950 border-gamer-border focus:ring-gamer-orange">
-                        <label for="login-remember" class="text-xs text-zinc-400">Recordar contraseña en este navegador</label>
-                    </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1">Contraseña</label>
+                    <input type="password" id="login-pass" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-4 py-3 text-sm neon-input text-zinc-200" placeholder="••••••••" autocomplete="current-password">
                 </div>
-
-                <button type="submit" class="w-full bg-gradient-to-r from-gamer-orange to-gamer-orangeHover hover:from-orange-500 hover:to-red-600 text-zinc-950 font-extrabold uppercase tracking-widest py-3.5 rounded-xl text-xs transition duration-300 transform active:scale-95 shadow-neon-orange flex justify-center items-center gap-2">
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" id="login-remember" class="w-4 h-4 rounded text-gamer-orange bg-zinc-950 border-gamer-border focus:ring-gamer-orange">
+                    <label for="login-remember" class="text-xs text-zinc-400">Recordar sesión en este navegador</label>
+                </div>
+                <button type="submit" id="login-btn" class="w-full bg-gradient-to-r from-gamer-orange to-gamer-orangeHover hover:from-orange-500 hover:to-red-600 text-zinc-950 font-extrabold uppercase tracking-widest py-3.5 rounded-xl text-xs transition duration-300 transform active:scale-95 shadow-neon-orange flex justify-center items-center gap-2">
                     <span>Ingresar al Sistema</span>
                     <i class="fa-solid fa-right-to-bracket"></i>
                 </button>
@@ -175,17 +167,25 @@
                 <i class="fa-solid fa-chart-line w-5"></i>
                 <span>Analytics & SEO</span>
             </button>
+            <button onclick="switchTab('contact-form')" id="nav-contact-form" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 border-l-2 border-transparent">
+                <i class="fa-regular fa-paper-plane w-5"></i>
+                <span>Formulario</span>
+            </button>
+            <button onclick="switchTab('users')" id="nav-users" class="hidden w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 border-l-2 border-transparent">
+                <i class="fa-solid fa-users-gear w-5"></i>
+                <span>Usuarios</span>
+            </button>
         </nav>
 
         <!-- Información de Usuario & Cerrar Sesión -->
         <div class="p-4 border-t border-gamer-border bg-zinc-950/40">
             <div class="flex items-center gap-3 mb-3">
-                <div class="w-10 h-10 rounded-full bg-zinc-800 border border-gamer-border flex items-center justify-center text-zinc-300">
+                <div id="admin-user-avatar" class="w-10 h-10 rounded-full bg-zinc-800 border border-gamer-border flex items-center justify-center text-zinc-300">
                     <i class="fa-solid fa-user-shield"></i>
                 </div>
                 <div class="overflow-hidden">
-                    <p class="text-xs font-bold text-zinc-200 truncate animate-pulse" id="admin-user-email">Invitado de Pruebas</p>
-                    <p class="text-[10px] text-zinc-500 truncate">Administrador</p>
+                    <p class="text-xs font-bold text-zinc-200 truncate" id="admin-user-name">Cargando...</p>
+                    <p class="text-[10px] text-zinc-500 truncate" id="admin-user-role">Sin rol</p>
                 </div>
             </div>
             <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold bg-gamer-danger/10 text-gamer-danger border border-gamer-danger/20 hover:bg-gamer-danger hover:text-white transition-all duration-200">
@@ -340,6 +340,75 @@
                     </button>
                 </div>
 
+                <!-- Importar productos desde CSV -->
+                <div class="bg-gamer-card border border-gamer-border rounded-2xl p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">
+                            <i class="fa-solid fa-file-csv mr-1"></i> Importar Productos desde CSV
+                        </h3>
+                        <button type="button" onclick="downloadCsvTemplate()" class="text-[10px] text-zinc-400 hover:text-gamer-orange transition font-bold uppercase tracking-wider">
+                            <i class="fa-solid fa-download mr-1"></i> Descargar Plantilla
+                        </button>
+                    </div>
+
+                    <div class="border-2 border-dashed border-gamer-border rounded-xl p-4 text-center hover:border-gamer-orange/50 transition cursor-pointer" id="csv-drop-zone" onclick="document.getElementById('csv-file-input').click()">
+                        <input type="file" id="csv-file-input" accept=".csv,text/csv" class="hidden" onchange="handleCsvFile(this)">
+                        <i class="fa-solid fa-cloud-arrow-up text-2xl text-zinc-600 mb-1"></i>
+                        <p class="text-xs text-zinc-400">Click o arrastra un archivo <code class="text-gamer-orange">.csv</code> aquí</p>
+                    </div>
+
+                    <!-- Indicaciones pequeñas -->
+                    <details class="mt-3">
+                        <summary class="text-[10px] text-zinc-500 cursor-pointer hover:text-zinc-300 uppercase tracking-wider font-bold">
+                            <i class="fa-solid fa-circle-info mr-1"></i> ¿Cómo exportar tu Excel como CSV?
+                        </summary>
+                        <div class="mt-2 p-3 bg-zinc-950 border border-gamer-border rounded-lg text-[10px] text-zinc-400 space-y-2">
+                            <div>
+                                <p class="font-bold text-gamer-orange">Desde Microsoft Excel:</p>
+                                <p>Archivo → Guardar como → Tipo: "CSV (separado por comas) (*.csv)" → Guardar</p>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gamer-orange">Desde Google Sheets:</p>
+                                <p>Archivo → Descargar → Valores separados por comas (.csv)</p>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gamer-orange">Columnas obligatorias:</p>
+                                <p><code class="text-zinc-300">name, category, price</code></p>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gamer-orange">Columnas opcionales:</p>
+                                <p><code class="text-zinc-300">stock, shortDesc, longDesc, sku, status, featured, image</code></p>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gamer-orange">Valores válidos:</p>
+                                <p>• <code class="text-zinc-300">status</code>: <code>published</code> o <code>draft</code> (default: published)</p>
+                                <p>• <code class="text-zinc-300">featured</code>: <code>true</code> o <code>false</code> (default: false)</p>
+                                <p>• <code class="text-zinc-300">price</code> y <code class="text-zinc-300">stock</code>: solo números</p>
+                                <p>• <code class="text-zinc-300">image</code>: URL completa (Cloudinary o externa)</p>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Preview del CSV -->
+                    <div id="csv-preview" class="hidden mt-4 space-y-3">
+                        <div class="p-3 bg-zinc-950 border border-gamer-border rounded-xl">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-[10px] font-bold text-zinc-200 uppercase tracking-wider">
+                                    <i class="fa-solid fa-eye mr-1"></i> Vista Previa (<span id="csv-row-count">0</span> productos)
+                                </h4>
+                                <button type="button" onclick="cancelCsvImport()" class="text-[10px] text-zinc-500 hover:text-red-400 font-bold uppercase">
+                                    <i class="fa-solid fa-times mr-1"></i> Cancelar
+                                </button>
+                            </div>
+                            <div id="csv-errors" class="hidden mb-2 p-2 bg-red-500/10 border border-red-500/30 rounded-lg text-[10px] text-red-300"></div>
+                            <div id="csv-preview-table" class="overflow-x-auto max-h-64 overflow-y-auto"></div>
+                        </div>
+                        <button type="button" onclick="executeCsvImport()" id="btn-csv-import" class="w-full py-2.5 bg-gradient-to-r from-green-500 to-green-600 text-white font-black uppercase tracking-wider rounded-xl text-xs shadow-lg hover:brightness-110 transition">
+                            <i class="fa-solid fa-file-import mr-1"></i> Importar <span id="csv-import-count">0</span> Productos
+                        </button>
+                    </div>
+                </div>
+
                 <!-- Barra de Filtrados -->
                 <div class="bg-gamer-card border border-gamer-border rounded-2xl p-4 flex flex-col md:flex-row gap-4 items-center justify-between">
                     <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
@@ -450,7 +519,7 @@
                     <form id="firebase-config-form" onsubmit="saveFirebaseConfig(event)" class="space-y-4">
                         <div class="p-4 bg-gamer-orangeHover/5 border border-gamer-orangeHover/20 rounded-xl text-xs text-gamer-orangeHover leading-relaxed">
                             <i class="fa-solid fa-triangle-exclamation mr-1"></i>
-                            <strong>Guía Rápida:</strong> Crea un proyecto web en <a href="https://console.firebase.google.com/" target="_blank" class="underline font-bold text-gamer-orange">Firebase Console</a>, activa **Firestore Database** en modo de lectura/escritura pública para tu tienda y pega aquí los datos de inicialización.
+                            <strong>Guía Rápida:</strong> Crea un proyecto web en <a href="https://console.firebase.google.com/" target="_blank" class="underline font-bold text-gamer-orange">Firebase Console</a>, activa <strong>Authentication → Email/Password</strong> y <strong>Firestore Database</strong> en modo de lectura/escritura pública para tu tienda. Luego pega aquí los datos de inicialización.
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1062,6 +1131,179 @@
                     </div>
                 </form>
             </section>
+
+            <!-- Formulario de Contacto -->
+            <section id="tab-contact-form" class="space-y-6 hidden fade-in">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-black tracking-wider text-zinc-200 uppercase">
+                        <i class="fa-regular fa-paper-plane text-gamer-orange mr-2"></i> Formulario de Contacto
+                    </h2>
+                </div>
+
+                <!-- Explicación -->
+                <div class="p-4 bg-zinc-900/60 border border-gamer-border rounded-xl space-y-2">
+                    <h3 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">
+                        <i class="fa-solid fa-circle-info mr-1"></i> ¿Para qué sirve esto?
+                    </h3>
+                    <p class="text-[11px] text-zinc-400 leading-relaxed">
+                        Personaliza el formulario de contacto de la tienda. Puedes cambiar los <strong class="text-zinc-200">textos de las etiquetas</strong>, agregar o eliminar <strong class="text-zinc-200">opciones del dropdown</strong> de "¿En qué estás interesado?", y configurar las <strong class="text-zinc-200">credenciales de EmailJS</strong>.
+                    </p>
+                </div>
+
+                <form id="contact-form-config" class="space-y-6">
+                    <!-- Textos generales -->
+                    <div class="p-5 bg-zinc-900 border border-gamer-border rounded-xl space-y-3">
+                        <h3 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">
+                            <i class="fa-solid fa-heading mr-1"></i> Textos Generales
+                        </h3>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Título del Formulario</label>
+                            <input type="text" id="cf-title" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Envíanos una Consulta">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Texto del Botón Enviar</label>
+                            <input type="text" id="cf-button" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Enviar Consulta por Correo">
+                        </div>
+                    </div>
+
+                    <!-- Etiquetas de campos -->
+                    <div class="p-5 bg-zinc-900 border border-gamer-border rounded-xl space-y-3">
+                        <h3 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">
+                            <i class="fa-solid fa-tag mr-1"></i> Etiquetas de los Campos
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Etiqueta: Nombre</label>
+                                <input type="text" id="cf-label-name" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Nombre Completo">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Etiqueta: Teléfono</label>
+                                <input type="text" id="cf-label-phone" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Teléfono / WhatsApp">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Etiqueta: Email</label>
+                                <input type="text" id="cf-label-email" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Correo Electrónico">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Etiqueta: Tema</label>
+                                <input type="text" id="cf-label-topic" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="¿En qué estás interesado?">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Etiqueta: Mensaje</label>
+                                <input type="text" id="cf-label-message" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Tu Mensaje">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Opciones del dropdown -->
+                    <div class="p-5 bg-zinc-900 border border-gamer-border rounded-xl space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">
+                                <i class="fa-solid fa-list mr-1"></i> Opciones del Dropdown
+                            </h3>
+                            <button type="button" onclick="addContactOption()" class="px-3 py-1.5 bg-gamer-orange/10 hover:bg-gamer-orange/20 border border-gamer-orange/30 text-gamer-orange rounded-lg text-[10px] font-bold transition">
+                                <i class="fa-solid fa-plus mr-1"></i> Agregar Opción
+                            </button>
+                        </div>
+                        <div id="cf-options" class="space-y-2"></div>
+                        <p class="text-[10px] text-zinc-500">Estas son las opciones que verá el usuario en "¿En qué estás interesado?".</p>
+                    </div>
+
+                    <!-- Configuración EmailJS -->
+                    <div class="p-5 bg-zinc-900 border border-gamer-border rounded-xl space-y-3">
+                        <h3 class="text-xs font-bold text-gamer-orange uppercase tracking-wider">
+                            <i class="fa-solid fa-envelope mr-1"></i> Configuración EmailJS
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Service ID</label>
+                                <input type="text" id="cf-emailjs-service" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input font-mono" placeholder="service_xxxxxxx">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Template ID</label>
+                                <input type="text" id="cf-emailjs-template" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input font-mono" placeholder="template_xxxxxxx">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Public Key</label>
+                                <input type="text" id="cf-emailjs-key" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input font-mono" placeholder="xxxxxxxxxxxxxxx">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Email Destino (referencia)</label>
+                                <input type="email" id="cf-email-dest" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="tecnogamers.ca@gmail.com">
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-zinc-500">Los datos sensibles (Service/Template/Key) también se guardan en localStorage para uso inmediato del front-end.</p>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button type="button" onclick="loadContactFormConfig()" class="px-4 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-gamer-border text-zinc-400 rounded-xl text-xs font-bold transition">
+                            <i class="fa-solid fa-rotate-right mr-1"></i> Recargar
+                        </button>
+                        <button type="submit" class="flex-1 py-2.5 bg-gradient-to-r from-gamer-orange to-gamer-orangeHover text-zinc-950 font-black uppercase tracking-wider rounded-xl text-xs shadow-neon-orange hover:brightness-110 transition">
+                            <i class="fa-solid fa-floppy-disk mr-1"></i> Guardar Formulario
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Gestión de Usuarios -->
+            <section id="tab-users" class="space-y-6 hidden fade-in">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-black tracking-wide text-zinc-200">GESTIÓN DE USUARIOS</h2>
+                        <p class="text-xs text-zinc-500">Administra los usuarios con acceso al panel de control.</p>
+                    </div>
+                    <button onclick="openUserModal()" class="w-full sm:w-auto bg-gradient-to-r from-gamer-orange to-gamer-orangeHover hover:from-orange-500 hover:to-red-600 text-zinc-950 font-bold text-xs uppercase tracking-widest px-5 py-3 rounded-xl shadow-neon-orange flex items-center justify-center gap-2 transition duration-200">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>Crear Usuario</span>
+                    </button>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div class="p-4 bg-gamer-card border border-gamer-border rounded-xl">
+                        <p class="text-[10px] text-zinc-500 uppercase tracking-wider font-bold">Total</p>
+                        <p class="text-2xl font-black text-zinc-200 mt-1" id="users-total">0</p>
+                    </div>
+                    <div class="p-4 bg-gamer-card border border-gamer-border rounded-xl">
+                        <p class="text-[10px] text-zinc-500 uppercase tracking-wider font-bold">Activos</p>
+                        <p class="text-2xl font-black text-gamer-success mt-1" id="users-active">0</p>
+                    </div>
+                    <div class="p-4 bg-gamer-card border border-gamer-border rounded-xl">
+                        <p class="text-[10px] text-zinc-500 uppercase tracking-wider font-bold">Super Admins</p>
+                        <p class="text-2xl font-black text-gamer-orange mt-1" id="users-super">0</p>
+                    </div>
+                    <div class="p-4 bg-gamer-card border border-gamer-border rounded-xl">
+                        <p class="text-[10px] text-zinc-500 uppercase tracking-wider font-bold">Admins</p>
+                        <p class="text-2xl font-black text-blue-400 mt-1" id="users-admins">0</p>
+                    </div>
+                </div>
+
+                <!-- Tabla de usuarios -->
+                <div class="bg-gamer-card border border-gamer-border rounded-2xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs">
+                            <thead class="bg-zinc-950 text-zinc-400 uppercase tracking-wider">
+                                <tr>
+                                    <th class="text-left px-4 py-3 font-bold">Usuario</th>
+                                    <th class="text-left px-4 py-3 font-bold">Email</th>
+                                    <th class="text-left px-4 py-3 font-bold">Rol</th>
+                                    <th class="text-left px-4 py-3 font-bold">Estado</th>
+                                    <th class="text-left px-4 py-3 font-bold">Último Login</th>
+                                    <th class="text-right px-4 py-3 font-bold">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body" class="divide-y divide-gamer-border">
+                                <!-- Renderizado dinámico -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="users-empty-state" class="hidden text-center py-8">
+                        <i class="fa-solid fa-users text-3xl text-zinc-600 mb-2"></i>
+                        <p class="text-xs text-zinc-500">No hay usuarios registrados</p>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <!-- Footer: Créditos del Desarrollador -->
@@ -1072,6 +1314,82 @@
             <p class="text-[9px] text-zinc-600 mt-0.5">Digital Visual Consultant & Designer</p>
         </div>
     </main>
+
+    <!-- MODAL: CREAR / EDITAR USUARIO -->
+    <div id="user-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden fade-in">
+        <div class="bg-gamer-card border border-gamer-border rounded-2xl w-full max-w-md p-6 shadow-neon-orange space-y-4">
+            <div class="flex items-center justify-between border-b border-gamer-border pb-3">
+                <h3 id="user-modal-title" class="text-sm font-black tracking-wider text-zinc-200 uppercase">Crear Usuario</h3>
+                <button onclick="closeUserModal()" class="text-zinc-500 hover:text-zinc-300">
+                    <i class="fa-solid fa-times text-lg"></i>
+                </button>
+            </div>
+
+            <form id="user-form" onsubmit="saveUser(event)" class="space-y-3">
+                <input type="hidden" id="user-edit-id">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Nombre Completo *</label>
+                    <input type="text" id="user-name" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Ej. Juan Pérez">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Email *</label>
+                    <input type="email" id="user-email" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="usuario@tecnogamers.com">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Contraseña *</label>
+                    <input type="password" id="user-password" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Mínimo 6 caracteres" minlength="6">
+                    <p class="text-[9px] text-zinc-500 mt-1" id="user-password-hint">Mínimo 6 caracteres</p>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Rol *</label>
+                    <select id="user-role" required class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input">
+                        <option value="admin">Admin</option>
+                        <option value="super_admin">Super Admin</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" id="user-active" checked class="w-4 h-4 rounded text-gamer-orange bg-zinc-950 border-gamer-border focus:ring-gamer-orange">
+                    <label for="user-active" class="text-xs text-zinc-400">Usuario activo</label>
+                </div>
+                <div class="flex gap-2 pt-2 border-t border-gamer-border">
+                    <button type="button" onclick="closeUserModal()" class="flex-1 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-gamer-border text-zinc-400 rounded-xl text-xs font-bold transition">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="flex-1 py-2.5 bg-gradient-to-r from-gamer-orange to-gamer-orangeHover text-zinc-950 font-black uppercase tracking-wider rounded-xl text-xs shadow-neon-orange hover:brightness-110 transition">
+                        <i class="fa-solid fa-floppy-disk mr-1"></i> Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: CAMBIAR CONTRASEÑA -->
+    <div id="password-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden fade-in">
+        <div class="bg-gamer-card border border-gamer-border rounded-2xl w-full max-w-md p-6 shadow-neon-orange space-y-4">
+            <div class="flex items-center justify-between border-b border-gamer-border pb-3">
+                <h3 class="text-sm font-black tracking-wider text-zinc-200 uppercase">Cambiar Contraseña</h3>
+                <button onclick="closePasswordModal()" class="text-zinc-500 hover:text-zinc-300">
+                    <i class="fa-solid fa-times text-lg"></i>
+                </button>
+            </div>
+            <form id="password-form" onsubmit="changePassword(event)" class="space-y-3">
+                <input type="hidden" id="password-user-id">
+                <p class="text-xs text-zinc-400">Usuario: <span id="password-user-email" class="text-zinc-200 font-bold"></span></p>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Nueva Contraseña *</label>
+                    <input type="password" id="new-password" required minlength="6" class="w-full bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input" placeholder="Mínimo 6 caracteres">
+                </div>
+                <div class="flex gap-2 pt-2 border-t border-gamer-border">
+                    <button type="button" onclick="closePasswordModal()" class="flex-1 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-gamer-border text-zinc-400 rounded-xl text-xs font-bold transition">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="flex-1 py-2.5 bg-gradient-to-r from-gamer-orange to-gamer-orangeHover text-zinc-950 font-black uppercase tracking-wider rounded-xl text-xs shadow-neon-orange hover:brightness-110 transition">
+                        <i class="fa-solid fa-key mr-1"></i> Cambiar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- MODAL: AGREGAR / EDITAR PRODUCTO -->
     <div id="product-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden fade-in">
@@ -1216,12 +1534,13 @@
     <!-- SCRIPT DE INICIALIZACIÓN Y CONFIGURACIÓN FIREBASE -->
     <script type="module">
         import { initializeApp, getApp, deleteApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, deleteDoc, onSnapshot, collection, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword, deleteUser } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, deleteDoc, onSnapshot, collection, query, getDocs, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // APP STATE (Memoria de ejecución)
         const state = {
-            mode: 'demo', // 'demo' o 'firebase'
+            mode: 'firebase', // 'firebase' solamente
+            currentUser: null,
             products: [],
             categories: [
                 { id: 'cat-1', name: 'Teclados', slug: 'teclados', icon: 'fa-solid fa-keyboard' },
@@ -1326,122 +1645,200 @@
             }, 4500);
         };
 
-        // CONEXIÓN Y AUTENTICACIÓN FIREBASE
-        window.switchLoginMode = function(mode) {
-            state.mode = mode;
-            const btnDemo = document.getElementById('btn-mode-demo');
-            const btnFb = document.getElementById('btn-mode-firebase');
-            const infoBox = document.getElementById('demo-info-box');
-            const credentialsInputs = document.getElementById('firebase-credentials-inputs');
-
-            if (mode === 'demo') {
-                btnDemo.className = "flex-1 text-center py-2.5 text-xs font-semibold rounded-lg bg-gamer-orange text-zinc-950 transition-all duration-300";
-                btnFb.className = "flex-1 text-center py-2.5 text-xs font-semibold rounded-lg text-zinc-400 hover:text-zinc-200 transition-all duration-300";
-                infoBox.classList.remove('hidden');
-                credentialsInputs.classList.add('hidden');
-            } else {
-                btnFb.className = "flex-1 text-center py-2.5 text-xs font-semibold rounded-lg bg-gamer-orangeHover text-zinc-100 transition-all duration-300 shadow-neon-orange";
-                btnDemo.className = "flex-1 text-center py-2.5 text-xs font-semibold rounded-lg text-zinc-400 hover:text-zinc-200 transition-all duration-300";
-                infoBox.classList.add('hidden');
-                credentialsInputs.classList.remove('hidden');
-
-                const savedPass = localStorage.getItem('tg_admin_pass');
-                if (savedPass) {
-                    document.getElementById('login-pass').value = savedPass;
-                    document.getElementById('login-remember').checked = true;
-                }
-            }
+        // ===================== AUTENTICACIÓN DE USUARIOS =====================
+        const BOOTSTRAP_ADMIN = {
+            email: 'admin@tecnogamers.com',
+            password: 'admin123',
+            name: 'Administrador Principal',
+            role: 'super_admin'
         };
+
+        let state_secondaryApp = null;
+
+        // Crear un cliente secundario de Firebase Auth para crear usuarios sin cerrar la sesión actual
+        function getSecondaryAuth() {
+            if (!state.firebaseApp) return null;
+            try {
+                if (!state_secondaryApp) {
+                    state_secondaryApp = initializeApp(state.firebaseApp.options, 'secondary');
+                }
+                return getAuth(state_secondaryApp);
+            } catch (e) {
+                return null;
+            }
+        }
+
+        // BOOTSTRAP: crear el primer super admin si no existe ninguno
+        async function bootstrapFirstAdmin() {
+            if (state.mode !== 'firebase' || !state.firebaseDb) return;
+            try {
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+                const usersQuery = query(collection(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'users'));
+                const snap = await getDocs(usersQuery);
+                if (snap.empty) {
+                    // No hay usuarios, crear el primer super admin
+                    const secondaryAuth = getSecondaryAuth();
+                    if (!secondaryAuth) return;
+                    try {
+                        const cred = await createUserWithEmailAndPassword(secondaryAuth, BOOTSTRAP_ADMIN.email, BOOTSTRAP_ADMIN.password);
+                        await setDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'users', cred.user.uid), {
+                            email: BOOTSTRAP_ADMIN.email,
+                            name: BOOTSTRAP_ADMIN.name,
+                            role: BOOTSTRAP_ADMIN.role,
+                            active: true,
+                            createdAt: new Date().toISOString(),
+                            lastLogin: null
+                        });
+                        await signOut(secondaryAuth);
+                        console.log('Bootstrap: Super admin creado');
+                    } catch (e) {
+                        console.log('Bootstrap error:', e.message);
+                    }
+                }
+            } catch (e) {
+                console.log('Bootstrap check error:', e.message);
+            }
+        }
 
         window.handleLogin = async function(event) {
             event.preventDefault();
-            
-            if (state.mode === 'demo') {
-                // Cargar datos locales de prueba
-                const savedProducts = localStorage.getItem('tg_demo_products');
-                const savedCategories = localStorage.getItem('tg_demo_categories');
-                
-                state.products = savedProducts ? JSON.parse(savedProducts) : [...initialDemoProducts];
-                if (savedCategories) state.categories = JSON.parse(savedCategories);
+            const btn = document.getElementById('login-btn');
+            const originalHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Conectando...';
 
+            // Cargar e inicializar Firebase
+            const hasConfig = loadSavedFbConfig();
+            if (!hasConfig) {
+                showToast("No tienes credenciales de Firebase configuradas. Configúralas primero en el panel de Firebase.", 'warn');
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
+                return;
+            }
+
+            try {
+                const config = JSON.parse(localStorage.getItem('tg_fb_config'));
+                try {
+                    const existingApp = getApp();
+                    if (existingApp) deleteApp(existingApp);
+                } catch(e) {}
+                state_secondaryApp = null;
+                state.firebaseApp = initializeApp(config);
+                state.firebaseDb = getFirestore(state.firebaseApp);
+                state.firebaseAuth = getAuth(state.firebaseApp);
+
+                // BOOTSTRAP: crear super admin si no existe
+                await bootstrapFirstAdmin();
+
+                // Login con email y contraseña
+                const email = document.getElementById('login-email').value.trim();
+                const pass = document.getElementById('login-pass').value;
+                if (!email || !pass) {
+                    showToast("Ingresa email y contraseña", 'warn');
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                    return;
+                }
+
+                const userCred = await signInWithEmailAndPassword(state.firebaseAuth, email, pass);
+                const user = userCred.user;
+
+                // Verificar perfil del usuario en Firestore
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+                let userData;
+                const userDoc = await getDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'users', user.uid));
+                if (!userDoc.exists()) {
+                    // Si no tiene perfil, crearlo automáticamente como super_admin
+                    // (caso típico: usuario creado manualmente en Firebase Auth)
+                    const newProfile = {
+                        email: user.email,
+                        name: user.email.split('@')[0],
+                        role: 'super_admin',
+                        active: true,
+                        createdAt: new Date().toISOString(),
+                        lastLogin: new Date().toISOString()
+                    };
+                    await setDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'users', user.uid), newProfile);
+                    userData = newProfile;
+                    showToast("Perfil creado automáticamente", 'success');
+                } else {
+                    userData = userDoc.data();
+                    if (userData.active === false) {
+                        showToast("Tu cuenta está desactivada. Contacta al administrador.", 'danger');
+                        await signOut(state.firebaseAuth);
+                        btn.disabled = false;
+                        btn.innerHTML = originalHtml;
+                        return;
+                    }
+                }
+
+                // Guardar sesión si "Recordar" está marcado
+                if (document.getElementById('login-remember').checked) {
+                    localStorage.setItem('tg_admin_session', '1');
+                } else {
+                    localStorage.removeItem('tg_admin_session');
+                }
+
+                // Actualizar último login
+                await setDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'users', user.uid), {
+                    lastLogin: new Date().toISOString()
+                }, { merge: true });
+
+                // Guardar info del usuario actual
+                state.currentUser = { uid: user.uid, ...userData };
+
+                // Mostrar UI
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('main-sidebar').classList.remove('hidden');
                 document.getElementById('main-content').classList.remove('hidden');
-                
-                document.getElementById('connection-badge').className = "px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20";
-                document.getElementById('connection-badge').textContent = "DEMO";
-                document.getElementById('admin-user-email').textContent = "Administrador Demo";
-                document.getElementById('sync-text').textContent = "Simulado";
-                document.getElementById('sync-status').className = "w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse";
-                
-                showToast("Acceso concedido en Modo Demo", 'success');
-                initAppUI();
-            } else {
-                // Validar contraseña Firebase
-                const pass = document.getElementById('login-pass').value;
-                if (pass !== 'admin123') {
-                    showToast("Contraseña incorrecta. Contraseña por defecto: admin123", 'danger');
-                    return;
-                }
 
-                // Guardar contraseña si "Recordar" está marcado
-                if (document.getElementById('login-remember').checked) {
-                    localStorage.setItem('tg_admin_pass', pass);
+                document.getElementById('connection-badge').className = "px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-gamer-success/10 text-gamer-success border border-gamer-success/20 shadow-neon-success";
+                document.getElementById('connection-badge').textContent = "LIVE";
+                document.getElementById('admin-user-name').textContent = userData.name || user.email;
+                document.getElementById('admin-user-role').textContent = userData.role === 'super_admin' ? 'Super Administrador' : 'Administrador';
+                document.getElementById('sync-text').textContent = "Sincronizado";
+                document.getElementById('sync-status').className = "w-2.5 h-2.5 rounded-full bg-gamer-success animate-pulse";
+
+                // Mostrar/ocultar pestaña Usuarios según el rol
+                const usersNav = document.getElementById('nav-users');
+                if (userData.role === 'super_admin') {
+                    usersNav.classList.remove('hidden');
                 } else {
-                    localStorage.removeItem('tg_admin_pass');
+                    usersNav.classList.add('hidden');
                 }
 
-                // Cargar e inicializar Firebase con los datos guardados
-                const hasConfig = loadSavedFbConfig();
-                if (!hasConfig) {
-                    showToast("No tienes credenciales de Firebase configuradas. Entra en Modo Demo primero para guardarlas.", 'warn');
-                    return;
+                showToast("Bienvenido, " + (userData.name || user.email), 'success');
+                initFirebaseSync();
+                if (userData.role === 'super_admin') renderUsers();
+            } catch (error) {
+                console.error(error);
+                if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                    showToast("Email o contraseña incorrectos", 'danger');
+                } else if (error.code === 'auth/too-many-requests') {
+                    showToast("Demasiados intentos. Intenta más tarde.", 'danger');
+                } else {
+                    showToast("Error al iniciar sesión: " + error.message, 'danger');
                 }
-
-                try {
-                    // Inicializar la conexión Firebase
-                    const config = JSON.parse(localStorage.getItem('tg_fb_config'));
-                    
-                    // Evitar error duplicate-app: eliminar app anterior si existe
-                    try { 
-                        const existingApp = getApp();
-                        if (existingApp) deleteApp(existingApp); 
-                    } catch(e) { /* no existía */ }
-                    
-                    state.firebaseApp = initializeApp(config);
-                    state.firebaseDb = getFirestore(state.firebaseApp);
-                    state.firebaseAuth = getAuth(state.firebaseApp);
-
-                    // Autenticarse de manera anónima antes de hacer consultas
-                    await signInAnonymously(state.firebaseAuth);
-
-                    document.getElementById('login-screen').classList.add('hidden');
-                    document.getElementById('main-sidebar').classList.remove('hidden');
-                    document.getElementById('main-content').classList.remove('hidden');
-                    
-                    document.getElementById('connection-badge').className = "px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-gamer-success/10 text-gamer-success border border-gamer-success/20 shadow-neon-success";
-                    document.getElementById('connection-badge').textContent = "LIVE";
-                    document.getElementById('admin-user-email').textContent = "Administrador Real";
-                    document.getElementById('sync-text').textContent = "Sincronizado";
-                    document.getElementById('sync-status').className = "w-2.5 h-2.5 rounded-full bg-gamer-success animate-pulse";
-
-                    showToast("Conectado con éxito a Firebase", 'success');
-                    initFirebaseSync();
-                } catch (error) {
-                    console.error(error);
-                    showToast("Fallo al conectar Firebase: " + error.message, 'danger');
-                }
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
             }
         };
 
-        window.logout = function() {
-            // Cancelar suscripciones activas
+        window.logout = async function() {
+            try {
+                if (state.firebaseAuth) await signOut(state.firebaseAuth);
+            } catch(e) {}
             state.unsubscribes.forEach(unsub => unsub());
             state.unsubscribes = [];
-            
+            state.currentUser = null;
             document.getElementById('login-screen').classList.remove('hidden');
             document.getElementById('main-sidebar').classList.add('hidden');
             document.getElementById('main-content').classList.add('hidden');
+            // Resetear form
+            document.getElementById('login-form').reset();
+            const btn = document.getElementById('login-btn');
+            btn.disabled = false;
+            btn.innerHTML = '<span>Ingresar al Sistema</span><i class="fa-solid fa-right-to-bracket"></i>';
             showToast("Sesión cerrada", 'warn');
         };
 
@@ -1485,13 +1882,11 @@
                 state.firebaseApp = null;
                 state.firebaseDb = null;
                 state.firebaseAuth = null;
-                
+                state.currentUser = null;
+
                 document.getElementById('login-screen').classList.remove('hidden');
                 document.getElementById('main-sidebar').classList.add('hidden');
                 document.getElementById('main-content').classList.add('hidden');
-                
-                // Activar modo Firebase en el login
-                switchLoginMode('firebase');
             }, 1000);
         };
 
@@ -2190,6 +2585,661 @@
             }
         });
 
+        // ===================== FORMULARIO DE CONTACTO =====================
+        let contactOptions = [];
+        const contactDefaultOptions = [
+            'Consolas de Videojuegos',
+            'Últimos Títulos y Videojuegos',
+            'Merchandising (Funko, Figuras)',
+            'Camisetas Especiales',
+            'Consultas Generales / Alianzas'
+        ];
+
+        function renderContactOptions() {
+            const container = document.getElementById('cf-options');
+            if (!container) return;
+            if (contactOptions.length === 0) {
+                contactOptions = [...contactDefaultOptions];
+            }
+            container.innerHTML = '';
+            contactOptions.forEach((opt, i) => {
+                container.insertAdjacentHTML('beforeend', `
+                    <div class="flex items-center gap-2" data-opt-idx="${i}">
+                        <input type="text" value="${opt.replace(/"/g, '&quot;')}" class="flex-1 bg-zinc-950 border border-gamer-border rounded-lg px-3 py-2 text-xs text-zinc-200 neon-input cf-opt-input" placeholder="Opción ${i + 1}">
+                        <button type="button" onclick="removeContactOption(${i})" class="text-zinc-600 hover:text-red-500 transition text-xs" title="Eliminar opción">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `);
+            });
+            // Adjuntar listeners
+            container.querySelectorAll('.cf-opt-input').forEach((inp, i) => {
+                inp.oninput = () => { contactOptions[i] = inp.value; };
+            });
+        }
+
+        window.addContactOption = function() {
+            contactOptions.push('Nueva opción');
+            renderContactOptions();
+        };
+
+        window.removeContactOption = function(idx) {
+            if (contactOptions.length <= 1) {
+                showToast("Debe haber al menos 1 opción", 'warn');
+                return;
+            }
+            contactOptions.splice(idx, 1);
+            renderContactOptions();
+        };
+
+        window.loadContactFormConfig = async function() {
+            if (state.mode !== 'firebase' || !state.firebaseDb) return;
+            try {
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+                const docSnap = await getDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'settings', 'contactForm'));
+                let data = {};
+                if (docSnap.exists()) data = docSnap.data();
+                // Merge con localStorage (credenciales EmailJS sensibles)
+                const localRaw = localStorage.getItem('tg_emailjs_config');
+                if (localRaw) {
+                    try { Object.assign(data, JSON.parse(localRaw)); } catch(e) {}
+                }
+
+                document.getElementById('cf-title').value = data.title || 'Envíanos una Consulta';
+                document.getElementById('cf-button').value = data.buttonText || 'Enviar Consulta por Correo';
+                document.getElementById('cf-label-name').value = data.labelName || 'Nombre Completo';
+                document.getElementById('cf-label-phone').value = data.labelPhone || 'Teléfono / WhatsApp';
+                document.getElementById('cf-label-email').value = data.labelEmail || 'Correo Electrónico';
+                document.getElementById('cf-label-topic').value = data.labelTopic || '¿En qué estás interesado?';
+                document.getElementById('cf-label-message').value = data.labelMessage || 'Tu Mensaje';
+                document.getElementById('cf-emailjs-service').value = data.service || '';
+                document.getElementById('cf-emailjs-template').value = data.template || '';
+                document.getElementById('cf-emailjs-key').value = data.publicKey || '';
+                document.getElementById('cf-email-dest').value = data.destEmail || 'tecnogamers.ca@gmail.com';
+
+                if (Array.isArray(data.options) && data.options.length > 0) {
+                    contactOptions = data.options;
+                } else {
+                    contactOptions = [...contactDefaultOptions];
+                }
+                renderContactOptions();
+            } catch (e) { console.log('Error loading contact form:', e); }
+        };
+
+        document.getElementById('contact-form-config').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            if (state.mode !== 'firebase' || !state.firebaseDb) {
+                showToast("Conéctate a Firebase primero", 'warn');
+                return;
+            }
+            try {
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+                const data = {
+                    title: document.getElementById('cf-title').value.trim(),
+                    buttonText: document.getElementById('cf-button').value.trim(),
+                    labelName: document.getElementById('cf-label-name').value.trim(),
+                    labelPhone: document.getElementById('cf-label-phone').value.trim(),
+                    labelEmail: document.getElementById('cf-label-email').value.trim(),
+                    labelTopic: document.getElementById('cf-label-topic').value.trim(),
+                    labelMessage: document.getElementById('cf-label-message').value.trim(),
+                    options: contactOptions.filter(o => o && o.trim()),
+                    destEmail: document.getElementById('cf-email-dest').value.trim(),
+                    updatedAt: new Date().toISOString()
+                };
+                // Datos sensibles a localStorage
+                const localData = {
+                    service: document.getElementById('cf-emailjs-service').value.trim(),
+                    template: document.getElementById('cf-emailjs-template').value.trim(),
+                    publicKey: document.getElementById('cf-emailjs-key').value.trim()
+                };
+                localStorage.setItem('tg_emailjs_config', JSON.stringify(localData));
+
+                // Datos públicos a Firestore
+                await setDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'settings', 'contactForm'), data);
+                showToast("Formulario de contacto guardado", 'success');
+            } catch (error) {
+                showToast("Error al guardar: " + error.message, 'danger');
+            }
+        });
+
+        // Inicializar opciones por defecto si no hay nada
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                if (contactOptions.length === 0) {
+                    contactOptions = [...contactDefaultOptions];
+                    renderContactOptions();
+                }
+            }, 800);
+        });
+
+        // ===================== GESTIÓN DE USUARIOS =====================
+        let usersUnsub = null;
+
+        function renderUsers() {
+            if (state.mode !== 'firebase' || !state.firebaseDb) return;
+            if (!state.currentUser || state.currentUser.role !== 'super_admin') return;
+
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+            const usersQuery = query(collection(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'users'));
+
+            if (usersUnsub) usersUnsub();
+            usersUnsub = onSnapshot(usersQuery, (snap) => {
+                const users = [];
+                snap.forEach(d => users.push({ id: d.id, ...d.data() }));
+                renderUsersTable(users);
+                updateUsersStats(users);
+            }, (error) => {
+                console.error('Error loading users:', error);
+                showToast("Error al cargar usuarios", 'danger');
+            });
+        }
+
+        function renderUsersTable(users) {
+            const tbody = document.getElementById('users-table-body');
+            const empty = document.getElementById('users-empty-state');
+            if (!tbody) return;
+
+            if (users.length === 0) {
+                tbody.innerHTML = '';
+                empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+
+            const currentUid = state.currentUser ? state.currentUser.uid : null;
+            tbody.innerHTML = users.map(u => {
+                const isMe = u.id === currentUid;
+                const lastLogin = u.lastLogin ? new Date(u.lastLogin).toLocaleString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Nunca';
+                const roleBadge = u.role === 'super_admin'
+                    ? '<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-gamer-orange/10 text-gamer-orange border border-gamer-orange/20">SUPER ADMIN</span>'
+                    : '<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">ADMIN</span>';
+                const statusBadge = u.active !== false
+                    ? '<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-gamer-success/10 text-gamer-success border border-gamer-success/20">ACTIVO</span>'
+                    : '<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-red-500/10 text-red-400 border border-red-500/20">INACTIVO</span>';
+
+                return `
+                    <tr class="hover:bg-zinc-900/40">
+                        <td class="px-4 py-3">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-gamer-orange/10 border border-gamer-orange/20 flex items-center justify-center text-gamer-orange text-xs font-bold">
+                                    ${(u.name || u.email).charAt(0).toUpperCase()}
+                                </div>
+                                <div>
+                                    <p class="text-zinc-200 font-bold">${u.name || 'Sin nombre'}${isMe ? ' <span class="text-[9px] text-gamer-orange">(tú)</span>' : ''}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-4 py-3 text-zinc-400">${u.email}</td>
+                        <td class="px-4 py-3">${roleBadge}</td>
+                        <td class="px-4 py-3">${statusBadge}</td>
+                        <td class="px-4 py-3 text-zinc-500 text-[10px]">${lastLogin}</td>
+                        <td class="px-4 py-3">
+                            <div class="flex items-center justify-end gap-1">
+                                <button onclick="openUserModal('${u.id}')" class="p-1.5 text-zinc-500 hover:text-gamer-orange transition" title="Editar">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button onclick="openPasswordModal('${u.id}', '${u.email}')" class="p-1.5 text-zinc-500 hover:text-blue-400 transition" title="Cambiar contraseña">
+                                    <i class="fa-solid fa-key"></i>
+                                </button>
+                                <button onclick="toggleUserActive('${u.id}', ${u.active !== false})" class="p-1.5 text-zinc-500 hover:text-yellow-400 transition" title="${u.active !== false ? 'Desactivar' : 'Activar'}">
+                                    <i class="fa-solid fa-${u.active !== false ? 'ban' : 'check'}"></i>
+                                </button>
+                                ${!isMe ? `<button onclick="deleteUser('${u.id}', '${u.email}')" class="p-1.5 text-zinc-500 hover:text-red-400 transition" title="Eliminar">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>` : ''}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateUsersStats(users) {
+            document.getElementById('users-total').textContent = users.length;
+            document.getElementById('users-active').textContent = users.filter(u => u.active !== false).length;
+            document.getElementById('users-super').textContent = users.filter(u => u.role === 'super_admin').length;
+            document.getElementById('users-admins').textContent = users.filter(u => u.role === 'admin').length;
+        }
+
+        window.openUserModal = function(uid) {
+            const modal = document.getElementById('user-modal');
+            const title = document.getElementById('user-modal-title');
+            const form = document.getElementById('user-form');
+            form.reset();
+            document.getElementById('user-edit-id').value = '';
+            document.getElementById('user-password').required = true;
+            document.getElementById('user-password-hint').classList.remove('hidden');
+
+            if (uid) {
+                title.textContent = 'Editar Usuario';
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+                getDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'users', uid)).then(snap => {
+                    if (snap.exists()) {
+                        const u = snap.data();
+                        document.getElementById('user-edit-id').value = uid;
+                        document.getElementById('user-name').value = u.name || '';
+                        document.getElementById('user-email').value = u.email || '';
+                        document.getElementById('user-role').value = u.role || 'admin';
+                        document.getElementById('user-active').checked = u.active !== false;
+                        document.getElementById('user-password').required = false;
+                        document.getElementById('user-password-hint').textContent = 'Dejar vacío para no cambiar';
+                        document.getElementById('user-password-hint').classList.remove('hidden');
+                    }
+                });
+            } else {
+                title.textContent = 'Crear Usuario';
+                document.getElementById('user-password-hint').textContent = 'Mínimo 6 caracteres';
+            }
+            modal.classList.remove('hidden');
+        };
+
+        window.closeUserModal = function() {
+            document.getElementById('user-modal').classList.add('hidden');
+        };
+
+        window.saveUser = async function(event) {
+            event.preventDefault();
+            if (!state.currentUser || state.currentUser.role !== 'super_admin') {
+                showToast("Sin permisos", 'danger');
+                return;
+            }
+            const editId = document.getElementById('user-edit-id').value;
+            const name = document.getElementById('user-name').value.trim();
+            const email = document.getElementById('user-email').value.trim();
+            const password = document.getElementById('user-password').value;
+            const role = document.getElementById('user-role').value;
+            const active = document.getElementById('user-active').checked;
+
+            if (!editId && !password) {
+                showToast("Contraseña es obligatoria para usuarios nuevos", 'warn');
+                return;
+            }
+            if (password && password.length < 6) {
+                showToast("La contraseña debe tener al menos 6 caracteres", 'warn');
+                return;
+            }
+
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+
+            try {
+                if (editId) {
+                    // Editar usuario existente
+                    const updateData = { name, email, role, active };
+                    if (password) {
+                        // Para cambiar contraseña de un usuario existente, hay que hacerlo con su sesión
+                        // Como solución simple, usamos updatePassword con un truco: el admin actual no puede cambiar
+                        // la contraseña de otro usuario directamente. Solución: usar la API de Admin (no disponible en cliente).
+                        // Workaround: eliminar el usuario y crearlo de nuevo (no ideal, los datos se perderían)
+                        // Por ahora, mostraremos un mensaje.
+                        showToast("Para cambiar la contraseña de otro usuario usa el botón 'Cambiar contraseña' en la tabla", 'warn');
+                        return;
+                    }
+                    await setDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'users', editId), updateData, { merge: true });
+                    showToast("Usuario actualizado", 'success');
+                    closeUserModal();
+                } else {
+                    // Crear nuevo usuario
+                    const secondaryAuth = getSecondaryAuth();
+                    if (!secondaryAuth) {
+                        showToast("Error: no se pudo inicializar auth secundario", 'danger');
+                        return;
+                    }
+                    const cred = await createUserWithEmailAndPassword(secondaryAuth, email, password);
+                    await setDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'users', cred.user.uid), {
+                        name,
+                        email,
+                        role,
+                        active,
+                        createdAt: new Date().toISOString(),
+                        lastLogin: null
+                    });
+                    await signOut(secondaryAuth);
+                    showToast("Usuario creado: " + name, 'success');
+                    closeUserModal();
+                }
+            } catch (error) {
+                console.error(error);
+                if (error.code === 'auth/email-already-in-use') {
+                    showToast("Este email ya está registrado", 'danger');
+                } else {
+                    showToast("Error: " + error.message, 'danger');
+                }
+            }
+        };
+
+        window.openPasswordModal = function(uid, email) {
+            document.getElementById('password-user-id').value = uid;
+            document.getElementById('password-user-email').textContent = email;
+            document.getElementById('new-password').value = '';
+            document.getElementById('password-modal').classList.remove('hidden');
+        };
+
+        window.closePasswordModal = function() {
+            document.getElementById('password-modal').classList.add('hidden');
+        };
+
+        window.changePassword = async function(event) {
+            event.preventDefault();
+            if (!state.currentUser || state.currentUser.role !== 'super_admin') return;
+            const uid = document.getElementById('password-user-id').value;
+            const newPass = document.getElementById('new-password').value;
+            if (newPass.length < 6) {
+                showToast("Mínimo 6 caracteres", 'warn');
+                return;
+            }
+            // Como no podemos cambiar la contraseña de otro usuario desde el cliente con Auth estándar,
+            // la solución es eliminar el usuario y recrearlo
+            if (!confirm("Para cambiar la contraseña, el sistema necesita recrear el usuario. El usuario recibirá la nueva contraseña y deberá volver a iniciar sesión. ¿Continuar?")) return;
+
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+            try {
+                const userDoc = await getDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'users', uid));
+                if (!userDoc.exists()) {
+                    showToast("Usuario no encontrado", 'danger');
+                    return;
+                }
+                const userData = userDoc.data();
+
+                // Crear nuevo usuario con nuevo password
+                const secondaryAuth = getSecondaryAuth();
+                if (!secondaryAuth) {
+                    showToast("Error de autenticación", 'danger');
+                    return;
+                }
+                const cred = await createUserWithEmailAndPassword(secondaryAuth, userData.email, newPass);
+                await setDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'users', cred.user.uid), {
+                    ...userData,
+                    lastLogin: null
+                });
+                await signOut(secondaryAuth);
+
+                // Eliminar el documento viejo y el usuario viejo de Auth
+                // Nota: no podemos eliminar el usuario de Auth desde el cliente.
+                // Workaround: marcar el viejo como inactivo para que no pueda iniciar sesión
+                await setDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'users', uid), {
+                    active: false,
+                    email: '_deleted_' + userData.email
+                }, { merge: true });
+
+                showToast("Contraseña cambiada. Comparte la nueva con el usuario.", 'success');
+                closePasswordModal();
+            } catch (error) {
+                showToast("Error: " + error.message, 'danger');
+            }
+        };
+
+        window.toggleUserActive = async function(uid, currentActive) {
+            if (!state.currentUser || state.currentUser.role !== 'super_admin') return;
+            if (uid === state.currentUser.uid) {
+                showToast("No puedes desactivarte a ti mismo", 'warn');
+                return;
+            }
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+            try {
+                await setDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'users', uid), {
+                    active: !currentActive
+                }, { merge: true });
+                showToast(currentActive ? "Usuario desactivado" : "Usuario activado", 'success');
+            } catch (error) {
+                showToast("Error: " + error.message, 'danger');
+            }
+        };
+
+        window.deleteUser = async function(uid, email) {
+            if (!state.currentUser || state.currentUser.role !== 'super_admin') return;
+            if (uid === state.currentUser.uid) {
+                showToast("No puedes eliminarte a ti mismo", 'warn');
+                return;
+            }
+            if (!confirm("¿Eliminar al usuario " + email + "?\\n\\nNota: Se eliminará su perfil de Firestore. La cuenta de Auth quedará deshabilitada.")) return;
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+            try {
+                await deleteDoc(doc(state.firebaseDb, 'artifacts', appId, 'public', 'data', 'users', uid));
+                showToast("Usuario eliminado", 'success');
+            } catch (error) {
+                showToast("Error: " + error.message, 'danger');
+            }
+        };
+
+        // ===================== IMPORTAR PRODUCTOS DESDE CSV =====================
+        let csvParsedData = [];
+
+        window.downloadCsvTemplate = function() {
+            const csv = 'name,category,price,stock,shortDesc,longDesc,sku,status,featured,image\n' +
+                '"PlayStation 5 Slim","consolas",1999,15,"Consola de nueva generación","La PS5 Slim ofrece gráficos de última generación","TG-VID-001","published",true,"https://res.cloudinary.com/demo/image.jpg"\n' +
+                '"Funko Pop Goku","merchandising",89,25,"Funko Pop de Goku Super Saiyan","Figura coleccionable de Dragon Ball","TG-FNK-001","published",false,""\n' +
+                '"Camiseta Classic","camisetas",49,50,"Camiseta 100% algodón","Camiseta negra con estampado retro","TG-CAM-001","draft",false,""';
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'plantilla-productos.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast("Plantilla descargada", 'success');
+        };
+
+        function parseCsv(text) {
+            const rows = [];
+            let row = [];
+            let field = '';
+            let inQuotes = false;
+            for (let i = 0; i < text.length; i++) {
+                const c = text[i];
+                const next = text[i + 1];
+                if (inQuotes) {
+                    if (c === '"' && next === '"') { field += '"'; i++; }
+                    else if (c === '"') { inQuotes = false; }
+                    else { field += c; }
+                } else {
+                    if (c === '"') { inQuotes = true; }
+                    else if (c === ',') { row.push(field); field = ''; }
+                    else if (c === '\n' || c === '\r') {
+                        if (c === '\r' && next === '\n') i++;
+                        if (field !== '' || row.length > 0) { row.push(field); rows.push(row); }
+                        row = []; field = '';
+                    } else { field += c; }
+                }
+            }
+            if (field !== '' || row.length > 0) { row.push(field); rows.push(row); }
+            return rows;
+        }
+
+        function autoSku(name, category) {
+            const cat = (category || 'GEN').substring(0, 3).toUpperCase();
+            const nm = (name || 'PRD').replace(/[^a-zA-Z0-9]/g, '').substring(0, 3).toUpperCase();
+            const num = Math.floor(Math.random() * 9000 + 1000);
+            return 'TG-' + cat + nm + num;
+        }
+
+        window.handleCsvFile = function(input) {
+            const file = input.files[0];
+            if (!file) return;
+            if (!file.name.toLowerCase().endsWith('.csv')) {
+                showToast("Solo se aceptan archivos .csv", 'danger');
+                input.value = '';
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const text = e.target.result;
+                    const rows = parseCsv(text);
+                    if (rows.length < 2) {
+                        showToast("El archivo está vacío o solo tiene encabezados", 'danger');
+                        return;
+                    }
+                    const headers = rows[0].map(h => h.trim().toLowerCase());
+                    const requiredFields = ['name', 'category', 'price'];
+                    const missingHeaders = requiredFields.filter(f => !headers.includes(f));
+                    if (missingHeaders.length > 0) {
+                        showToast("Faltan columnas obligatorias: " + missingHeaders.join(', '), 'danger');
+                        return;
+                    }
+                    const data = [];
+                    const errors = [];
+                    for (let r = 1; r < rows.length; r++) {
+                        const row = rows[r];
+                        if (row.every(f => !f || !f.trim())) continue;
+                        if (row.length < headers.length) {
+                            while (row.length < headers.length) row.push('');
+                        }
+                        const obj = {};
+                        for (let c = 0; c < headers.length; c++) {
+                            obj[headers[c]] = (row[c] || '').trim();
+                        }
+                        // Validaciones
+                        const rowErrors = [];
+                        if (!obj.name) rowErrors.push('falta nombre');
+                        if (!obj.category) rowErrors.push('falta categoría');
+                        if (!obj.price || isNaN(parseFloat(obj.price))) rowErrors.push('precio inválido');
+                        if (obj.stock && isNaN(parseInt(obj.stock))) rowErrors.push('stock inválido');
+                        if (obj.status && !['published', 'draft'].includes(obj.status.toLowerCase())) {
+                            rowErrors.push('status debe ser "published" o "draft"');
+                        }
+                        if (rowErrors.length > 0) {
+                            errors.push('Fila ' + (r + 1) + ': ' + rowErrors.join(', '));
+                        }
+                        // Generar SKU automático si está vacío
+                        if (!obj.sku) obj.sku = autoSku(obj.name, obj.category);
+                        // Normalizar boolean
+                        obj.featured = (obj.featured || '').toLowerCase() === 'true';
+                        // Normalizar status
+                        if (!obj.status) obj.status = 'published';
+                        else obj.status = obj.status.toLowerCase();
+                        // Normalizar números
+                        obj.price = parseFloat(obj.price) || 0;
+                        obj.stock = parseInt(obj.stock) || 0;
+                        obj._rowIndex = r + 1;
+                        data.push(obj);
+                    }
+                    csvParsedData = data;
+                    showCsvPreview(data, errors);
+                } catch (err) {
+                    showToast("Error al leer CSV: " + err.message, 'danger');
+                }
+            };
+            reader.readAsText(file);
+        };
+
+        function showCsvPreview(data, errors) {
+            const preview = document.getElementById('csv-preview');
+            const table = document.getElementById('csv-preview-table');
+            const errorsEl = document.getElementById('csv-errors');
+            const countEl = document.getElementById('csv-row-count');
+            const importCountEl = document.getElementById('csv-import-count');
+            preview.classList.remove('hidden');
+            countEl.textContent = data.length;
+            importCountEl.textContent = data.length;
+
+            if (errors.length > 0) {
+                errorsEl.classList.remove('hidden');
+                errorsEl.innerHTML = '<strong>Errores encontrados:</strong><br>' + errors.slice(0, 10).join('<br>') + (errors.length > 10 ? '<br>... y ' + (errors.length - 10) + ' más' : '');
+            } else {
+                errorsEl.classList.add('hidden');
+            }
+
+            const previewRows = data.slice(0, 5);
+            let html = '<table class="w-full text-[10px] text-zinc-300"><thead class="text-zinc-500 uppercase"><tr>';
+            ['name', 'category', 'price', 'stock', 'status'].forEach(h => {
+                html += '<th class="text-left py-1 px-2">' + h + '</th>';
+            });
+            html += '</tr></thead><tbody>';
+            previewRows.forEach(row => {
+                html += '<tr class="border-t border-gamer-border">';
+                ['name', 'category', 'price', 'stock', 'status'].forEach(h => {
+                    html += '<td class="py-1 px-2">' + (row[h] || '') + '</td>';
+                });
+                html += '</tr>';
+            });
+            html += '</tbody></table>';
+            if (data.length > 5) {
+                html += '<p class="text-[10px] text-zinc-500 mt-2 text-center">... y ' + (data.length - 5) + ' productos más</p>';
+            }
+            table.innerHTML = html;
+        }
+
+        window.cancelCsvImport = function() {
+            csvParsedData = [];
+            document.getElementById('csv-preview').classList.add('hidden');
+            document.getElementById('csv-file-input').value = '';
+        };
+
+        window.executeCsvImport = async function() {
+            if (csvParsedData.length === 0) {
+                showToast("No hay datos para importar", 'warn');
+                return;
+            }
+            if (state.mode !== 'firebase' || !state.firebaseDb) {
+                showToast("Conéctate a Firebase primero", 'warn');
+                return;
+            }
+            const btn = document.getElementById('btn-csv-import');
+            btn.disabled = true;
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Importando...';
+
+            try {
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'tecnogamers-store';
+                const db = state.firebaseDb;
+                let imported = 0;
+                let failed = 0;
+
+                for (const p of csvParsedData) {
+                    try {
+                        const productData = {
+                            name: p.name,
+                            category: p.category,
+                            price: p.price,
+                            stock: p.stock,
+                            shortDesc: p.shortdesc || p['shortdesc'] || '',
+                            longDesc: p.longdesc || p['longdesc'] || '',
+                            sku: p.sku,
+                            status: p.status,
+                            featured: p.featured,
+                            image: p.image || '',
+                            createdAt: new Date().toISOString()
+                        };
+                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'productos', p.sku), productData);
+                        imported++;
+                        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> ' + imported + '/' + csvParsedData.length;
+                    } catch (e) {
+                        failed++;
+                    }
+                }
+
+                showToast('Importación completa: ' + imported + ' productos' + (failed > 0 ? ' (' + failed + ' fallaron)' : ''), failed > 0 ? 'warn' : 'success');
+                cancelCsvImport();
+            } catch (error) {
+                showToast("Error al importar: " + error.message, 'danger');
+            }
+            btn.disabled = false;
+            btn.innerHTML = originalHtml;
+        };
+
+        // Drag & Drop para CSV
+        document.addEventListener('DOMContentLoaded', function() {
+            const dz = document.getElementById('csv-drop-zone');
+            if (dz) {
+                dz.addEventListener('dragover', function(e) { e.preventDefault(); this.classList.add('border-gamer-orange/50'); });
+                dz.addEventListener('dragleave', function() { this.classList.remove('border-gamer-orange/50'); });
+                dz.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('border-gamer-orange/50');
+                    const file = e.dataTransfer.files[0];
+                    if (file) {
+                        const input = document.getElementById('csv-file-input');
+                        const dt = new DataTransfer();
+                        dt.items.add(file);
+                        input.files = dt.files;
+                        handleCsvFile(input);
+                    }
+                });
+            }
+        });
+
         // CONEXIÓN EN TIEMPO REAL CON FIREBASE FIRESTORE (RULE 1 STRICT PATHS)
         function initFirebaseSync() {
             // Ruta estricta de regla 1: /artifacts/{appId}/public/data/{collectionName}
@@ -2243,6 +3293,7 @@
             loadSavedSocialConfig();
             loadAllContent();
             loadAnalyticsSettings();
+            loadContactFormConfig();
         }
 
         window.switchTab = function(tabId) {
@@ -2258,9 +3309,11 @@
             document.getElementById('tab-content-settings').classList.add('hidden');
             document.getElementById('tab-import-export').classList.add('hidden');
             document.getElementById('tab-analytics-settings').classList.add('hidden');
+            document.getElementById('tab-contact-form').classList.add('hidden');
+            document.getElementById('tab-users').classList.add('hidden');
             
             // Remover estilos activos de todos los botones de navegación
-                const navs = ['dashboard', 'products', 'categories', 'firebase-settings', 'cloudinary-settings', 'social-settings', 'content-settings', 'import-export', 'analytics-settings'];
+                const navs = ['dashboard', 'products', 'categories', 'firebase-settings', 'cloudinary-settings', 'social-settings', 'content-settings', 'import-export', 'analytics-settings', 'contact-form', 'users'];
             navs.forEach(nav => {
                 const btn = document.getElementById(`nav-${nav}`);
                 btn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50 border-l-2 border-transparent";
@@ -2281,7 +3334,9 @@
                 'social-settings': 'Redes Sociales',
                 'content-settings': 'Gestión de Contenido',
                 'import-export': 'Importar / Exportar',
-                'analytics-settings': 'Analytics & SEO'
+                'analytics-settings': 'Analytics & SEO',
+                'contact-form': 'Formulario de Contacto',
+                'users': 'Gestión de Usuarios'
             };
             document.getElementById('page-title').textContent = titles[tabId];
 
@@ -2934,7 +3989,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(initDefaultLegalSections, 600);
             setTimeout(function() {
-                if (ubicacionStores.length === 0) {
+                if (typeof ubicacionStores !== 'undefined' && ubicacionStores.length === 0) {
                     ubicacionStores = getDefaultStores();
                     renderUbiStores();
                 }

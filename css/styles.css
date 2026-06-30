@@ -65,3 +65,72 @@ html {
 .quill-content a { color: #FF4500; text-decoration: underline; }
 .quill-content a:hover { color: #FF6A33; }
 .quill-content blockquote { border-left: 3px solid #FF4500; padding-left: 1rem; margin: 0.75rem 0; color: #9ca3af; font-style: italic; }
+
+/* --- Cookie Consent Banner --- */
+#cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: linear-gradient(180deg, rgba(21,21,24,0.98) 0%, rgba(9,9,11,0.98) 100%);
+    border-top: 1px solid #FF4500;
+    backdrop-filter: blur(10px);
+    padding: 1rem 1.25rem;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+    animation: slideUp 0.4s ease-out;
+}
+#cookie-banner.hidden { display: none; }
+#cookie-banner .cookie-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+#cookie-banner .cookie-text {
+    flex: 1;
+    min-width: 250px;
+}
+#cookie-banner .cookie-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+#cookie-banner .cookie-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+#cookie-banner .cookie-btn-accept {
+    background: #FF4500;
+    color: #fff;
+}
+#cookie-banner .cookie-btn-accept:hover { background: #E03A00; }
+#cookie-banner .cookie-btn-reject {
+    background: transparent;
+    color: #9ca3af;
+    border-color: #242428;
+}
+#cookie-banner .cookie-btn-reject:hover { color: #fff; border-color: #6b7280; }
+#cookie-banner .cookie-btn-settings {
+    background: transparent;
+    color: #FF4500;
+    border: none;
+    text-decoration: underline;
+    font-weight: 600;
+}
+@keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+@supports (bottom: env(safe-area-inset-bottom)) {
+    #cookie-banner { bottom: env(safe-area-inset-bottom); }
+}

@@ -610,30 +610,30 @@
                 <!-- Panel derecho: Formulario de contacto -->
                 <div class="lg:col-span-7 bg-brand-darkBg/90 border border-brand-accentGray rounded-3xl p-6 sm:p-8">
                     
-                    <h3 class="font-orbitron text-xl font-bold text-white uppercase mb-6"><i class="fa-regular fa-paper-plane text-brand-orange mr-2"></i> Envíanos una Consulta</h3>
+                    <h3 id="cf-form-title" class="font-orbitron text-xl font-bold text-white uppercase mb-6"><i class="fa-regular fa-paper-plane text-brand-orange mr-2"></i> Envíanos una Consulta</h3>
                     
                     <!-- Contact Form -->
                     <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="text-xs font-bold text-gray-400 uppercase font-orbitron block mb-2">Nombre Completo</label>
+                                <label id="cf-label-name" class="text-xs font-bold text-gray-400 uppercase font-orbitron block mb-2">Nombre Completo</label>
                                 <input type="text" required placeholder="Ej. Juan Pérez" class="w-full bg-brand-darkCard border border-brand-accentGray focus:border-brand-orange focus:ring-1 focus:ring-brand-orange rounded-xl py-3 px-4 text-white outline-none transition-all">
                             </div>
                             <div>
-                                <label class="text-xs font-bold text-gray-400 uppercase font-orbitron block mb-2">Teléfono / WhatsApp</label>
+                                <label id="cf-label-phone" class="text-xs font-bold text-gray-400 uppercase font-orbitron block mb-2">Teléfono / WhatsApp</label>
                                 <input type="tel" required placeholder="Ej. 999 999 999" class="w-full bg-brand-darkCard border border-brand-accentGray focus:border-brand-orange focus:ring-1 focus:ring-brand-orange rounded-xl py-3 px-4 text-white outline-none transition-all">
                             </div>
                         </div>
 
                         <div>
-                            <label class="text-xs font-bold text-gray-400 uppercase font-orbitron block mb-2">Correo Electrónico</label>
+                            <label id="cf-label-email" class="text-xs font-bold text-gray-400 uppercase font-orbitron block mb-2">Correo Electrónico</label>
                             <input type="email" required placeholder="Ej. juan@tecnogamers.com" class="w-full bg-brand-darkCard border border-brand-accentGray focus:border-brand-orange focus:ring-1 focus:ring-brand-orange rounded-xl py-3 px-4 text-white outline-none transition-all">
                         </div>
 
                         <div>
-                            <label class="text-xs font-bold text-gray-400 uppercase font-orbitron block mb-2">¿En qué estás interesado?</label>
-                            <select class="w-full bg-brand-darkCard border border-brand-accentGray focus:border-brand-orange focus:ring-1 focus:ring-brand-orange rounded-xl py-3 px-4 text-white outline-none transition-all">
+                            <label id="cf-label-topic" class="text-xs font-bold text-gray-400 uppercase font-orbitron block mb-2">¿En qué estás interesado?</label>
+                            <select id="cf-select-topic" class="w-full bg-brand-darkCard border border-brand-accentGray focus:border-brand-orange focus:ring-1 focus:ring-brand-orange rounded-xl py-3 px-4 text-white outline-none transition-all">
                                 <option>Consolas de Videojuegos</option>
                                 <option>Últimos Títulos y Videojuegos</option>
                                 <option>Merchandising (Funko, Figuras)</option>
@@ -643,12 +643,12 @@
                         </div>
 
                         <div>
-                            <label class="text-xs font-bold text-gray-400 uppercase font-orbitron block mb-2">Tu Mensaje</label>
+                            <label id="cf-label-message" class="text-xs font-bold text-gray-400 uppercase font-orbitron block mb-2">Tu Mensaje</label>
                             <textarea rows="4" required placeholder="Detalla los artículos que te interesan y nuestro equipo técnico te responderá con cotización al instante..." class="w-full bg-brand-darkCard border border-brand-accentGray focus:border-brand-orange focus:ring-1 focus:ring-brand-orange rounded-xl py-3 px-4 text-white outline-none transition-all resize-none"></textarea>
                         </div>
 
                         <!-- Submit with modern animation -->
-                        <button type="submit" class="w-full bg-brand-orange hover:bg-brand-orangeHover text-white font-tech font-bold text-lg uppercase tracking-widest py-3.5 px-6 rounded-xl transition-all duration-300 transform active:scale-95">
+                        <button id="cf-submit-btn" type="submit" class="w-full bg-brand-orange hover:bg-brand-orangeHover text-white font-tech font-bold text-lg uppercase tracking-widest py-3.5 px-6 rounded-xl transition-all duration-300 transform active:scale-95">
                             Enviar Consulta por Correo
                         </button>
 
@@ -1485,6 +1485,7 @@
             event.preventDefault();
             const form = document.getElementById('contact-form');
             const btn = form.querySelector('button[type="submit"]');
+            const originalBtn = btn.innerHTML;
             btn.disabled = true;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
 
@@ -1496,7 +1497,19 @@
                 message: form.querySelector('textarea').value,
             };
 
-            emailjs.send("service_cabvc0u", "template_k8lcl7f", templateParams)
+            // Leer credenciales EmailJS desde localStorage (configuradas en admin)
+            let service = 'service_cabvc0u';
+            let template = 'template_k8lcl7f';
+            try {
+                const raw = localStorage.getItem('tg_emailjs_config');
+                if (raw) {
+                    const cfg = JSON.parse(raw);
+                    if (cfg.service) service = cfg.service;
+                    if (cfg.template) template = cfg.template;
+                }
+            } catch(e) {}
+
+            emailjs.send(service, template, templateParams)
                 .then((response) => {
                     console.log("EmailJS OK:", response);
                     form.reset();
@@ -1508,7 +1521,7 @@
                 })
                 .finally(() => {
                     btn.disabled = false;
-                    btn.innerHTML = 'Enviar Consulta por Correo';
+                    btn.innerHTML = originalBtn;
                 });
         }
 
@@ -1867,6 +1880,51 @@
                             el2.innerHTML = storesHtml;
                         }
                     }
+
+                    // Cargar configuración del formulario de contacto
+                    db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('contactForm').onSnapshot(function(snap) {
+                        if (!snap.exists) return;
+                        var cf = snap.data();
+                        if (cf.title) {
+                            var titleEl = document.getElementById('cf-form-title');
+                            if (titleEl) titleEl.innerHTML = '<i class="fa-regular fa-paper-plane text-brand-orange mr-2"></i> ' + cf.title;
+                        }
+                        if (cf.buttonText) {
+                            var btnEl = document.getElementById('cf-submit-btn');
+                            if (btnEl) btnEl.textContent = cf.buttonText;
+                        }
+                        if (cf.labelName) {
+                            var l1 = document.getElementById('cf-label-name');
+                            if (l1) l1.textContent = cf.labelName;
+                        }
+                        if (cf.labelPhone) {
+                            var l2 = document.getElementById('cf-label-phone');
+                            if (l2) l2.textContent = cf.labelPhone;
+                        }
+                        if (cf.labelEmail) {
+                            var l3 = document.getElementById('cf-label-email');
+                            if (l3) l3.textContent = cf.labelEmail;
+                        }
+                        if (cf.labelTopic) {
+                            var l4 = document.getElementById('cf-label-topic');
+                            if (l4) l4.textContent = cf.labelTopic;
+                        }
+                        if (cf.labelMessage) {
+                            var l5 = document.getElementById('cf-label-message');
+                            if (l5) l5.textContent = cf.labelMessage;
+                        }
+                        if (Array.isArray(cf.options) && cf.options.length > 0) {
+                            var sel = document.getElementById('cf-select-topic');
+                            if (sel) {
+                                sel.innerHTML = '';
+                                cf.options.forEach(function(opt) {
+                                    var o = document.createElement('option');
+                                    o.textContent = opt;
+                                    sel.appendChild(o);
+                                });
+                            }
+                        }
+                    });
 
                 });
             } catch (e) {
